@@ -2,10 +2,12 @@ import { Image, StyleSheet, Platform } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AppHeader } from '@/components/ui/AppHeader';
 
 export default function InfoScreen() {
   return (
     <SafeAreaView>
+      <AppHeader />
       <ThemedText>
       </ThemedText>
     </SafeAreaView>

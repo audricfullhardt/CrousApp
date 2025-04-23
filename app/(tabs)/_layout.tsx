@@ -38,6 +38,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="menu"
+        options={{
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="list.bullet" color={color} />,
+          href: null, // Empêche l'affichage dans la barre de navigation
+        }}
+      />
+      <Tabs.Screen
         name="info"
         options={{
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="info.circle" color={color} />,
