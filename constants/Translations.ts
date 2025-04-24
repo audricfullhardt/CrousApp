@@ -22,6 +22,28 @@ export const translations: Translations = {
     en: 'CROUStillant allows you to view menus from CROUS restaurants in France and overseas.',
   },
 
+  // Tabs
+  'tabs.home': {
+    fr: 'Accueil',
+    en: 'Home',
+  },
+  'tabs.restaurants': {
+    fr: 'Restaurants',
+    en: 'Restaurants',
+  },
+  'tabs.menu': {
+    fr: 'Menu',
+    en: 'Menu',
+  },
+  'tabs.info': {
+    fr: 'À propos',
+    en: 'About',
+  },
+  'tabs.settings': {
+    fr: 'Paramètres',
+    en: 'Settings',
+  },
+
   // Common actions
   'common.cancel': {
     fr: 'Annuler',
