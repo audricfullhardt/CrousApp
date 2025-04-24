@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { IconSymbol, IconSymbolName } from './IconSymbol';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface ButtonProps {
     title: string;
@@ -12,7 +13,12 @@ interface ButtonProps {
     onPress: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({ title, size = 'medium', color , icon, onPress , textColor = '#fff', border}) => {
+const Button: React.FC<ButtonProps> = ({ title, size = 'medium', color, icon, onPress, textColor, border }) => {
+    const theme = useTheme();
+    const defaultTextColor = theme.colors.surface;
+    const defaultColor = theme.colors.primary;
+    const defaultBorder = theme.colors.border;
+
     const getSizeStyle = (): { button: ViewStyle; text: TextStyle } => {
         switch (size) {
             case 'small':
@@ -28,11 +34,19 @@ const Button: React.FC<ButtonProps> = ({ title, size = 'medium', color , icon, o
 
     return (
         <TouchableOpacity
-            style={[styles.button, sizeStyle.button, { backgroundColor: color, borderWidth: border ? 1 : 0, borderColor: border }]}
+            style={[
+                styles.button, 
+                sizeStyle.button, 
+                { 
+                    backgroundColor: color || defaultColor,
+                    borderWidth: border ? 1 : 0,
+                    borderColor: border || defaultBorder
+                }
+            ]}
             onPress={onPress}
         >
-            <Text style={[styles.text, sizeStyle.text, { color: textColor }]}>{title}</Text>
-            {icon && <IconSymbol name={icon} size={sizeStyle.text.fontSize} color={textColor} style={styles.icon} />}
+            <Text style={[styles.text, sizeStyle.text, { color: textColor || defaultTextColor }]}>{title}</Text>
+            {icon && <IconSymbol name={icon} size={sizeStyle.text.fontSize} color={textColor || defaultTextColor} style={styles.icon} />}
         </TouchableOpacity>
     );
 };
@@ -45,7 +59,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     text: {
-        color: '#fff',
         fontWeight: 'bold',
     },
     icon: {

@@ -3,11 +3,11 @@ import { StyleSheet, Platform, View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '@/components/ui/Button';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { Colors } from '@/constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AppHeader } from '@/components/ui/AppHeader';
+import AppHeader from '../components/ui/AppHeader';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 type RootStackParamList = {
   restaurants: undefined;
@@ -16,41 +16,44 @@ type RootStackParamList = {
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function HomeScreen() {
-  const color = useColorScheme();
+  const theme = useTheme();
+  const { t } = useLanguage();
   const navigation = useNavigation<NavigationProp>();
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <AppHeader />
       <View style={styles.openSource}>
-        <ThemedText style={styles.openSourceText}>
-          Ce projet est 100% open source !
+        <ThemedText style={[styles.openSourceText, { 
+          borderColor: theme.colors.error,
+          color: theme.colors.error 
+        }]}>
+          {t('home.open_source')}
         </ThemedText>
       </View>
       <View style={styles.content}>
-        <ThemedText style={styles.title}>
-          Vos repas, simples et accessibles
+        <ThemedText style={[styles.title, { color: theme.colors.text }]}>
+          {t('app.description')}
         </ThemedText>
-        <ThemedText style={styles.subtitle}>
-          CROUStillant vous permet de consulter les menus des restaurants CROUS
-          de France et d'outre-mer.
+        <ThemedText style={[styles.subtitle, { color: theme.colors.text }]}>
+          {t('app.subtitle')}
         </ThemedText>
         <View style={styles.buttonsContainer}>
           <Button
-            title="Découvrir votre menu"
+            title={t('home.discover')}
             size="large"
-            color={Colors[color ?? 'light'].tint}
-            textColor={Colors[color ?? 'light'].background}
+            color={theme.colors.primary}
+            textColor={theme.colors.surface}
             onPress={() => navigation.navigate('restaurants')}
             icon="arrow.right"
           />
           <Button
-            title="Voir les restaurants"
+            title={t('home.view_restaurants')}
             size="large"
-            color={Colors[color ?? 'light'].background}
-            textColor={Colors[color ?? 'light'].text}
+            color={theme.colors.surface}
+            textColor={theme.colors.text}
             onPress={() => navigation.navigate('restaurants')}
             icon="fork.knife"
-            border={Colors[color ?? 'light'].text}
+            border={theme.colors.text}
           />
         </View>
       </View>
@@ -90,8 +93,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     textAlign: 'center',
     borderWidth: 1,
-    borderColor: 'red',
     borderRadius: 20,
-    color: 'red',
   },
 });
