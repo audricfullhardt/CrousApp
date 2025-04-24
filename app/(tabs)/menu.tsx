@@ -6,6 +6,7 @@ import {
   Image,
   ActivityIndicator,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -49,8 +50,13 @@ export default function MenuScreen() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+    },
+    content: {
+      flex: 1,
+    },
+    contentContainer: {
       padding: 16,
-      backgroundColor: theme.colors.background,
+      paddingBottom: Platform.OS === 'ios' ? 150 : 100,
     },
     loadingContainer: {
       flex: 1,
@@ -360,9 +366,9 @@ export default function MenuScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-        <AppHeader />
-      <ScrollView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <AppHeader />
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
           <ThemedText style={styles.title}>{restaurant.nom}</ThemedText>
           <TouchableOpacity onPress={toggleFavorite}>

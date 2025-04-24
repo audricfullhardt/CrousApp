@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator, SafeAreaView, Platform } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import RestaurantCard from '../components/ui/RestaurantCard';
 import AppHeader from '../components/ui/AppHeader';
@@ -106,7 +106,7 @@ export default function RestaurantsScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <AppHeader />
-      <ScrollView style={[styles.content, { backgroundColor: theme.colors.background }]}>
+      <ScrollView style={[styles.content, { backgroundColor: theme.colors.background }]} contentContainerStyle={styles.contentContainer}>
         <ThemedText style={[styles.title, { color: theme.colors.text }]}>
           {t('restaurants.title')}
         </ThemedText>
@@ -172,7 +172,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
+    flex: 1,
+  },
+  contentContainer: {
     padding: 20,
+    paddingBottom: Platform.OS === 'ios' ? 150 : 100,
   },
   title: {
     fontSize: 24,

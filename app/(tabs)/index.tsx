@@ -30,7 +30,7 @@ export default function HomeScreen() {
           {t('home.open_source')}
         </ThemedText>
       </View>
-      <View style={styles.content}>
+      <View style={[styles.content, { paddingBottom: Platform.OS === 'ios' ? 150 : 100 }]}>
         <ThemedText style={[styles.title, { color: theme.colors.text }]}>
           {t('app.description')}
         </ThemedText>

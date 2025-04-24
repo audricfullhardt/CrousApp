@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableOpacity, ScrollView, Switch, Alert, Modal } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ScrollView, Switch, Alert, Modal, Platform } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -155,7 +155,7 @@ export default function ParamsScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <AppHeader/>
-      <ScrollView style={styles.content}>
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
         <ThemedText style={[styles.sectionHeader, { color: theme.colors.text }]}>{t('settings.appearance')}</ThemedText>
         
         <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
@@ -284,7 +284,10 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  contentContainer: {
     padding: 16,
+    paddingBottom: Platform.OS === 'ios' ? 150 : 100,
   },
   sectionHeader: {
     fontSize: 22,
