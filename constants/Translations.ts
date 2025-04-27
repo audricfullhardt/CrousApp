@@ -179,6 +179,74 @@ export const translations: Translations = {
     fr: 'Filtres',
     en: 'Filters',
   },
+  'restaurants.filters.crous': {
+    fr: 'CROUS',
+    en: 'CROUS',
+  },
+  'restaurants.filters.all_crous': {
+    fr: 'Tous les CROUS',
+    en: 'All CROUS',
+  },
+  'restaurants.filters.restaurant_name': {
+    fr: 'Nom du restaurant',
+    en: 'Restaurant name',
+  },
+  'restaurants.filters.alphabetical_order': {
+    fr: 'Ordre alphabétique (A-Z)',
+    en: 'Alphabetical order (A-Z)',
+  },
+  'restaurants.filters.reverse_alphabetical': {
+    fr: 'Ordre alphabétique inverse (Z-A)',
+    en: 'Reverse alphabetical order (Z-A)',
+  },
+  'restaurants.filters.city': {
+    fr: 'Ville du restaurant',
+    en: 'Restaurant city',
+  },
+  'restaurants.filters.city_alphabetical_order': {
+    fr: 'Ordre alphabétique (A-Z)',
+    en: 'Alphabetical order (A-Z)',
+  },
+  'restaurants.filters.city_reverse_alphabetical': {
+    fr: 'Ordre alphabétique inverse (Z-A)',
+    en: 'Reverse alphabetical order (Z-A)',
+  },
+  'restaurants.filters.type': {
+    fr: 'Type de restaurant',
+    en: 'Restaurant type',
+  },
+  'restaurants.filters.all_types': {
+    fr: 'Tous les types',
+    en: 'All types',
+  },
+  'restaurants.filters.payment': {
+    fr: 'Moyens de paiement',
+    en: 'Payment methods',
+  },
+  'restaurants.filters.card_payment': {
+    fr: 'Paiement par carte bancaire accepté',
+    en: 'Card payment accepted',
+  },
+  'restaurants.filters.izly_payment': {
+    fr: 'Paiement Izly accepté',
+    en: 'Izly payment accepted',
+  },
+  'restaurants.filters.additional': {
+    fr: 'Filtres additionnels',
+    en: 'Additional filters',
+  },
+  'restaurants.filters.open_now': {
+    fr: 'Ouvert maintenant',
+    en: 'Open now',
+  },
+  'restaurants.filters.accessible': {
+    fr: 'Accessible aux personnes à mobilité réduite',
+    en: 'Accessible to people with reduced mobility',
+  },
+  'restaurants.filters.close': {
+    fr: 'Fermer',
+    en: 'Close',
+  },
   'restaurants.nearby': {
     fr: 'Restaurants à proximité',
     en: 'Nearby restaurants',
@@ -232,5 +300,37 @@ export const translations: Translations = {
   'info.view_github': {
     fr: 'Voir le projet sur GitHub →',
     en: 'View project on GitHub →',
+  },
+
+  // Location
+  'location.permission_denied': {
+    fr: 'Permission refusée',
+    en: 'Permission denied',
+  },
+  'location.permission_required': {
+    fr: 'L\'accès à votre localisation est nécessaire pour afficher les restaurants les plus proches.',
+    en: 'Access to your location is required to show nearby restaurants.',
+  },
+  'location.error': {
+    fr: 'Erreur de localisation',
+    en: 'Location error',
+  },
+  'location.error_message': {
+    fr: 'Impossible d\'obtenir votre position. Veuillez vérifier que la localisation est activée.',
+    en: 'Unable to get your location. Please check that location services are enabled.',
+  },
+  'location.distance': {
+    fr: 'à {distance}km',
+    en: '{distance}km away',
+  },
+
+  // Map
+  'restaurants.map_title': {
+    fr: 'Carte des restaurants',
+    en: 'Restaurants map',
+  },
+  'common.back': {
+    fr: 'Retour',
+    en: 'Back',
   },
 }; 

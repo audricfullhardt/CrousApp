@@ -1,0 +1,82 @@
+export default {
+  restaurants: {
+    title: 'Restaurants',
+    available: '{{count}} restaurants available',
+    search: 'Search for a restaurant',
+    filters: 'Filters',
+    nearby: 'Nearby',
+    show_map: 'Show map',
+    open: 'Open',
+    closed: 'Closed',
+    view_menu: 'View menu',
+    favorites_count: 'There is {{count}} favorite restaurant',
+    favorites_count_plural: 'There are {{count}} favorite restaurants',
+    reset: 'Reset',
+  },
+  settings: {
+    title: 'Settings',
+    appearance: 'Appearance',
+    language: {
+      title: 'Language',
+      description: 'Choose the application language',
+    },
+    dark_theme: {
+      title: 'Dark theme',
+      description: 'Enable dark theme',
+    },
+    behavior: 'Behavior',
+    favorites: {
+      title: 'Favorite restaurants',
+      description: 'Manage your favorite restaurants',
+      empty: {
+        title: 'No favorite restaurants',
+        description: 'You don\'t have any favorite restaurants yet. ',
+        link: 'Discover restaurants',
+      },
+    },
+    region: {
+      title: 'Region',
+      description: 'Choose your region',
+      all: 'All regions',
+    },
+    personal_info: 'Personal information',
+    delete_data: {
+      title: 'Delete data',
+      description: 'Delete all application data',
+      button: 'Delete',
+      confirm: 'Are you sure you want to delete all data?',
+      success: 'Data successfully deleted',
+      error: 'Error while deleting data',
+    },
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System',
+  },
+  common: {
+    cancel: 'Cancel',
+    success: 'Success',
+    error: 'Error',
+  },
+  tabs: {
+    info: 'Info',
+    settings: 'Settings',
+  },
+  home: {
+    discover: 'Discover',
+    view_restaurants: 'View restaurants',
+    open_source: 'Open Source',
+  },
+  info: {
+    students: 'Students',
+    students_desc: 'This application is intended for students who want to find nearby CROUS restaurants.',
+    hot_meals: 'Hot meals',
+    hot_meals_desc: 'CROUS restaurants offer hot meals at reduced prices for students.',
+    open_source: 'Open Source',
+    open_source_desc: 'This application is open source and available on GitHub.',
+    view_github: 'View on GitHub',
+  },
+  app: {
+    description: 'Find nearby CROUS restaurants',
+    subtitle: 'Discover menus and opening hours',
+  },
+}; 
