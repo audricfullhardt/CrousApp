@@ -82,9 +82,71 @@ export default {
     settings: 'Paramètres',
   },
   home: {
-    discover: 'Découvrir',
+    discover: 'Découvrir votre menu',
     view_restaurants: 'Voir les restaurants',
-    open_source: 'Open Source',
+    open_source: 'Le projet est 100% open source !',
+    Cards:{
+      title: 'Toutes les informations sur votre restaurant',
+      searchCard: {
+        title: 'Recherche par région, ville ou restaurant',
+        desc: 'Accédez facilement à votre restaurant grâce à notre fonction de recherche',
+        button: 'En savoir plus',
+      },
+      hoursCard: {
+        title: 'Horaires d\'ouverture et de fermeture',
+        desc: 'Consultez rapidement les horaires de votre restaurant universitaire du CROUS.',
+        button: 'En savoir plus',
+      },
+      paymentCard: {
+        title: 'Contacts et moyens de paiement acceptés',
+        desc: 'Découvrez les moyens de paiement acceptés dans votre restaurant universitaire.',
+        button: 'En savoir plus',
+      },
+      accessCard: {
+        title: 'Accès à tous les restaurants',
+        desc: 'CROUStillant vous propose une sélection complète des restaurants du CROUS.',
+        button: 'En savoir plus',
+      },
+    },
+    Team:{
+      title: 'Faites partie de l’équipe',
+      Cards:{
+        projectDesc:{
+          title: 'Créé par des étudiants, pour des étudiants',
+          desc: 'CROUStillant est un projet qui a pour but de fournir des informations sur les menus des restaurants universitaires en France et en Outre-Mer.',
+          button: 'Participer au projet',
+        },
+        teamDesc:{
+          title: 'Rejoignez l\'équipe !',
+          desc: 'CROUStillant est un projet en constante évolution. Nous sommes toujours à la recherche de nouveaux talents pour rejoindre l\'équipe et nous aider à améliorer le service.',
+          button: 'Nous rejoindre',
+          teamMembers:{
+            title: 'Membres de l\'équipe',
+            members:{
+              paul: 'Paul Bayfield',
+              alden: 'Adlen Cherif',
+              lucas: 'Lucas Debeve',
+              louis: 'Louis Descotes',
+            }
+          }
+        },
+        cicd:{
+          title: 'Intégration facile',
+          desc: 'Intégrer les informations de CROUStillant sur votre propre application gratuitement en utilisant notre API.',
+          button: 'Commencer à l\'utiliser',
+          server:{
+            title: 'Serveur',
+            link: 'https://api.croustillant.menu',
+            server_desc: 'Serveur de production',
+          },
+        },
+        convinced:{
+          title: 'Convaincu ?',
+          desc: 'Débutez votre utilisation de CROUStillant dès maintenant !',
+          button: 'Découvrir votre menu',
+        }
+      },
+    }
   },
   info: {
     students: 'Étudiants',
@@ -96,13 +158,15 @@ export default {
     view_github: 'Voir sur GitHub',
   },
   app: {
-    description: 'Trouvez les restaurants CROUS à proximité',
-    subtitle: 'Découvrez les menus et les horaires d\'ouverture',
+    name: 'CROUStillant',
+    description: 'Le menu du CROUS en un clic',
+    subtitle: 'CROUStillant vous permet de consulter les menus des restaurants CROUS de France et d\'outre-mer.',
   },
   location: {
     permission_denied: 'Permission refusée',
     permission_required: 'Permission requise',
     error: 'Erreur',
     error_message: 'Une erreur est survenue lors de la récupération de votre position',
+    distance: 'à {distance}km',
   },
 }; 
