@@ -18,6 +18,22 @@ export type Theme = {
     link: string;
     surface: string;
     surfaceVariant: string;
+    openSource: string;
+    openSourceBorder: string;
+    cardsTitle: string;
+    teamCard: {
+      membersCard: {
+        background: string;
+        text: string;
+        dot: string;
+        border: string;
+      }
+    }
+    convincedCard: {
+      background: string;
+      text: string;
+      border: string;
+    }
   };
 };
 
@@ -36,8 +52,24 @@ export const lightTheme: Theme = {
     success: '#4CAF50',
     error: '#F44336',
     link: '#2196F3',
-    surface: '#FFFFFF',
+    surface: '#fafafa',
     surfaceVariant: '#F5F5F5',
+    openSource: '#fed7da',
+    openSourceBorder: '#eaafb3',
+    cardsTitle: '#f0353d',
+    teamCard: {
+      membersCard: {
+        background: '#f9f3f3',
+        border: '#fce3e3',
+        text: '#000000',
+        dot: '#0066FF',
+      }
+    },
+    convincedCard: {
+      background: '#ff6563',
+      text: '#F2F2F2',
+      border: '#ff9493',
+    }
   },
 };
 
@@ -58,6 +90,22 @@ export const darkTheme: Theme = {
     link: '#2196F3',
     surface: '#1C1C1E',
     surfaceVariant: '#2C2C2E',
+    openSource: '#740e17',
+    openSourceBorder: '#ffd9dc',
+    cardsTitle: '#f0353d',
+    teamCard: {
+      membersCard: {
+        background: '#FFF1F4',
+        border: '#fce3e3',
+        text: '#000000',
+        dot: '#0066FF',
+      }
+    },
+    convincedCard: {
+      background: '#ff6563',
+      text: '#F2F2F2',
+      border: '#ff9493',
+    }
   },
 };
 
