@@ -4,7 +4,7 @@ import RestaurantCard from '../components/ui/RestaurantCard';
 import AppHeader from '../components/ui/AppHeader';
 import SearchBar from '../components/ui/SearchBar';
 import FilterButton from '../components/ui/FilterButton';
-import FilterModal from '@/components/ui/FilterModal';
+import FilterModal from '@/app/components/ui/FilterModal';
 import Pagination from '../components/ui/Pagination';
 import ResetButton from '../components/ui/ResetButton';
 import { useEffect, useState } from 'react';
@@ -72,11 +72,26 @@ export default function RestaurantsScreen() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await fetch(`https://api-croustillant.bayfield.dev/v1/restaurants`);
-        const data = await response.json();
+        const response = await fetch(`https://api.croustillant.menu/v1/restaurants`);
+        const responseText = await response.text();
+        
+        console.log('API Response:', responseText);
+        
+
+        let data;
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error('JSON Parse Error:', parseError);
+          console.error('Raw Response:', responseText);
+          throw new Error('Invalid JSON response from server');
+        }
         
         if (data.success) {
           setRestaurants(data.data);
+        } else {
+          console.error('API Error:', data);
+          throw new Error('API returned unsuccessful response');
         }
       } catch (error) {
         console.error('Error fetching restaurants:', error);
@@ -144,7 +159,6 @@ export default function RestaurantsScreen() {
   const applyFilters = (restaurants: Restaurant[]) => {
     let filtered = [...restaurants];
 
-    // Apply search filter
     if (searchQuery.trim()) {
       filtered = filtered.filter(restaurant =>
         (restaurant.nom?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
@@ -153,12 +167,10 @@ export default function RestaurantsScreen() {
       );
     }
 
-    // Apply distance sorting if nearby is active and we have location
     if (showNearby && location) {
       filtered = updateRestaurantsWithDistance(filtered, location)
         .sort((a, b) => (a.distance || Infinity) - (b.distance || Infinity));
     } else {
-      // Apply other sorting methods only if not showing nearby
       if (filters.alphabeticalOrder.value) {
         filtered.sort((a, b) => a.nom.localeCompare(b.nom, undefined, { sensitivity: 'base' }));
       } else if (filters.reverseAlphabeticalOrder.value) {
@@ -172,7 +184,6 @@ export default function RestaurantsScreen() {
       }
     }
 
-    // Apply payment filters
     if (filters.cardPayment.value || filters.izlyPayment.value) {
       filtered = filtered.filter(restaurant => {
         if (!restaurant.paiement) return false;
@@ -188,10 +199,9 @@ export default function RestaurantsScreen() {
       });
     }
 
-    // Apply open now filter
     if (filters.openNow.value) {
       const now = new Date();
-      const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, ...
+      const currentDay = now.getDay();
       const currentHour = now.getHours();
       const currentMinutes = now.getMinutes();
       const currentTime = currentHour * 60 + currentMinutes;
@@ -218,7 +228,6 @@ export default function RestaurantsScreen() {
       });
     }
 
-    // Apply accessibility filter
     if (filters.accessible.value) {
       filtered = filtered.filter(restaurant => 
         restaurant.paiement && restaurant.paiement.some(p => 

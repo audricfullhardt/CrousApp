@@ -9,13 +9,13 @@ import {
   Platform,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useLocalSearchParams } from "expo-router";
 import { useState, useEffect } from "react";
 import AppHeader from "../components/ui/AppHeader";
 import { useTheme } from '@/contexts/ThemeContext';
+import { MapPin, CreditCard, Heart, Check, X } from 'lucide-react-native';
 
 interface Restaurant {
   nom: string;
@@ -217,6 +217,22 @@ export default function MenuScreen() {
       color: theme.colors.link,
       textDecorationLine: "underline",
     },
+    infoContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 20,
+    },
+    locationContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+    },
+    location: {
+      fontSize: 16,
+    },
+    payment: {
+      fontSize: 16,
+    },
   });
 
   const checkIfOpen = (restaurant: Restaurant) => {
@@ -315,49 +331,13 @@ export default function MenuScreen() {
           <View key={day} style={styles.tableRow}>
             <ThemedText style={styles.tableCell}>{day}</ThemedText>
             <View style={styles.tableCell}>
-              <IconSymbol
-                name={
-                  restaurant.jours_ouvert[index]?.ouverture.matin
-                    ? "checkmark"
-                    : "xmark"
-                }
-                size={20}
-                color={
-                  restaurant.jours_ouvert[index]?.ouverture.matin
-                    ? "#4CAF50"
-                    : "#F44336"
-                }
-              />
+              {restaurant.jours_ouvert[index]?.ouverture.matin ? <Check size={20} color="#4CAF50" /> : <X size={20} color="#F44336" />}
             </View>
             <View style={styles.tableCell}>
-              <IconSymbol
-                name={
-                  restaurant.jours_ouvert[index]?.ouverture.midi
-                    ? "checkmark"
-                    : "xmark"
-                }
-                size={20}
-                color={
-                  restaurant.jours_ouvert[index]?.ouverture.midi
-                    ? "#4CAF50"
-                    : "#F44336"
-                }
-              />
+              {restaurant.jours_ouvert[index]?.ouverture.midi ? <Check size={20} color="#4CAF50" /> : <X size={20} color="#F44336" />}
             </View>
             <View style={styles.tableCell}>
-              <IconSymbol
-                name={
-                  restaurant.jours_ouvert[index]?.ouverture.soir
-                    ? "checkmark"
-                    : "xmark"
-                }
-                size={20}
-                color={
-                  restaurant.jours_ouvert[index]?.ouverture.soir
-                    ? "#4CAF50"
-                    : "#F44336"
-                }
-              />
+              {restaurant.jours_ouvert[index]?.ouverture.soir ? <Check size={20} color="#4CAF50" /> : <X size={20} color="#F44336" />}
             </View>
           </View>
         ))}
@@ -372,11 +352,7 @@ export default function MenuScreen() {
         <View style={styles.header}>
           <ThemedText style={styles.title}>{restaurant.nom}</ThemedText>
           <TouchableOpacity onPress={toggleFavorite}>
-            <IconSymbol
-              name={isFavorite ? "heart.fill" : "heart"}
-              size={24}
-              color={isFavorite ? colors.tint : colors.text}
-            />
+            {isFavorite ? <Heart size={24} color={colors.tint} /> : <Heart size={24} color={colors.text} />}
           </TouchableOpacity>
         </View>
 
@@ -439,14 +415,14 @@ export default function MenuScreen() {
         </View>
 
         <View style={styles.addressContainer}>
-          <IconSymbol name="location" size={20} color={colors.text} />
+          <MapPin size={20} color={colors.text} />
           <ThemedText style={styles.address}>{restaurant.adresse}</ThemedText>
         </View>
 
         <View style={styles.paymentContainer}>
           {restaurant.paiement?.includes("Carte bancaire") && (
             <TouchableOpacity style={styles.paymentButton}>
-              <IconSymbol name="creditcard" size={20} color={colors.text} />
+              <CreditCard size={20} color={colors.text} />
             </TouchableOpacity>
           )}
           {restaurant.paiement?.includes("IZLY") && (
@@ -465,6 +441,22 @@ export default function MenuScreen() {
           <TouchableOpacity>
             <ThemedText style={styles.crousLink}>{restaurant.zone}</ThemedText>
           </TouchableOpacity>
+        </View>
+
+        <View style={styles.infoContainer}>
+          <View style={styles.locationContainer}>
+            <MapPin size={20} color={colors.text} />
+            <ThemedText style={[styles.location, { color: colors.text }]}>
+              {restaurant.adresse}
+            </ThemedText>
+          </View>
+
+          <View style={styles.paymentContainer}>
+            <CreditCard size={20} color={colors.text} />
+            <ThemedText style={[styles.payment, { color: colors.text }]}>
+              {restaurant.paiement?.join(", ") || "Aucun"}
+            </ThemedText>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
