@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Platform, Pressable } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { useRouter, useNavigation } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
@@ -9,6 +9,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useLocation } from '@/hooks/useLocation';
 import { Colors } from '@/constants/Colors';
+import { ChevronLeft } from 'lucide-react-native';
 
 interface Restaurant {
   code: number;
@@ -74,10 +75,9 @@ export default function MapScreen() {
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-          <IconSymbol name="chevron.left" size={24} color={theme.colors.text} />
-          <ThemedText style={styles.backText}>{t('common.back')}</ThemedText>
-        </TouchableOpacity>
+        <Pressable style={styles.backButton} onPress={handleBackPress}>
+          <ChevronLeft size={24} color={theme.colors.text} />
+        </Pressable>
         <ThemedText style={styles.title}>{t('restaurants.map_title')}</ThemedText>
       </View>
 
