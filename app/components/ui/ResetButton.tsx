@@ -1,8 +1,8 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { RotateCcw } from 'lucide-react-native';
 
 interface ResetButtonProps {
   onPress: () => void;
@@ -13,21 +13,17 @@ function ResetButton({ onPress }: ResetButtonProps) {
   const { t } = useLanguage();
 
   return (
-    <TouchableOpacity
-      style={[styles.container, { 
-        borderColor: theme.colors.text,
-        backgroundColor: theme.colors.surfaceVariant 
-      }]}
-      onPress={onPress}
-    >
-      <IconSymbol name="arrow.counterclockwise" size={16} color={theme.colors.text} />
-      <ThemedText style={[styles.text, { color: theme.colors.text }]}>{t('restaurants.reset')}</ThemedText>
-    </TouchableOpacity>
+    <Pressable style={styles.button} onPress={onPress}>
+      <RotateCcw size={16} color={theme.colors.text} />
+      <ThemedText style={[styles.text, { color: theme.colors.text }]}>
+        {t('reset')}
+      </ThemedText>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  button: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
