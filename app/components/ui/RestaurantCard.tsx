@@ -1,8 +1,9 @@
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Utensils, MapPin, CreditCard } from 'lucide-react-native';
 
 export interface RestaurantCardProps {
   imageUrl: string | null;
@@ -14,6 +15,8 @@ export interface RestaurantCardProps {
   isFavorite?: boolean;
   isIzly?: boolean;
   isCreditCard?: boolean;
+  location: string;
+  payment: string;
 }
 
 function RestaurantCard({
@@ -26,6 +29,8 @@ function RestaurantCard({
   isFavorite = false,
   isIzly = false,
   isCreditCard = false,
+  location,
+  payment,
 }: RestaurantCardProps) {
   const theme = useTheme();
   const { t } = useLanguage();
@@ -37,7 +42,9 @@ function RestaurantCard({
           <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
         ) : (
           <View style={[styles.placeholderImage, { backgroundColor: theme.colors.surfaceVariant }]}>
-            <IconSymbol name="fork.knife" size={48} color={theme.colors.text} />
+            <View style={styles.iconContainer}>
+              <Utensils size={48} color={theme.colors.text} />
+            </View>
           </View>
         )}
         <TouchableOpacity
@@ -61,6 +68,22 @@ function RestaurantCard({
           <View style={[styles.status, { backgroundColor: isOpen ? theme.colors.success : theme.colors.error }]}>
             <ThemedText style={[styles.statusText, { color: theme.colors.surface }]}>
               {isOpen ? t('restaurants.open') : t('restaurants.closed')}
+            </ThemedText>
+          </View>
+        </View>
+
+        <View style={styles.infoContainer}>
+          <View style={styles.locationContainer}>
+            <MapPin size={20} color={theme.colors.text} />
+            <ThemedText style={[styles.location, { color: theme.colors.text }]}>
+              {location}
+            </ThemedText>
+          </View>
+
+          <View style={styles.paymentContainer}>
+            <CreditCard size={20} color={theme.colors.text} />
+            <ThemedText style={[styles.payment, { color: theme.colors.text }]}>
+              {payment}
             </ThemedText>
           </View>
         </View>
@@ -179,6 +202,26 @@ const styles = StyleSheet.create({
   menuButtonText: {
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  paymentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  iconContainer: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
   },
 });
 

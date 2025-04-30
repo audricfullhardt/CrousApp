@@ -3,10 +3,10 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { Home, Utensils, Info, Settings, UtensilsCrossed } from 'lucide-react-native';
 
 export default function TabLayout() {
   const theme = useTheme();
@@ -42,37 +42,35 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
           tabBarLabel: t('tabs.home'),
+          tabBarIcon: ({ color }) => <Home size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name="restaurants"
         options={{
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="fork.knife" color={color} />,
           tabBarLabel: t('tabs.restaurants'),
+          tabBarIcon: ({ color }) => <UtensilsCrossed size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name="menu"
         options={{
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="list.bullet" color={color} />,
           href: null,
-          tabBarLabel: t('tabs.menu'),
         }}
       />
       <Tabs.Screen
         name="info"
         options={{
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="info.circle" color={color} />,
           tabBarLabel: t('tabs.info'),
+          tabBarIcon: ({ color }) => <Info size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name="params"
         options={{
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gear" color={color} />,
           tabBarLabel: t('tabs.settings'),
+          tabBarIcon: ({ color }) => <Settings size={28} color={color} />,
         }}
       />
     </Tabs>

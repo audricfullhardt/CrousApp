@@ -1,7 +1,7 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
+import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 
 interface PaginationProps {
   currentPage: number;
@@ -18,7 +18,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
     
     // Always show first page
     pages.push(
-      <TouchableOpacity
+      <Pressable
         key={1}
         style={[
           styles.pageButton,
@@ -30,14 +30,14 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
           styles.pageText,
           currentPage === 1 && { color: theme.colors.surface }
         ]}>1</ThemedText>
-      </TouchableOpacity>
+      </Pressable>
     );
 
     if (totalPages <= maxVisiblePages) {
       // Show all pages if total is less than max visible
       for (let i = 2; i <= totalPages; i++) {
         pages.push(
-          <TouchableOpacity
+          <Pressable
             key={i}
             style={[
               styles.pageButton,
@@ -49,7 +49,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
               styles.pageText,
               currentPage === i && { color: theme.colors.surface }
             ]}>{i}</ThemedText>
-          </TouchableOpacity>
+          </Pressable>
         );
       }
     } else {
@@ -63,7 +63,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
       // Show current page and surrounding pages
       for (let i = Math.max(2, currentPage - 1); i <= Math.min(currentPage + 1, totalPages - 1); i++) {
         pages.push(
-          <TouchableOpacity
+          <Pressable
             key={i}
             style={[
               styles.pageButton,
@@ -75,7 +75,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
               styles.pageText,
               currentPage === i && { color: theme.colors.surface }
             ]}>{i}</ThemedText>
-          </TouchableOpacity>
+          </Pressable>
         );
       }
 
@@ -88,7 +88,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
       // Always show last page
       if (totalPages > 1) {
         pages.push(
-          <TouchableOpacity
+          <Pressable
             key={totalPages}
             style={[
               styles.pageButton,
@@ -100,7 +100,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
               styles.pageText,
               currentPage === totalPages && { color: theme.colors.surface }
             ]}>{totalPages}</ThemedText>
-          </TouchableOpacity>
+          </Pressable>
         );
       }
     }
@@ -110,25 +110,25 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={[styles.arrowButton, { opacity: currentPage === 1 ? 0.5 : 1 }]}
+      <Pressable
+        style={[styles.button, currentPage === 1 ? styles.buttonDisabled : { opacity: 1 }]}
         onPress={() => currentPage > 1 && onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        <IconSymbol name="chevron.left" size={20} color={theme.colors.text} />
-      </TouchableOpacity>
+        <ChevronLeft size={20} color={theme.colors.text} />
+      </Pressable>
       
       <View style={styles.pageContainer}>
         {renderPageNumbers()}
       </View>
 
-      <TouchableOpacity
-        style={[styles.arrowButton, { opacity: currentPage === totalPages ? 0.5 : 1 }]}
+      <Pressable
+        style={[styles.button, currentPage === totalPages ? styles.buttonDisabled : { opacity: 1 }]}
         onPress={() => currentPage < totalPages && onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        <IconSymbol name="chevron.right" size={20} color={theme.colors.text} />
-      </TouchableOpacity>
+        <ChevronRight size={20} color={theme.colors.text} />
+      </Pressable>
     </View>
   );
 }
@@ -155,12 +155,18 @@ const styles = StyleSheet.create({
   pageText: {
     fontSize: 14,
   },
-  arrowButton: {
+  button: {
     padding: 8,
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
   ellipsis: {
     fontSize: 14,
     marginHorizontal: 4,
+  },
+  pageInfo: {
+    fontSize: 14,
   },
 });
 

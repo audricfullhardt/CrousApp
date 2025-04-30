@@ -1,6 +1,11 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Language, translations } from '@/constants/Translations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import fr from '@/app/i18n/fr';
+import en from '@/app/i18n/en';
+
+type Language = 'fr' | 'en';
+type Translations = typeof fr;
+const translations: Record<Language, Translations> = { fr, en };
 
 type LanguageContextType = {
   language: Language;
@@ -23,7 +28,13 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const t = (key: string, params?: Record<string, string | number>): string => {
-    const translation = translations[key]?.[language] || key;
+    const keys = key.split('.');
+    let translation: any = translations[language];
+    
+    for (const k of keys) {
+      translation = translation?.[k];
+      if (!translation) return key;
+    }
     
     if (params) {
       return Object.entries(params).reduce((acc, [key, value]) => {

@@ -5,6 +5,7 @@ import AppHeader from "../components/ui/AppHeader";
 import { SafeAreaView } from "react-native";
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { GraduationCap, Flame, Code } from 'lucide-react-native';
 
 export default function InfoScreen() {
   const theme = useTheme();
@@ -23,9 +24,9 @@ export default function InfoScreen() {
           shadowColor: theme.colors.text,
         }]}>
           <View style={styles.titleContainer}>
-            <IconSymbol name="graduationcap" size={24} color={theme.colors.text} />
+            <GraduationCap size={24} color={theme.colors.text} />
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t('info.students')}
+              {t('info.education.title')}
             </ThemedText>
           </View>
           <ThemedText style={[styles.description, { color: theme.colors.text }]}>
@@ -38,9 +39,9 @@ export default function InfoScreen() {
           shadowColor: theme.colors.text,
         }]}>
           <View style={styles.titleContainer}>
-            <IconSymbol name="flame" size={24} color={theme.colors.text} />
+            <Flame size={24} color={theme.colors.text} />
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t('info.hot_meals')}
+              {t('info.passion.title')}
             </ThemedText>
           </View>
           <ThemedText style={[styles.description, { color: theme.colors.text }]}>
@@ -53,9 +54,9 @@ export default function InfoScreen() {
           shadowColor: theme.colors.text,
         }]}>
           <View style={styles.titleContainer}>
-            <IconSymbol name="chevron.left.forwardslash.chevron.right" size={24} color={theme.colors.text} />
+            <Code size={24} color={theme.colors.text} />
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t('info.open_source')}
+              {t('info.tech.title')}
             </ThemedText>
           </View>
           <ThemedText style={[styles.description, { color: theme.colors.text }]}>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Settings, X } from 'lucide-react-native';
 
 function SettingsButton() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -16,16 +17,12 @@ function SettingsButton() {
 
   return (
     <>
-      <TouchableOpacity
-        style={[styles.button, { 
-          backgroundColor: theme.colors.surfaceVariant,
-          borderWidth: 1,
-          borderColor: theme.colors.border,
-        }]}
-        onPress={() => setIsModalVisible(true)}
-      >
-        <IconSymbol name="gearshape" size={24} color={theme.colors.text} />
-      </TouchableOpacity>
+      <Pressable style={styles.button} onPress={() => setIsModalVisible(true)}>
+        <Settings size={24} color={theme.colors.text} />
+        <ThemedText style={[styles.text, { color: theme.colors.text }]}>
+          {t('settings')}
+        </ThemedText>
+      </Pressable>
 
       <Modal
         visible={isModalVisible}
@@ -39,9 +36,9 @@ function SettingsButton() {
               <ThemedText style={[styles.title, { color: theme.colors.text }]}>
                 {t('settings.title')}
               </ThemedText>
-              <TouchableOpacity onPress={() => setIsModalVisible(false)}>
-                <IconSymbol name="xmark" size={24} color={theme.colors.text} />
-              </TouchableOpacity>
+              <Pressable style={styles.closeButton} onPress={() => setIsModalVisible(false)}>
+                <X size={24} color={theme.colors.text} />
+              </Pressable>
             </View>
 
             <View style={styles.section}>
@@ -141,6 +138,8 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
     marginLeft: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   modalOverlay: {
     flex: 1,
@@ -183,6 +182,12 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  closeButton: {
+    padding: 8,
+  },
+  text: {
+    marginLeft: 8,
   },
 });
 

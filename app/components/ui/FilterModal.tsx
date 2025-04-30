@@ -1,12 +1,13 @@
 import React from 'react';
-import { Modal, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Modal, StyleSheet, View, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
-import { IconSymbol } from './IconSymbol';
-import { ThemedText } from '../ThemedText';
-import { ThemedView } from '../ThemedView';
+import { ThemedText } from '../../../components/ThemedText';
+import { ThemedView } from '../../../components/ThemedView';
+import { Check, X } from 'lucide-react-native';
+import { useTheme } from '@/contexts/ThemeContext';
 
 type FilterOption = {
   key: string;
@@ -32,6 +33,7 @@ type FilterModalProps = {
 export default function FilterModal({ visible, onClose, filters }: FilterModalProps) {
   const { t } = useLanguage();
   const colorScheme = useColorScheme();
+  const theme = useTheme();
 
   const FilterSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <View style={styles.section}>
@@ -42,9 +44,11 @@ export default function FilterModal({ visible, onClose, filters }: FilterModalPr
 
   const FilterCheckbox = ({ label, checked, onToggle }: { label: string; checked: boolean; onToggle: () => void }) => (
     <TouchableOpacity style={styles.checkboxContainer} onPress={onToggle}>
-      <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-        {checked && <IconSymbol name="checkmark" size={16} color="#fff" />}
-      </View>
+      <Pressable
+        style={[styles.checkbox, checked && { backgroundColor: theme.colors.primary }]}
+      >
+        {checked && <Check size={16} color="#fff" />}
+      </Pressable>
       <ThemedText style={styles.checkboxLabel}>{label}</ThemedText>
     </TouchableOpacity>
   );
@@ -60,9 +64,9 @@ export default function FilterModal({ visible, onClose, filters }: FilterModalPr
         <ThemedView style={styles.modalContent}>
           <View style={styles.header}>
             <ThemedText style={styles.title}>{t('restaurants.filters')}</ThemedText>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <IconSymbol name="xmark" size={24} color={Colors[colorScheme ?? 'light'].text} />
-            </TouchableOpacity>
+            <Pressable style={styles.closeButton} onPress={onClose}>
+              <X size={24} color={Colors[colorScheme ?? 'light'].text} />
+            </Pressable>
           </View>
 
           <ScrollView style={styles.content}>

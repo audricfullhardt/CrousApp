@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableOpacity, ScrollView, Switch, Alert, Modal, Platform } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ScrollView, Switch, Alert, Modal, Platform, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -10,6 +10,7 @@ import { Link } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
 import { Language } from '@/constants/Translations';
+import { X, ChevronDown, AlertTriangle } from 'lucide-react-native';
 
 const REGIONS = [
   { id: 'all', name: 'Toutes les régions' },
@@ -67,9 +68,9 @@ export default function ParamsScreen() {
         <View style={[styles.modalContent, { backgroundColor: theme.colors.surface }]}>
           <View style={styles.modalHeader}>
             <ThemedText style={[styles.modalTitle, { color: theme.colors.text }]}>{t('settings.language.title')}</ThemedText>
-            <TouchableOpacity onPress={() => setShowLanguageModal(false)}>
-              <IconSymbol name="xmark" size={24} color={theme.colors.text} />
-            </TouchableOpacity>
+            <Pressable style={styles.closeButton} onPress={() => setShowLanguageModal(false)}>
+              <X size={24} color={theme.colors.text} />
+            </Pressable>
           </View>
           {LANGUAGES.map((lang) => (
             <TouchableOpacity
@@ -115,9 +116,9 @@ export default function ParamsScreen() {
         <View style={[styles.modalContent, { backgroundColor: theme.colors.surface }]}>
           <View style={styles.modalHeader}>
             <ThemedText style={[styles.modalTitle, { color: theme.colors.text }]}>{t('settings.region.title')}</ThemedText>
-            <TouchableOpacity onPress={() => setShowRegionModal(false)}>
-              <IconSymbol name="xmark" size={24} color={theme.colors.text} />
-            </TouchableOpacity>
+            <Pressable style={styles.closeButton} onPress={() => setShowRegionModal(false)}>
+              <X size={24} color={theme.colors.text} />
+            </Pressable>
           </View>
           {REGIONS.map((region) => (
             <TouchableOpacity
@@ -179,13 +180,12 @@ export default function ParamsScreen() {
             <ThemedText style={[styles.settingDescription, { color: theme.colors.text }]}>
               {t('settings.language.description')}
             </ThemedText>
-            <TouchableOpacity
-              style={[styles.selectButton, { backgroundColor: theme.colors.surfaceVariant }]}
-              onPress={() => setShowLanguageModal(true)}
-            >
-              <ThemedText style={{ color: theme.colors.text }}>{LANGUAGES.find(l => l.id === language)?.name || 'Français (fr)'}</ThemedText>
-              <IconSymbol name="chevron.down" size={20} color={theme.colors.text} />
-            </TouchableOpacity>
+            <Pressable style={styles.dropdownButton} onPress={() => setShowLanguageModal(true)}>
+              <ThemedText style={[styles.dropdownText, { color: theme.colors.text }]}>
+                {LANGUAGES.find(l => l.id === language)?.name || 'Français (fr)'}
+              </ThemedText>
+              <ChevronDown size={20} color={theme.colors.text} />
+            </Pressable>
           </View>
         </View>
 
@@ -241,15 +241,12 @@ export default function ParamsScreen() {
             <ThemedText style={[styles.settingDescription, { color: theme.colors.text }]}>
               {t('settings.region.description')}
             </ThemedText>
-            <TouchableOpacity
-              style={[styles.selectButton, { backgroundColor: theme.colors.surfaceVariant }]}
-              onPress={() => setShowRegionModal(true)}
-            >
-              <ThemedText style={{ color: theme.colors.text }}>
+            <Pressable style={styles.dropdownButton} onPress={() => setShowRegionModal(true)}>
+              <ThemedText style={[styles.dropdownText, { color: theme.colors.text }]}>
                 {REGIONS.find(r => r.id === favoriteRegion)?.name || t('settings.region.all')}
               </ThemedText>
-              <IconSymbol name="chevron.down" size={20} color={theme.colors.text} />
-            </TouchableOpacity>
+              <ChevronDown size={20} color={theme.colors.text} />
+            </Pressable>
           </View>
         </View>
 
@@ -403,5 +400,30 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     padding: 4,
+  },
+  closeButton: {
+    padding: 8,
+  },
+  dropdownButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 8,
+  },
+  dropdownText: {
+    fontSize: 16,
+  },
+  errorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 12,
+    gap: 8,
+  },
+  errorText: {
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
