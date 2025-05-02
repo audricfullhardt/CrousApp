@@ -11,6 +11,7 @@ import InfoCard from '../components/ui/InfoCard';
 import ServerStatus from '../components/ui/ServerStatus';
 import { ArrowRight, MapPin, Clock, CreditCard, HeartHandshake, UtensilsCrossed } from 'lucide-react-native';
 import TeamCard from '../components/ui/TeamCard';
+import StudentProjectCard from '../components/ui/StudentProjectCard';
 
 type RootStackParamList = {
   restaurants: undefined;
@@ -98,17 +99,11 @@ export default function HomeScreen() {
             <ThemedText style={[styles.sectionTitle, { color: theme.colors.text }]}>
               {t('home.Team.title')}
             </ThemedText>
-
-            <TeamCard
+            
+            <StudentProjectCard
               title={t('home.Team.Cards.projectDesc.title')}
               description={t('home.Team.Cards.projectDesc.desc')}
               buttonText={t('home.Team.Cards.projectDesc.button')}
-              members={[
-                { name: 'Paul Bayfield' },
-                { name: 'Alden Cherif' },
-                { name: 'Lucas Debeve' },
-                { name: 'Louis Descotes' }
-              ]}
               onPress={navigateToRestaurants}
             />
 
@@ -120,7 +115,7 @@ export default function HomeScreen() {
                 { name: t('home.Team.Cards.teamDesc.teamMembers.members.paul') },
                 { name: t('home.Team.Cards.teamDesc.teamMembers.members.alden') },
                 { name: t('home.Team.Cards.teamDesc.teamMembers.members.lucas') },
-                { name: t('home.Team.Cards.teamDesc.teamMembers.members.louis') }
+                { name: t('home.Team.Cards.teamDesc.teamMembers.members.louis') },
               ]}
               onPress={navigateToRestaurants}
             />
@@ -151,6 +146,7 @@ export default function HomeScreen() {
               />
             </View>
           </View>
+
         </View>
       </ScrollView>
     </SafeAreaView>
