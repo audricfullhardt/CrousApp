@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Linking } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '@/components/ui/Button';
@@ -25,6 +25,9 @@ export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
 
   const navigateToRestaurants = () => navigation.navigate('restaurants');
+  const navigateToInfo = () => navigation.navigate('info');
+  const navigateToGitHub = () => Linking.openURL('https://github.com/CROUStillant-Developpement');
+  const navigateToServer = () => Linking.openURL('https://api.croustillant.menu');
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -69,28 +72,28 @@ export default function HomeScreen() {
               title={t('home.Cards.searchCard.title')}
               description={t('home.Cards.searchCard.desc')}
               buttonText={t('home.Cards.searchCard.button')}
-              onPress={navigateToRestaurants}
+              onPress={navigateToInfo}
               icon={<MapPin size={130} color={theme.colors.text} strokeWidth={2} />}
             />
             <InfoCard
               title={t('home.Cards.hoursCard.title')}
               description={t('home.Cards.hoursCard.desc')}
               buttonText={t('home.Cards.hoursCard.button')}
-              onPress={navigateToRestaurants}
+              onPress={navigateToInfo}
               icon={<Clock size={130} color={theme.colors.text} strokeWidth={2} />}
             />
             <InfoCard
               title={t('home.Cards.paymentCard.title')}
               description={t('home.Cards.paymentCard.desc')}
               buttonText={t('home.Cards.paymentCard.button')}
-              onPress={navigateToRestaurants}
+              onPress={navigateToInfo}
               icon={<CreditCard size={130} color={theme.colors.text} strokeWidth={2} />}
             />
             <InfoCard
               title={t('home.Cards.accessCard.title')}
               description={t('home.Cards.accessCard.desc')}
               buttonText={t('home.Cards.accessCard.button')}
-              onPress={navigateToRestaurants}
+              onPress={navigateToInfo}
               icon={<UtensilsCrossed size={130} color={theme.colors.text} strokeWidth={2} />}
             />
           </View>
@@ -104,7 +107,7 @@ export default function HomeScreen() {
               title={t('home.Team.Cards.projectDesc.title')}
               description={t('home.Team.Cards.projectDesc.desc')}
               buttonText={t('home.Team.Cards.projectDesc.button')}
-              onPress={navigateToRestaurants}
+              onPress={navigateToGitHub}
             />
 
             <TeamCard
@@ -117,14 +120,14 @@ export default function HomeScreen() {
                 { name: t('home.Team.Cards.teamDesc.teamMembers.members.lucas') },
                 { name: t('home.Team.Cards.teamDesc.teamMembers.members.louis') },
               ]}
-              onPress={navigateToRestaurants}
+              onPress={navigateToGitHub}
             />
 
             <ServerStatus 
               title={t('home.Team.Cards.cicd.server.title')}
               description={t('home.Team.Cards.cicd.desc')}
-              buttonText={t('home.Team.Cards.cicd.server.link')}
-              onPress={navigateToRestaurants}
+              buttonText={t('home.Team.Cards.cicd.button')}
+              onPress={navigateToServer}
             />
 
             <View style={[styles.convincedCard, { backgroundColor: theme.colors.surface }]}>

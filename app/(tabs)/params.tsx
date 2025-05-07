@@ -1,6 +1,5 @@
 import { StyleSheet, View, TouchableOpacity, ScrollView, Switch, Alert, Modal, Platform, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useFavorites } from '@/contexts/FavoritesContext';
@@ -9,8 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
-import { Language } from '@/constants/Translations';
-import { X, ChevronDown, AlertTriangle } from 'lucide-react-native';
+import { X, ChevronDown, AlertTriangle, Check, Trash2 } from 'lucide-react-native';
+import type { Language } from '@/contexts/LanguageContext';
 
 const REGIONS = [
   { id: 'all', name: 'Toutes les régions' },
@@ -19,7 +18,7 @@ const REGIONS = [
   { id: 'paca', name: 'Provence-Alpes-Côte d\'Azur' },
 ];
 
-const LANGUAGES: { id: Language; name: string }[] = [
+const LANGUAGES: { id: string; name: string }[] = [
   { id: 'fr', name: 'Français (fr)' },
   { id: 'en', name: 'English (en)' },
 ];
@@ -92,11 +91,7 @@ export default function ParamsScreen() {
                 {lang.name}
               </ThemedText>
               {language === lang.id && (
-                <IconSymbol
-                  name="checkmark"
-                  size={20}
-                  color={theme.colors.primary}
-                />
+                <Check size={20} color={theme.colors.primary} />
               )}
             </TouchableOpacity>
           ))}
@@ -140,11 +135,7 @@ export default function ParamsScreen() {
                 {region.name}
               </ThemedText>
               {favoriteRegion === region.id && (
-                <IconSymbol
-                  name="checkmark"
-                  size={20}
-                  color={theme.colors.primary}
-                />
+                <Check size={20} color={theme.colors.primary} />
               )}
             </TouchableOpacity>
           ))}
@@ -194,7 +185,7 @@ export default function ParamsScreen() {
         {favoriteRestaurants.length === 0 ? (
           <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
             <View style={[styles.alert, { backgroundColor: theme.colors.error + '10' }]}>
-              <IconSymbol name="exclamationmark.triangle" size={20} color={theme.colors.error} />
+              <AlertTriangle size={20} color={theme.colors.error} />
               <ThemedText style={[styles.alertText, { color: theme.colors.error }]}>
                 {t('settings.favorites.empty.title')}
               </ThemedText>
@@ -226,7 +217,7 @@ export default function ParamsScreen() {
                       onPress={() => removeFavoriteRestaurant(restaurant.id)}
                       style={styles.removeButton}
                     >
-                      <IconSymbol name="xmark" size={16} color={theme.colors.error} />
+                      <Trash2 size={16} color={theme.colors.error} />
                     </TouchableOpacity>
                   </View>
                 ))}

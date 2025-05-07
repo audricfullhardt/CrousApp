@@ -1,6 +1,5 @@
 import { StyleSheet, View, ScrollView, Linking } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import AppHeader from "../components/ui/AppHeader";
 import { SafeAreaView } from "react-native";
 import { useTheme } from '@/contexts/ThemeContext';
@@ -26,7 +25,7 @@ export default function InfoScreen() {
           <View style={styles.titleContainer}>
             <GraduationCap size={24} color={theme.colors.text} />
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t('info.education.title')}
+              {t('info.students')}
             </ThemedText>
           </View>
           <ThemedText style={[styles.description, { color: theme.colors.text }]}>
@@ -41,7 +40,7 @@ export default function InfoScreen() {
           <View style={styles.titleContainer}>
             <Flame size={24} color={theme.colors.text} />
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t('info.passion.title')}
+              {t('info.hot_meals')}
             </ThemedText>
           </View>
           <ThemedText style={[styles.description, { color: theme.colors.text }]}>
@@ -56,7 +55,7 @@ export default function InfoScreen() {
           <View style={styles.titleContainer}>
             <Code size={24} color={theme.colors.text} />
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t('info.tech.title')}
+              {t('info.open_source')}
             </ThemedText>
           </View>
           <ThemedText style={[styles.description, { color: theme.colors.text }]}>

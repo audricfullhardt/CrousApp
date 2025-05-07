@@ -1,18 +1,18 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { IconSymbol } from './IconSymbol';
 import { ThemedText } from '../ThemedText';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { LucideIcon } from 'lucide-react-native';
 
 interface FilterButtonProps {
   title: string;
-  icon: string;
+  icon: LucideIcon;
   onPress: () => void;
   isActive?: boolean;
 }
 
-export default function FilterButton({ title, icon, onPress, isActive = false }: FilterButtonProps) {
+export default function FilterButton({ title, icon: Icon, onPress, isActive = false }: FilterButtonProps) {
   const colorScheme = useColorScheme();
   const backgroundColor = isActive ? Colors[colorScheme ?? 'light'].tint : Colors[colorScheme ?? 'light'].background;
   const textColor = isActive ? '#fff' : Colors[colorScheme ?? 'light'].text;
@@ -26,7 +26,7 @@ export default function FilterButton({ title, icon, onPress, isActive = false }:
       ]}
       onPress={onPress}
     >
-      <IconSymbol name={icon} size={16} color={textColor} />
+      <Icon size={16} color={textColor} />
       <ThemedText style={[styles.text, { color: textColor }]}>{title}</ThemedText>
     </TouchableOpacity>
   );
