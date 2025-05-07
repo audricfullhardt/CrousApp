@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Settings, X } from 'lucide-react-native';

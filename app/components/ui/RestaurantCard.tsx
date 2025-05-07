@@ -1,9 +1,8 @@
 import { Image, StyleSheet, TouchableOpacity, View, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Utensils, MapPin, CreditCard } from 'lucide-react-native';
+import { Utensils, MapPin, CreditCard, Heart } from 'lucide-react-native';
 
 export interface RestaurantCardProps {
   imageUrl: string | null;
@@ -41,29 +40,29 @@ function RestaurantCard({
         {imageUrl ? (
           <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
         ) : (
-          <View style={[styles.placeholderImage, { backgroundColor: theme.colors.surfaceVariant }]}>
-            <View style={styles.iconContainer}>
-              <Utensils size={48} color={theme.colors.text} />
-            </View>
-          </View>
+          <Image 
+            source={require('@/assets/images/default_ru.png')} 
+            style={styles.image} 
+            resizeMode="cover" 
+          />
         )}
         <TouchableOpacity
           style={[styles.favoriteButton, { backgroundColor: theme.colors.surface }]}
           onPress={onPressFavorite}
         >
-          <IconSymbol
-            name={isFavorite ? "heart.fill" : "heart"}
+          <Heart
             size={24}
             color={isFavorite ? theme.colors.primary : theme.colors.text}
+            fill={isFavorite ? theme.colors.primary : 'none'}
           />
         </TouchableOpacity>
       </View>
 
       <View style={styles.content}>
         <View style={styles.header}>
-          <View>
-            <ThemedText style={[styles.name, { color: theme.colors.text }]}>{name}</ThemedText>
-            <ThemedText style={[styles.city, { color: theme.colors.text }]}>{city}</ThemedText>
+          <View style={styles.titleContainer}>
+            <ThemedText style={[styles.name, { color: theme.colors.text }]} numberOfLines={2}>{name}</ThemedText>
+            <ThemedText style={[styles.city, { color: theme.colors.text }]} numberOfLines={1}>{city}</ThemedText>
           </View>
           <View style={[styles.status, { backgroundColor: isOpen ? theme.colors.success : theme.colors.error }]}>
             <ThemedText style={[styles.statusText, { color: theme.colors.surface }]}>
@@ -72,26 +71,10 @@ function RestaurantCard({
           </View>
         </View>
 
-        <View style={styles.infoContainer}>
-          <View style={styles.locationContainer}>
-            <MapPin size={20} color={theme.colors.text} />
-            <ThemedText style={[styles.location, { color: theme.colors.text }]}>
-              {location}
-            </ThemedText>
-          </View>
-
-          <View style={styles.paymentContainer}>
-            <CreditCard size={20} color={theme.colors.text} />
-            <ThemedText style={[styles.payment, { color: theme.colors.text }]}>
-              {payment}
-            </ThemedText>
-          </View>
-        </View>
-
         <View style={styles.actions}>
           {isCreditCard && (
             <TouchableOpacity style={[styles.iconButton, { backgroundColor: theme.colors.surfaceVariant }]}>
-              <IconSymbol name="creditcard" size={20} color={theme.colors.text} />
+              <CreditCard size={20} color={theme.colors.text} />
             </TouchableOpacity>
           )}
           {isIzly && (
@@ -159,6 +142,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 16,
+    gap: 8,
+  },
+  titleContainer: {
+    flex: 1,
   },
   name: {
     fontSize: 22,
@@ -174,12 +161,12 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   status: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
     paddingVertical: 6,
     borderRadius: 16,
+    alignSelf: 'flex-start',
   },
   statusText: {
-    color: '#fff',
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -222,6 +209,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 12,
     left: 12,
+  },
+  payment: {
+    fontSize: 14,
+    opacity: 0.7,
   },
 });
 

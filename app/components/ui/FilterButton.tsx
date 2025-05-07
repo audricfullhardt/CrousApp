@@ -1,15 +1,15 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol, IconSymbolName } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
+import { LucideIcon } from 'lucide-react-native';
 
 interface FilterButtonProps {
   title: string;
-  icon?: IconSymbolName;
+  icon?: LucideIcon;
   onPress: () => void;
 }
 
-function FilterButton({ title, icon, onPress }: FilterButtonProps) {
+function FilterButton({ title, icon: Icon, onPress }: FilterButtonProps) {
   const theme = useTheme();
 
   return (
@@ -20,8 +20,8 @@ function FilterButton({ title, icon, onPress }: FilterButtonProps) {
       }]}
       onPress={onPress}
     >
-      {icon && (
-        <IconSymbol name={icon} size={16} color={theme.colors.text} />
+      {Icon && (
+        <Icon size={16} color={theme.colors.text} />
       )}
       <ThemedText style={[styles.text, { color: theme.colors.text }]}>{title}</ThemedText>
     </TouchableOpacity>

@@ -35,11 +35,39 @@ interface Restaurant {
   isOpen: boolean;
 }
 
+interface Plat {
+  code: number;
+  libelle: string;
+  ordre: number;
+}
+
+interface Categorie {
+  code: number;
+  libelle: string;
+  ordre: number;
+  plats: Plat[];
+}
+
+interface Repas {
+  code: number;
+  type: string;
+  categories: Categorie[];
+}
+
+interface MenuResponse {
+  data: {
+    code: number;
+    date: string;
+    repas: Repas[];
+  };
+  success: boolean;
+}
+
 export default function MenuScreen() {
   const { restaurantId } = useLocalSearchParams();
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(true);
-  const [menuImage, setMenuImage] = useState<string | null>(null);
+  const [menuData, setMenuData] = useState<MenuResponse | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const colorScheme = useColorScheme();
@@ -233,6 +261,30 @@ export default function MenuScreen() {
     payment: {
       fontSize: 16,
     },
+    menuContainer: {
+      marginBottom: 20,
+    },
+    repasContainer: {
+      marginBottom: 20,
+    },
+    repasTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      marginBottom: 10,
+    },
+    categorieContainer: {
+      marginBottom: 10,
+    },
+    categorieTitle: {
+      fontSize: 16,
+      fontWeight: "bold",
+    },
+    platContainer: {
+      marginBottom: 10,
+    },
+    platText: {
+      fontSize: 14,
+    },
   });
 
   const checkIfOpen = (restaurant: Restaurant) => {
@@ -260,21 +312,21 @@ export default function MenuScreen() {
     return false;
   };
 
-  const fetchMenuImage = async () => {
+  const fetchMenuData = async () => {
     try {
-      const today = new Date().toISOString().split('T')[0];
       const response = await fetch(
-        `https://api-croustillant.bayfield.dev/v1/restaurants/${restaurantId}/menu/${today}/image`
+        `https://api.croustillant.menu/v1/restaurants/${restaurantId}/menu`
       );
       
       if (response.ok) {
-        setMenuImage(`https://api-croustillant.bayfield.dev/v1/restaurants/${restaurantId}/menu/${today}/image`);
+        const data = await response.json();
+        setMenuData(data);
       } else {
-        setMenuImage(null);
+        setMenuData(null);
       }
     } catch (error) {
-      console.error("Error fetching menu image:", error);
-      setMenuImage(null);
+      console.error("Error fetching menu data:", error);
+      setMenuData(null);
     }
   };
 
@@ -282,14 +334,14 @@ export default function MenuScreen() {
     const fetchRestaurant = async () => {
       try {
         const response = await fetch(
-          `https://api-croustillant.bayfield.dev/v1/restaurants/${restaurantId}`
+          `https://api.croustillant.menu/v1/restaurants/${restaurantId}`
         );
         const data = await response.json();
 
         if (data.success) {
           setRestaurant(data.data);
           setIsOpen(checkIfOpen(data.data));
-          fetchMenuImage();
+          fetchMenuData();
         }
       } catch (error) {
         console.error("Error fetching restaurant:", error);
@@ -345,6 +397,54 @@ export default function MenuScreen() {
     );
   };
 
+  const renderMenu = () => {
+    if (!menuData?.data.repas) {
+      return (
+        <View style={styles.messageContainer}>
+          <ThemedText style={styles.messageTitle}>
+            Aucun plat disponible pour ce restaurant 😕
+          </ThemedText>
+          <ThemedText style={styles.messageText}>
+            Le restaurant ne propose actuellement aucun plat. Veuillez réessayer
+            plus tard.
+          </ThemedText>
+          <ThemedText style={styles.messageNote}>
+            Le menu doit être manuellement mis à jour par le restaurant. Si le
+            menu n'est jamais disponible, vous pouvez contacter le restaurant
+            pour leur faire part de votre problème.
+          </ThemedText>
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.menuContainer}>
+        {menuData.data.repas.map((repas) => (
+          <View key={repas.code} style={styles.repasContainer}>
+            <ThemedText style={styles.repasTitle}>
+              {repas.type === 'matin' ? 'Petit-déjeuner' : 
+               repas.type === 'midi' ? 'Déjeuner' : 'Dîner'}
+            </ThemedText>
+            {repas.categories.map((categorie) => (
+              <View key={categorie.code} style={styles.categorieContainer}>
+                <ThemedText style={styles.categorieTitle}>
+                  {categorie.libelle}
+                </ThemedText>
+                {categorie.plats.map((plat) => (
+                  <View key={plat.code} style={styles.platContainer}>
+                    <ThemedText style={styles.platText}>
+                      {plat.libelle}
+                    </ThemedText>
+                  </View>
+                ))}
+              </View>
+            ))}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <AppHeader />
@@ -356,48 +456,7 @@ export default function MenuScreen() {
           </TouchableOpacity>
         </View>
 
-        {menuImage ? (
-          <View style={styles.menuImageContainer}>
-            <Image
-              source={{ uri: menuImage }}
-              style={styles.menuImage}
-              resizeMode="contain"
-            />
-          </View>
-        ) : (
-          <View style={styles.messageContainer}>
-            <ThemedText style={styles.messageTitle}>
-              Aucun plat disponible pour ce restaurant 😕
-            </ThemedText>
-            <ThemedText style={styles.messageText}>
-              Le restaurant ne propose actuellement aucun plat. Veuillez réessayer
-              plus tard.
-            </ThemedText>
-            <ThemedText style={styles.messageNote}>
-              Le menu doit être manuellement mis à jour par le restaurant. Si le
-              menu n'est jamais disponible, vous pouvez contacter le restaurant
-              pour leur faire part de votre problème.
-            </ThemedText>
-          </View>
-        )}
-
-        <View style={styles.tabContainer}>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === "calendrier" && styles.activeTab]}
-            onPress={() => setActiveTab("calendrier")}
-          >
-            <ThemedText>Calendrier</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.tab,
-              activeTab === "informations" && styles.activeTab,
-            ]}
-            onPress={() => setActiveTab("informations")}
-          >
-            <ThemedText>Informations</ThemedText>
-          </TouchableOpacity>
-        </View>
+        {renderMenu()}
 
         <View style={styles.openingHoursContainer}>
           <View style={styles.openingHoursHeader}>
@@ -441,22 +500,6 @@ export default function MenuScreen() {
           <TouchableOpacity>
             <ThemedText style={styles.crousLink}>{restaurant.zone}</ThemedText>
           </TouchableOpacity>
-        </View>
-
-        <View style={styles.infoContainer}>
-          <View style={styles.locationContainer}>
-            <MapPin size={20} color={colors.text} />
-            <ThemedText style={[styles.location, { color: colors.text }]}>
-              {restaurant.adresse}
-            </ThemedText>
-          </View>
-
-          <View style={styles.paymentContainer}>
-            <CreditCard size={20} color={colors.text} />
-            <ThemedText style={[styles.payment, { color: colors.text }]}>
-              {restaurant.paiement?.join(", ") || "Aucun"}
-            </ThemedText>
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

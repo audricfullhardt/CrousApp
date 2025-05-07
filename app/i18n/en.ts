@@ -1,7 +1,7 @@
 export default {
   restaurants: {
     title: 'Restaurants',
-    available: '{{count}} restaurants available',
+    available: '{count} restaurants available',
     search: 'Search for a restaurant',
     filters: 'Filters',
     nearby: 'Nearby',

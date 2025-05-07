@@ -1,11 +1,11 @@
 export default {
   restaurants: {
     title: 'Restaurants',
-    available: '{{count}} restaurants disponibles',
+    available: '{count} restaurants disponibles',
     search: 'Rechercher un restaurant',
     filters: 'Filtres',
-    nearby: 'À proximité',
-    show_map: 'Voir la carte',
+    nearby: 'Restaurants à proximité',
+    show_map: 'Afficher sur la carte',
     open: 'Ouvert',
     closed: 'Fermé',
     view_menu: 'Voir le menu',

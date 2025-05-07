@@ -15,6 +15,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useFavorites } from '@/contexts/FavoritesContext';
 import { useLocation, LocationType } from '@/hooks/useLocation';
 import { useRouter } from 'expo-router';
+import { SlidersHorizontal, MapPin, Map } from 'lucide-react-native';
 
 type RootStackParamList = {
   menu: { restaurantId: string };
@@ -237,6 +238,13 @@ export default function RestaurantsScreen() {
       );
     }
 
+    if (!showNearby && !filters.alphabeticalOrder.value && !filters.reverseAlphabeticalOrder.value && 
+        !filters.cityAlphabeticalOrder.value && !filters.cityReverseAlphabeticalOrder.value) {
+      filtered = restaurants.filter(restaurant => 
+        filtered.some(f => f.code === restaurant.code)
+      );
+    }
+
     return filtered;
   };
 
@@ -291,17 +299,17 @@ export default function RestaurantsScreen() {
         <View style={styles.filterContainer}>
           <FilterButton 
             title={t('restaurants.filters')} 
-            icon="slider.horizontal.3" 
+            icon={SlidersHorizontal}
             onPress={() => setIsFilterModalVisible(true)}
           />
           <FilterButton
             title={t('restaurants.nearby')}
-            icon="location"
+            icon={MapPin}
             onPress={handleNearbyPress}
           />
           <FilterButton
             title={t('restaurants.show_map')}
-            icon="map"
+            icon={Map}
             onPress={handleShowMap}
           />
           <ResetButton onPress={handleReset} />
@@ -328,6 +336,8 @@ export default function RestaurantsScreen() {
                     isFavorite={true}
                     isCreditCard={restaurant.paiement && restaurant.paiement.includes('Carte bancaire')}
                     isIzly={restaurant.paiement && restaurant.paiement.includes('IZLY')}
+                    location={restaurant.adresse}
+                    payment={restaurant.paiement?.join(", ") || "Aucun"}
                   />
                 );
               })}
@@ -350,6 +360,8 @@ export default function RestaurantsScreen() {
                 isFavorite={isFavorite(restaurant.code.toString())}
                 isCreditCard={restaurant.paiement && restaurant.paiement.includes('Carte bancaire')}
                 isIzly={restaurant.paiement && restaurant.paiement.includes('IZLY')}
+                location={restaurant.adresse}
+                payment={restaurant.paiement?.join(", ") || "Aucun"}
               />
             ))}
         </View>

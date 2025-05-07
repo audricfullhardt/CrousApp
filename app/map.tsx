@@ -4,7 +4,6 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import { useRouter, useNavigation } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useLocation } from '@/hooks/useLocation';
