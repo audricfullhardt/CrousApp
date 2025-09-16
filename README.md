@@ -1,50 +1,231 @@
-# Welcome to your Expo app 👋
+# 🍽️ CrousApp
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Une application React Native moderne pour découvrir et explorer les restaurants CROUS avec une interface intuitive et des fonctionnalités avancées.
 
-## Get started
+## 📱 Description
 
-1. Install dependencies
+CrousApp est une application mobile développée avec React Native et Expo Router qui permet aux étudiants de :
+- Découvrir les restaurants CROUS disponibles
+- Consulter les menus en temps réel
+- Localiser les restaurants sur une carte interactive
+- Gérer leurs restaurants favoris
+- Personnaliser l'interface selon leurs préférences
 
+## 🚀 Prérequis
+
+Avant de commencer, assurez-vous d'avoir installé :
+
+- **Node.js** (version 18 ou supérieure)
+- **npm** ou **yarn**
+- **Expo CLI** : `npm install -g @expo/cli`
+- **Expo Go** (application mobile pour tester)
+- **Git**
+
+### Pour le développement iOS (optionnel)
+- **Xcode** (sur macOS)
+- **iOS Simulator**
+
+### Pour le développement Android (optionnel)
+- **Android Studio**
+- **Android Emulator**
+
+## 📦 Installation
+
+1. **Cloner le projet**
+   ```bash
+   git clone <url-du-repo>
+   cd CrousApp
+   ```
+
+2. **Installer les dépendances**
    ```bash
    npm install
+   # ou
+   yarn install
    ```
 
-2. Start the app
-
+3. **Configurer les variables d'environnement**
    ```bash
-    npx expo start
+   cp .env.example .env
+   ```
+   Puis éditez le fichier `.env` avec vos clés API :
+   ```
+   EXPO_PUBLIC_API_BASE_URL=your_api_url_here
    ```
 
-In the output, you'll find options to open the app in a
+4. **Démarrer le serveur de développement**
+   ```bash
+   npm start
+   # ou
+   yarn start
+   ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+5. **Lancer sur votre appareil**
+   - Scannez le QR code avec l'app **Expo Go** (iOS/Android)
+   - Ou utilisez les commandes :
+     ```bash
+     npm run ios      # iOS Simulator
+     npm run android  # Android Emulator
+     npm run web      # Navigateur web
+     ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 📁 Structure du projet
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+CrousApp/
+├── app/                          # Pages et composants (Expo Router)
+│   ├── (tabs)/                   # Navigation par onglets
+│   │   ├── _layout.tsx          # Configuration des onglets
+│   │   ├── index.tsx            # Page d'accueil
+│   │   ├── restaurants.tsx      # Liste des restaurants
+│   │   ├── menu.tsx             # Détails du menu
+│   │   ├── info.tsx             # Informations de l'app
+│   │   └── params.tsx           # Paramètres
+│   ├── components/ui/           # Composants réutilisables
+│   │   ├── RestaurantCard.tsx   # Carte restaurant
+│   │   ├── FilterModal.tsx      # Modal de filtres
+│   │   ├── TabBarBackground.tsx  # Arrière-plan des onglets
+│   │   └── ...
+│   ├── i18n/                    # Fichiers de traduction
+│   │   ├── fr.ts               # Français
+│   │   └── en.ts               # Anglais
+│   └── _layout.tsx             # Layout principal
+├── contexts/                    # Contextes React
+│   ├── ThemeContext.tsx        # Gestion des thèmes
+│   ├── LanguageContext.tsx     # Gestion des langues
+│   └── FavoritesContext.tsx    # Gestion des favoris
+├── constants/                   # Constantes et configuration
+│   ├── Theme.ts               # Définition des thèmes
+│   ├── Colors.ts              # Palette de couleurs
+│   └── api.ts                 # Configuration API
+├── hooks/                      # Hooks personnalisés
+│   ├── useLocation.ts         # Géolocalisation
+│   └── useThemeColor.ts       # Couleurs du thème
+├── assets/                     # Ressources statiques
+│   ├── images/               # Images et icônes
+│   └── fonts/                # Polices personnalisées
+└── app.json                   # Configuration Expo
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Fichiers principaux
 
-## Learn more
+- **`app/_layout.tsx`** : Layout racine avec les providers (thème, langue, favoris)
+- **`app/(tabs)/_layout.tsx`** : Configuration de la navigation par onglets
+- **`contexts/`** : Gestion globale de l'état (thème, langue, favoris)
+- **`constants/Theme.ts`** : Définition des thèmes clair/sombre
+- **`app/i18n/`** : Système d'internationalisation (FR/EN)
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🌍 Gestion de la langue et du thème
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Système de traduction
 
-## Join the community
+L'application supporte le français et l'anglais via un système de contextes :
 
-Join our community of developers creating universal apps.
+```tsx
+// Utilisation dans un composant
+import { useLanguage } from '@/contexts/LanguageContext';
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+function MyComponent() {
+  const { t, language, setLanguage } = useLanguage();
+  
+  return (
+    <Text>{t('restaurants.title')}</Text>
+  );
+}
+```
+
+**Fichiers de traduction :**
+- `app/i18n/fr.ts` : Traductions françaises
+- `app/i18n/en.ts` : Traductions anglaises
+
+**Ajouter une nouvelle traduction :**
+1. Ajoutez la clé dans les fichiers `fr.ts` et `en.ts`
+2. Utilisez `t('ma.nouvelle.cle')` dans vos composants
+
+### Système de thème
+
+Support des thèmes clair, sombre et automatique :
+
+```tsx
+// Utilisation dans un composant
+import { useTheme } from '@/contexts/ThemeContext';
+
+function MyComponent() {
+  const theme = useTheme();
+  
+  return (
+    <View style={{ backgroundColor: theme.colors.background }}>
+      <Text style={{ color: theme.colors.text }}>Contenu</Text>
+    </View>
+  );
+}
+```
+
+**Thèmes disponibles :**
+- **Clair** : Interface claire et moderne
+- **Sombre** : Interface sombre pour un confort visuel
+- **Automatique** : Suit les préférences système
+
+**Personnalisation :**
+- Modifiez `constants/Theme.ts` pour ajuster les couleurs
+- Les préférences sont sauvegardées automatiquement
+
+## 🛠️ Scripts disponibles
+
+```bash
+npm start          # Démarrer le serveur de développement
+npm run android    # Lancer sur Android
+npm run ios        # Lancer sur iOS
+npm run web        # Lancer sur le web
+npm test           # Lancer les tests
+npm run lint       # Vérifier le code
+npm run reset-project  # Réinitialiser le projet
+```
+
+## 🔧 Configuration
+
+### Variables d'environnement
+
+Créez un fichier `.env` à la racine :
+
+```env
+EXPO_PUBLIC_API_BASE_URL=https://api.example.com
+```
+
+### Configuration des cartes
+
+Pour utiliser les cartes Google Maps, configurez vos clés API dans `app.json` :
+
+```json
+{
+  "expo": {
+    "ios": {
+      "config": {
+        "googleMapsApiKey": "YOUR_IOS_API_KEY"
+      }
+    },
+    "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "YOUR_ANDROID_API_KEY"
+        }
+      }
+    }
+  }
+}
+```
+
+## 📱 Fonctionnalités
+
+- ✅ **Navigation par onglets** avec Expo Router
+- ✅ **Thèmes clair/sombre** avec persistance
+- ✅ **Internationalisation** (FR/EN)
+- ✅ **Géolocalisation** pour les restaurants proches
+- ✅ **Cartes interactives** avec Google Maps
+- ✅ **Gestion des favoris** avec AsyncStorage
+- ✅ **Interface responsive** et moderne
+- ✅ **Effets de flou** sur iOS
+- ✅ **Animations fluides** avec Reanimated
+
+
+**Développé avec ❤️ pour la communauté étudiante**

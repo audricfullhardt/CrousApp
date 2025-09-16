@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,77 +8,41 @@ import {
   ActivityIndicator,
   SafeAreaView,
   Platform,
-} from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { useLocalSearchParams } from "expo-router";
-import { useState, useEffect } from "react";
-import AppHeader from "../components/ui/AppHeader";
+  StatusBar,
+} from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { MapPin, CreditCard, Heart, Check, X, Utensils, Coffee, Clock, Star, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react-native';
+
+import { ThemedText } from '@/app/components/ui/ThemedText';
+import { Colors } from '@/constants/Colors';
+import { useColorScheme } from '@/hooks/useColorScheme';
 import { useTheme } from '@/contexts/ThemeContext';
-import { MapPin, CreditCard, Heart, Check, X } from 'lucide-react-native';
-
-interface Restaurant {
-  nom: string;
-  zone: string;
-  adresse: string;
-  actif: boolean;
-  horaires: string[];
-  paiement: string[];
-  jours_ouvert: {
-    jour: string;
-    ouverture: {
-      matin: boolean;
-      midi: boolean;
-      soir: boolean;
-    };
-  }[];
-  isOpen: boolean;
-}
-
-interface Plat {
-  code: number;
-  libelle: string;
-  ordre: number;
-}
-
-interface Categorie {
-  code: number;
-  libelle: string;
-  ordre: number;
-  plats: Plat[];
-}
-
-interface Repas {
-  code: number;
-  type: string;
-  categories: Categorie[];
-}
-
-interface MenuResponse {
-  data: {
-    code: number;
-    date: string;
-    repas: Repas[];
-  };
-  success: boolean;
-}
+import { api, Restaurant, MenuResponse } from '@/constants/api';
+import { checkIfRestaurantOpen, formatDateForAPI } from '@/utils/restaurantUtils';
+import { MEAL_TYPE_LABELS, WEEK_DAYS, SERVICE_TYPES, PLAT_ICON_KEYWORDS } from '@/utils/constants';
 
 export default function MenuScreen() {
+  // Hooks d'état
   const { restaurantId } = useLocalSearchParams();
+  const router = useRouter();
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(true);
   const [menuData, setMenuData] = useState<MenuResponse | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? "light"];
+  const [collapsedRepas, setCollapsedRepas] = useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = useState<"calendrier" | "informations">("calendrier");
+  
+  // Hooks de contexte
+  const colorScheme = useColorScheme();
   const theme = useTheme();
+  const colors = Colors[colorScheme ?? "light"];
 
-  const styles = StyleSheet.create({
+  // Styles mémorisés
+  const styles = useMemo(() => StyleSheet.create({
     container: {
       flex: 1,
+      paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
     content: {
       flex: 1,
@@ -115,10 +80,20 @@ export default function MenuScreen() {
       height: 400,
     },
     messageContainer: {
-      backgroundColor: theme.colors.surfaceVariant,
-      borderRadius: 12,
-      padding: 16,
+      backgroundColor: theme.colors.surface,
+      borderRadius: 16,
+      padding: 24,
       marginBottom: 20,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 4,
+      borderLeftWidth: 4,
+      borderLeftColor: theme.colors.error,
     },
     messageTitle: {
       fontSize: 18,
@@ -265,112 +240,181 @@ export default function MenuScreen() {
       marginBottom: 20,
     },
     repasContainer: {
-      marginBottom: 20,
+      marginBottom: 24,
+      backgroundColor: theme.colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 4,
     },
     repasTitle: {
-      fontSize: 18,
+      fontSize: 20,
       fontWeight: "bold",
-      marginBottom: 10,
+      marginBottom: 16,
+      color: theme.colors.text,
+      textAlign: "center",
+      paddingBottom: 12,
+      borderBottomWidth: 2,
+      borderBottomColor: theme.colors.primary,
     },
     categorieContainer: {
-      marginBottom: 10,
+      marginBottom: 16,
     },
     categorieTitle: {
-      fontSize: 16,
-      fontWeight: "bold",
+      fontSize: 18,
+      fontWeight: "600",
+      marginBottom: 12,
+      color: theme.colors.text,
+      paddingLeft: 8,
+      borderLeftWidth: 4,
+      borderLeftColor: theme.colors.primary,
     },
     platContainer: {
-      marginBottom: 10,
+      marginBottom: 8,
+      paddingLeft: 8,
     },
     platText: {
-      fontSize: 14,
+      fontSize: 15,
+      color: theme.colors.text,
+      lineHeight: 22,
+      marginBottom: 4,
     },
-  });
+    platItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 6,
+    },
+    platIcon: {
+      marginRight: 8,
+    },
+    repasHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 16,
+    },
+    repasHeaderLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1,
+    },
+    collapseButton: {
+      padding: 8,
+      borderRadius: 8,
+      backgroundColor: theme.colors.surfaceVariant,
+    },
+    backButtonHeader: {
+      padding: 12,
+      marginRight: 16,
+      backgroundColor: theme.colors.surfaceVariant,
+      borderRadius: 12,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 3,
+      elevation: 2,
+    },
+  }), [theme.colors]);
 
-  const checkIfOpen = (restaurant: Restaurant) => {
-    const now = new Date();
-    const currentDay = now.getDay();
-    const currentHour = now.getHours();
-    
+  // Utilitaire pour vérifier si un restaurant est ouvert (utilise maintenant la fonction importée)
+  const checkIfOpen = useCallback((restaurant: Restaurant): boolean => {
+    return checkIfRestaurantOpen(restaurant);
+  }, []);
 
-    const dayIndex = currentDay === 0 ? 6 : currentDay - 1;
-    
-    const daySchedule = restaurant.jours_ouvert[dayIndex];
-    if (!daySchedule) return false;
-
-
-    if (currentHour >= 6 && currentHour < 11 && daySchedule.ouverture.matin) {
-      return true;
-    }
-    if (currentHour >= 11 && currentHour < 15 && daySchedule.ouverture.midi) {
-      return true;
-    }
-    if (currentHour >= 18 && currentHour < 22 && daySchedule.ouverture.soir) {
-      return true;
-    }
-
-    return false;
-  };
-
-  const fetchMenuData = async () => {
+  // Fonction optimisée pour récupérer les données du menu
+  const fetchMenuData = useCallback(async (formattedDate: string) => {
     try {
-      const response = await fetch(
-        `https://api.croustillant.menu/v1/restaurants/${restaurantId}/menu`
-      );
-      
-      if (response.ok) {
-        const data = await response.json();
-        setMenuData(data);
-      } else {
-        setMenuData(null);
-      }
+      const data = await api.getRestaurantMenu(restaurantId as string, formattedDate);
+      setMenuData(data);
     } catch (error) {
-      console.error("Error fetching menu data:", error);
       setMenuData(null);
     }
-  };
+  }, [restaurantId]);
 
+  // Actions optimisées avec useCallback
+  const toggleFavorite = useCallback(() => {
+    setIsFavorite(prev => !prev);
+  }, []);
+
+  const toggleRepasCollapse = useCallback((repasCode: number) => {
+    setCollapsedRepas(prev => {
+      const newCollapsed = new Set(prev);
+      if (newCollapsed.has(repasCode)) {
+        newCollapsed.delete(repasCode);
+      } else {
+        newCollapsed.add(repasCode);
+      }
+      return newCollapsed;
+    });
+  }, []);
+
+  // Effet principal pour charger les données du restaurant
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
-        const response = await fetch(
-          `https://api.croustillant.menu/v1/restaurants/${restaurantId}`
-        );
-        const data = await response.json();
-
-        if (data.success) {
-          setRestaurant(data.data);
-          setIsOpen(checkIfOpen(data.data));
-          fetchMenuData();
+        const response = await api.getRestaurant(restaurantId as string);
+        const formattedDate = formatDateForAPI(new Date());
+        
+        if (response.success) {
+          setRestaurant(response.data);
+          setIsOpen(checkIfOpen(response.data));
+          await fetchMenuData(formattedDate);
         }
       } catch (error) {
-        console.error("Error fetching restaurant:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchRestaurant();
-  }, [restaurantId]);
+  }, [restaurantId, checkIfOpen, fetchMenuData]);
 
-  if (loading || !restaurant) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  // Initialiser tous les repas comme collapsés par défaut
+  useEffect(() => {
+    if (menuData?.data.repas) {
+      const allRepasCodes = new Set(menuData.data.repas.map(repas => repas.code));
+      setCollapsedRepas(allRepasCodes);
+    }
+  }, [menuData]);
 
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
+  // Fonctions utilitaires mémorisées
+  const getPlatIcon = useCallback((platLibelle: string, isCafeteria: boolean) => {
+    const libelle = platLibelle.toLowerCase();
+    
+    if (isCafeteria) {
+      if (PLAT_ICON_KEYWORDS.COFFEE.some(keyword => libelle.includes(keyword))) {
+        return <Coffee size={16} color={theme.colors.primary} />;
+      }
+      if (PLAT_ICON_KEYWORDS.BAKERY.some(keyword => libelle.includes(keyword))) {
+        return <Star size={16} color={theme.colors.primary} />;
+      }
+    }
+    
+    return <Utensils size={16} color={theme.colors.primary} />;
+  }, [theme.colors.primary]);
 
-  const toggleOpen = () => {
-    setIsOpen(!isOpen);
-  };
+  const getRepasIcon = useCallback((type: string) => {
+    const iconMap = {
+      matin: <Coffee size={20} color={theme.colors.primary} />,
+      midi: <Utensils size={20} color={theme.colors.primary} />,
+      soir: <Clock size={20} color={theme.colors.primary} />,
+    };
+    
+    return iconMap[type as keyof typeof iconMap] || <Utensils size={20} color={theme.colors.primary} />;
+  }, [theme.colors.primary]);
 
-
-  const renderOpeningHours = () => {
-    const days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+  // Fonction de rendu des horaires optimisée avec useMemo
+  const renderOpeningHours = useMemo(() => {
+    
     return (
       <View style={styles.tableContainer}>
         <View style={styles.tableHeader}>
@@ -379,25 +423,29 @@ export default function MenuScreen() {
           <ThemedText style={styles.tableHeaderCell}>Déjeuner</ThemedText>
           <ThemedText style={styles.tableHeaderCell}>Dîner</ThemedText>
         </View>
-        {days.map((day, index) => (
+        {WEEK_DAYS.map((day, index) => (
           <View key={day} style={styles.tableRow}>
             <ThemedText style={styles.tableCell}>{day}</ThemedText>
-            <View style={styles.tableCell}>
-              {restaurant.jours_ouvert[index]?.ouverture.matin ? <Check size={20} color="#4CAF50" /> : <X size={20} color="#F44336" />}
-            </View>
-            <View style={styles.tableCell}>
-              {restaurant.jours_ouvert[index]?.ouverture.midi ? <Check size={20} color="#4CAF50" /> : <X size={20} color="#F44336" />}
-            </View>
-            <View style={styles.tableCell}>
-              {restaurant.jours_ouvert[index]?.ouverture.soir ? <Check size={20} color="#4CAF50" /> : <X size={20} color="#F44336" />}
-            </View>
+            {SERVICE_TYPES.map((service) => {
+              const isOpen = restaurant?.jours_ouvert?.[index]?.ouverture[service];
+              return (
+                <View key={service} style={styles.tableCell}>
+                  {isOpen ? (
+                    <Check size={20} color="#4CAF50" />
+                  ) : (
+                    <X size={20} color="#F44336" />
+                  )}
+                </View>
+              );
+            })}
           </View>
         ))}
       </View>
     );
-  };
+  }, [restaurant?.jours_ouvert]);
 
-  const renderMenu = () => {
+  // Fonction de rendu du menu optimisée avec useMemo
+  const renderMenu = useMemo(() => {
     if (!menuData?.data.repas) {
       return (
         <View style={styles.messageContainer}>
@@ -417,46 +465,115 @@ export default function MenuScreen() {
       );
     }
 
+    const isCafeteria = restaurant?.type?.libelle === "Cafeteria";
+
     return (
       <View style={styles.menuContainer}>
-        {menuData.data.repas.map((repas) => (
-          <View key={repas.code} style={styles.repasContainer}>
-            <ThemedText style={styles.repasTitle}>
-              {repas.type === 'matin' ? 'Petit-déjeuner' : 
-               repas.type === 'midi' ? 'Déjeuner' : 'Dîner'}
-            </ThemedText>
-            {repas.categories.map((categorie) => (
-              <View key={categorie.code} style={styles.categorieContainer}>
-                <ThemedText style={styles.categorieTitle}>
-                  {categorie.libelle}
-                </ThemedText>
-                {categorie.plats.map((plat) => (
-                  <View key={plat.code} style={styles.platContainer}>
-                    <ThemedText style={styles.platText}>
-                      {plat.libelle}
-                    </ThemedText>
-                  </View>
-                ))}
-              </View>
-            ))}
-          </View>
-        ))}
+        {menuData.data.repas.map((repas) => {
+          const isCollapsed = collapsedRepas.has(repas.code);
+          
+          return (
+            <View key={repas.code} style={styles.repasContainer}>
+              <TouchableOpacity 
+                style={styles.repasHeader}
+                onPress={() => toggleRepasCollapse(repas.code)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.repasHeaderLeft}>
+                  {getRepasIcon(repas.type)}
+                  <ThemedText style={styles.repasTitle}>
+                    {MEAL_TYPE_LABELS[repas.type as keyof typeof MEAL_TYPE_LABELS] || repas.type}
+                  </ThemedText>
+                </View>
+                <TouchableOpacity style={styles.collapseButton}>
+                  {isCollapsed ? (
+                    <ChevronDown size={20} color={theme.colors.text} />
+                  ) : (
+                    <ChevronUp size={20} color={theme.colors.text} />
+                  )}
+                </TouchableOpacity>
+              </TouchableOpacity>
+              
+              {!isCollapsed && (
+                <>
+                  {repas.categories.map((categorie) => (
+                    <View key={categorie.code} style={styles.categorieContainer}>
+                      <ThemedText style={styles.categorieTitle}>
+                        {categorie.libelle}
+                      </ThemedText>
+                      {categorie.plats.map((plat) => (
+                        <View key={plat.code} style={styles.platContainer}>
+                          {isCafeteria ? (
+                            // Pour les cafétérias, séparer les éléments par virgule
+                            plat.libelle.split(',').map((item, index) => (
+                              <View key={`${plat.code}-${index}`} style={styles.platItem}>
+                                {getPlatIcon(item.trim(), isCafeteria)}
+                                <ThemedText style={styles.platText}>
+                                  {item.trim()}
+                                </ThemedText>
+                              </View>
+                            ))
+                          ) : (
+                            // Pour les restaurants, afficher le plat tel quel
+                            <View style={styles.platItem}>
+                              {getPlatIcon(plat.libelle, isCafeteria)}
+                              <ThemedText style={styles.platText}>
+                                {plat.libelle}
+                              </ThemedText>
+                            </View>
+                          )}
+                        </View>
+                      ))}
+                    </View>
+                  ))}
+                </>
+              )}
+            </View>
+          );
+        })}
       </View>
     );
-  };
+  }, [menuData, restaurant?.type?.libelle, collapsedRepas, getRepasIcon, getPlatIcon, toggleRepasCollapse, theme.colors.text]);
+
+  // Rendu conditionnel pour le loading
+  if (loading || !restaurant) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <AppHeader />
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
         <View style={styles.header}>
-          <ThemedText style={styles.title}>{restaurant.nom}</ThemedText>
+          <TouchableOpacity 
+            style={styles.backButtonHeader}
+            onPress={() => router.push('/restaurants')}
+            activeOpacity={0.7}
+          >
+            <ArrowLeft size={20} color={theme.colors.text} />
+          </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+            <ThemedText style={styles.title}>{restaurant.nom}</ThemedText>
+            {restaurant.type && (
+              <ThemedText style={{ 
+                fontSize: 14, 
+                color: theme.colors.primary, 
+                fontWeight: '600',
+                marginTop: 4 
+              }}>
+                {restaurant.type.libelle}
+              </ThemedText>
+            )}
+          </View>
           <TouchableOpacity onPress={toggleFavorite}>
             {isFavorite ? <Heart size={24} color={colors.tint} /> : <Heart size={24} color={colors.text} />}
           </TouchableOpacity>
         </View>
 
-        {renderMenu()}
+        {renderMenu}
 
         <View style={styles.openingHoursContainer}>
           <View style={styles.openingHoursHeader}>
@@ -464,13 +581,13 @@ export default function MenuScreen() {
               Horaires d'ouverture
             </ThemedText>
             <View style={styles.openStatus}>
-              <ThemedText style={styles.openStatusText}>{restaurant.isOpen ? "Ouvert" : "Fermé"}</ThemedText>
+              <ThemedText style={styles.openStatusText}>{isOpen ? "Ouvert" : "Fermé"}</ThemedText>
             </View>
           </View>
           <ThemedText style={styles.openingHoursSubtitle}>
             Le restaurant est ouvert, du Lundi au Vendredi : de 11h30 à 14h00
           </ThemedText>
-          {renderOpeningHours()}
+          {renderOpeningHours}
         </View>
 
         <View style={styles.addressContainer}>

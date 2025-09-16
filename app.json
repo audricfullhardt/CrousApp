@@ -32,7 +32,8 @@
         "googleMaps": {
           "apiKey": "YOUR_ANDROID_API_KEY"
         }
-      }
+      },
+      "package": "com.audric_dev.crousapp"
     },
     "web": {
       "bundler": "metro",
@@ -53,6 +54,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9ba9ecd9-5215-4106-8ce7-03a77eaa765b"
+      }
     }
   }
 }

@@ -4,8 +4,8 @@ import { BlurView } from 'expo-blur';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
-import { ThemedText } from '../../../components/ThemedText';
-import { ThemedView } from '../../../components/ThemedView';
+import { ThemedText } from './ThemedText';
+import { ThemedView } from './ThemedView';
 import { Check, X } from 'lucide-react-native';
 import { useTheme } from '@/contexts/ThemeContext';
 

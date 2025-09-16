@@ -127,6 +127,7 @@ export default {
               alden: 'Adlen Cherif',
               lucas: 'Lucas Debeve',
               louis: 'Louis Descotes',
+              audric: 'Audric Fullhardt',
             }
           }
         },
@@ -136,7 +137,7 @@ export default {
           button: 'Commencer à l\'utiliser',
           server:{
             title: 'Serveur',
-            link: 'https://api.croustillant.menu',
+            link: 'API_BASE_URL',
             server_desc: 'Serveur de production',
           },
         },
@@ -149,13 +150,19 @@ export default {
     }
   },
   info: {
-    students: 'Étudiants',
-    students_desc: 'Cette application est destinée aux étudiants qui souhaitent trouver des restaurants CROUS à proximité.',
-    hot_meals: 'Repas chauds',
-    hot_meals_desc: 'Les restaurants CROUS proposent des repas chauds à prix réduits pour les étudiants.',
-    open_source: 'Open Source',
-    open_source_desc: 'Cette application est open source et disponible sur GitHub.',
+    students: 'Créé par des étudiants, pour des étudiants',
+    students_desc: 'CROUStillant est un projet qui a pour but de fournir des informations sur les menus des restaurants universitaires en France et en Outre-Mer.',
+    hot_meals: 'Plats toujours chauds.',
+    hot_meals_desc: 'CROUStillant scan l\'entièreté des menus des restaurants CROUS plusieurs fois par jour pour vous fournir des informations toujours à jour et fiables.',
+    open_source: 'Gratuit & 100% open-source !',
+    open_source_desc: 'CROUStillant est un projet entièrement open-source et gratuit. Vous pouvez consulter le code source du projet sur GitHub et contribuer à son développement si vous le souhaitez.',
     view_github: 'Voir sur GitHub',
+    simple_to_use: 'Simple, intuitif et accessible',
+    simple_to_use_desc: 'Nos services sont conçus pour être facile à utiliser et accessible à tous. Que vous soyez étudiant, personnel universitaire ou simple curieux, vous trouverez toutes les informations dont vous avez besoin sur CROUStillant.',
+    access_all_restaurants: 'Accès à tous les restaurants',
+    search_by_region: 'Recherche par région',
+    opening_hours: 'Horaires d\'ouverture et de fermeture',
+    contacts_and_payment: 'Contacts et moyens de paiement acceptés',
   },
   app: {
     name: 'CROUStillant',

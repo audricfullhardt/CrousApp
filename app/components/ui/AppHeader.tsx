@@ -1,5 +1,5 @@
 import { Image, StyleSheet, View } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
 
 interface AppHeaderProps {

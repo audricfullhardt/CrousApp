@@ -2,8 +2,8 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
 
-import { HapticTab } from '@/components/HapticTab';
-import TabBarBackground from '@/components/ui/TabBarBackground';
+import { HapticTab } from '@/app/components/ui/HapticTab';
+import TabBarBackground from '@/app/components/ui/TabBarBackground';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Home, Utensils, Info, Settings, UtensilsCrossed } from 'lucide-react-native';
@@ -27,6 +27,7 @@ export default function TabLayout() {
             right: 0,
             height: 88,
             paddingBottom: 30,
+            marginTop: 10,
             borderTopWidth: 0,
             elevation: 0,
             shadowOpacity: 0,

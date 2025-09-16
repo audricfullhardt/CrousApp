@@ -1,5 +1,5 @@
 import { StyleSheet, View, Pressable } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 

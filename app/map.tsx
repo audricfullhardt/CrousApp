@@ -2,24 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Platform, Pressable } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { useRouter, useNavigation } from 'expo-router';
-import { ThemedView } from '@/components/ThemedView';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/app/components/ui/ThemedView';
+import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useLocation } from '@/hooks/useLocation';
 import { Colors } from '@/constants/Colors';
 import { ChevronLeft } from 'lucide-react-native';
-
-interface Restaurant {
-  code: number;
-  nom: string;
-  adresse: string;
-  image_url: string | null;
-  actif: boolean;
-  zone: string;
-  latitude?: number;
-  longitude?: number;
-}
+import { api, Restaurant } from '@/constants/api';
 
 export default function MapScreen() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -39,11 +29,10 @@ export default function MapScreen() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await fetch('https://api-croustillant.bayfield.dev/v1/restaurants');
-        const data = await response.json();
+        const response = await api.getRestaurantsForMap();
         
-        if (data.success) {
-          setRestaurants(data.data);
+        if (response.success) {
+          setRestaurants(response.data);
         }
       } catch (error) {
         console.error('Error fetching restaurants:', error);
