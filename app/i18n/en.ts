@@ -127,6 +127,7 @@ export default {
               alden: 'Adlen Cherif',
               lucas: 'Lucas Debeve',
               louis: 'Louis Descotes',
+              audric: 'Audric Fullhardt',
             }
           }
         },
@@ -136,7 +137,7 @@ export default {
           button: 'Start using it',
           server: {
             title: 'Server',
-            link: 'https://api.croustillant.menu',
+            link: 'API_BASE_URL',
             server_desc: 'Production server',
           },
         },
@@ -156,6 +157,12 @@ export default {
     open_source: 'Open Source',
     open_source_desc: 'This application is open source and available on GitHub.',
     view_github: 'View on GitHub',
+    simple_to_use: 'Simple, intuitive and accessible',
+    simple_to_use_desc: 'Our services are designed to be easy to use and accessible to everyone. Whether you are a student, university staff or simply curious, you will find all the information you need on CROUStillant.',
+    access_all_restaurants: 'Access to all restaurants',
+    search_by_region: 'Search by region',
+    opening_hours: 'Opening and closing hours',
+    contacts_and_payment: 'Contacts and accepted payment methods',
   },
   app: {
     name: 'CROUStillant',

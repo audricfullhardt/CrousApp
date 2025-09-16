@@ -1,7 +1,8 @@
 import { StyleSheet, View } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Config } from '@/constants/Config';
 
 interface ServerStatusProps {
   title: string;
@@ -45,7 +46,7 @@ export default function ServerStatus({ title, description, buttonText, onPress }
 
           <View style={[styles.serverUrlRow, { borderColor: theme.colors.teamCard.membersCard.border }]}>
             <ThemedText style={[styles.serverUrl, { color: theme.colors.teamCard.membersCard.text }]}>
-              {t('home.Team.Cards.cicd.server.link')}
+              {t('home.Team.Cards.cicd.server.link') === 'API_BASE_URL' ? Config.API.BASE_URL : t('home.Team.Cards.cicd.server.link')}
             </ThemedText>
           </View>
           

@@ -1,7 +1,7 @@
-import { StyleSheet, View, ScrollView, Linking } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import { StyleSheet, View, ScrollView, Linking, Platform } from 'react-native';
+import { ThemedText } from '@/app/components/ui/ThemedText';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Button from '@/components/ui/Button';
+import Button from '@/app/components/ui/Button';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AppHeader from '../components/ui/AppHeader';
@@ -12,9 +12,11 @@ import ServerStatus from '../components/ui/ServerStatus';
 import { ArrowRight, MapPin, Clock, CreditCard, HeartHandshake, UtensilsCrossed } from 'lucide-react-native';
 import TeamCard from '../components/ui/TeamCard';
 import StudentProjectCard from '../components/ui/StudentProjectCard';
+import { Config } from '@/constants/Config';
 
 type RootStackParamList = {
   restaurants: undefined;
+  info: undefined;
 };
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -26,13 +28,17 @@ export default function HomeScreen() {
 
   const navigateToRestaurants = () => navigation.navigate('restaurants');
   const navigateToInfo = () => navigation.navigate('info');
-  const navigateToGitHub = () => Linking.openURL('https://github.com/CROUStillant-Developpement');
-  const navigateToServer = () => Linking.openURL('https://api.croustillant.menu');
+  const navigateToGitHub = () => Linking.openURL(Config.EXTERNAL.GITHUB_REPO);
+  const navigateToServer = () => Linking.openURL(Config.API.BASE_URL);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <AppHeader />
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={styles.scrollViewContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.openSource}>
           <ThemedText style={[styles.openSourceText, { 
             color: theme.colors.text,
@@ -162,6 +168,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+  },
+  scrollViewContent: {
+    paddingBottom: Platform.OS === 'ios' ? 100 : 5,
   },
   content: {
     padding: 20,

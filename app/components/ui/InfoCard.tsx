@@ -1,5 +1,7 @@
+import React, { useMemo } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+
+import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
 
 interface InfoCardProps {
@@ -10,16 +12,33 @@ interface InfoCardProps {
   onPress: () => void;
 }
 
-export default function InfoCard({ title, description, buttonText, icon, onPress }: InfoCardProps) {
+export default function InfoCard({ 
+  title, 
+  description, 
+  buttonText, 
+  icon, 
+  onPress 
+}: InfoCardProps) {
   const theme = useTheme();
 
+  // Styles optimisés avec useMemo
+  const cardStyles = useMemo(() => ({
+    container: [styles.container, { backgroundColor: theme.colors.surface }],
+    title: [styles.title, { color: theme.colors.cardsTitle }],
+    description: [styles.description, { color: theme.colors.text }],
+    buttonText: [styles.buttonText, { 
+      color: theme.colors.text,
+      textDecorationLine: 'underline'
+    }],
+  }), [theme.colors]);
+
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
+    <View style={cardStyles.container}>
       <View style={styles.content}>
-        <ThemedText style={[styles.title, { color: theme.colors.cardsTitle }]}>
+        <ThemedText style={cardStyles.title}>
           {title}
         </ThemedText>
-        <ThemedText style={[styles.description, { color: theme.colors.text }]}>
+        <ThemedText style={cardStyles.description}>
           {description}
         </ThemedText>
       </View>
@@ -30,10 +49,7 @@ export default function InfoCard({ title, description, buttonText, icon, onPress
           { opacity: pressed ? 0.8 : 1 }
         ]}
       >
-        <ThemedText style={[styles.buttonText, { 
-          color: theme.colors.text,
-          textDecorationLine: 'underline'
-        }]}>
+        <ThemedText style={cardStyles.buttonText}>
           {buttonText}
         </ThemedText>
       </Pressable>

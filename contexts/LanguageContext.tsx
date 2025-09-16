@@ -3,8 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import fr from '@/app/i18n/fr';
 import en from '@/app/i18n/en';
 
-type Language = 'fr' | 'en';
-type Translations = typeof fr;
+export type Language = 'fr' | 'en';
+export type Translations = typeof fr;
 const translations: Record<Language, Translations> = { fr, en };
 
 type LanguageContextType = {

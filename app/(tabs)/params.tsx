@@ -1,5 +1,5 @@
 import { StyleSheet, View, TouchableOpacity, ScrollView, Switch, Alert, Modal, Platform, Pressable } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useFavorites } from '@/contexts/FavoritesContext';
@@ -18,7 +18,7 @@ const REGIONS = [
   { id: 'paca', name: 'Provence-Alpes-Côte d\'Azur' },
 ];
 
-const LANGUAGES: { id: string; name: string }[] = [
+const LANGUAGES: { id: Language; name: string }[] = [
   { id: 'fr', name: 'Français (fr)' },
   { id: 'en', name: 'English (en)' },
 ];

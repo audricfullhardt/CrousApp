@@ -1,8 +1,10 @@
-import { Image, StyleSheet, TouchableOpacity, View, Pressable } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import React, { useMemo } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Utensils, MapPin, CreditCard, Heart } from 'lucide-react-native';
+
+import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Utensils, MapPin, CreditCard, Heart } from 'lucide-react-native';
 
 export interface RestaurantCardProps {
   imageUrl: string | null;
@@ -34,20 +36,32 @@ function RestaurantCard({
   const theme = useTheme();
   const { t } = useLanguage();
 
+  // Optimisation des styles avec useMemo
+  const cardStyles = useMemo(() => ({
+    container: [styles.container, { backgroundColor: theme.colors.surface }],
+    favoriteButton: [styles.favoriteButton, { backgroundColor: theme.colors.surface }],
+    status: [styles.status, { backgroundColor: isOpen ? theme.colors.success : theme.colors.error }],
+    iconButton: [styles.iconButton, { backgroundColor: theme.colors.surfaceVariant }],
+    menuButton: [styles.menuButton, { backgroundColor: theme.colors.primary }],
+    name: [styles.name, { color: theme.colors.text }],
+    city: [styles.city, { color: theme.colors.text }],
+    statusText: [styles.statusText, { color: theme.colors.surface }],
+    menuButtonText: [styles.menuButtonText, { color: theme.colors.surface }],
+  }), [theme.colors, isOpen]);
+
+  // Image source optimisée
+  const imageSource = useMemo(() => {
+    return imageUrl 
+      ? { uri: imageUrl } 
+      : require('@/assets/images/default_ru.png');
+  }, [imageUrl]);
+
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
+    <View style={cardStyles.container}>
       <View style={styles.imageContainer}>
-        {imageUrl ? (
-          <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
-        ) : (
-          <Image 
-            source={require('@/assets/images/default_ru.png')} 
-            style={styles.image} 
-            resizeMode="cover" 
-          />
-        )}
+        <Image source={imageSource} style={styles.image} resizeMode="cover" />
         <TouchableOpacity
-          style={[styles.favoriteButton, { backgroundColor: theme.colors.surface }]}
+          style={cardStyles.favoriteButton}
           onPress={onPressFavorite}
         >
           <Heart
@@ -61,11 +75,15 @@ function RestaurantCard({
       <View style={styles.content}>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <ThemedText style={[styles.name, { color: theme.colors.text }]} numberOfLines={2}>{name}</ThemedText>
-            <ThemedText style={[styles.city, { color: theme.colors.text }]} numberOfLines={1}>{city}</ThemedText>
+            <ThemedText style={cardStyles.name} numberOfLines={2}>
+              {name}
+            </ThemedText>
+            <ThemedText style={cardStyles.city} numberOfLines={1}>
+              {city}
+            </ThemedText>
           </View>
-          <View style={[styles.status, { backgroundColor: isOpen ? theme.colors.success : theme.colors.error }]}>
-            <ThemedText style={[styles.statusText, { color: theme.colors.surface }]}>
+          <View style={cardStyles.status}>
+            <ThemedText style={cardStyles.statusText}>
               {isOpen ? t('restaurants.open') : t('restaurants.closed')}
             </ThemedText>
           </View>
@@ -73,24 +91,24 @@ function RestaurantCard({
 
         <View style={styles.actions}>
           {isCreditCard && (
-            <TouchableOpacity style={[styles.iconButton, { backgroundColor: theme.colors.surfaceVariant }]}>
+            <TouchableOpacity style={cardStyles.iconButton}>
               <CreditCard size={20} color={theme.colors.text} />
             </TouchableOpacity>
           )}
           {isIzly && (
-          <TouchableOpacity style={[styles.iconButton, { backgroundColor: theme.colors.surfaceVariant }]}>
-            <Image 
-              source={require('@/assets/images/izly.png')} 
-              style={{ width: 20, height: 20 }}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
+            <TouchableOpacity style={cardStyles.iconButton}>
+              <Image 
+                source={require('@/assets/images/izly.png')} 
+                style={{ width: 20, height: 20 }}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
           )}
           <TouchableOpacity
-            style={[styles.menuButton, { backgroundColor: theme.colors.primary }]}
+            style={cardStyles.menuButton}
             onPress={onPressMenu}
           >
-            <ThemedText style={[styles.menuButtonText, { color: theme.colors.surface }]}>
+            <ThemedText style={cardStyles.menuButtonText}>
               {t('restaurants.view_menu')}
             </ThemedText>
           </TouchableOpacity>
