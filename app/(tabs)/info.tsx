@@ -1,11 +1,13 @@
-import { StyleSheet, View, ScrollView, Linking, Platform } from "react-native";
+import { StyleSheet, View, ScrollView, Linking, Platform, Pressable } from "react-native";
 import { ThemedText } from "@/app/components/ui/ThemedText";
 import AppHeader from "../components/ui/AppHeader";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { GraduationCap, Flame, Code, Check } from "lucide-react-native";
+import { GraduationCap, Flame, Code, Check, ArrowRight } from "lucide-react-native";
 import { Config } from "@/constants/Config";
+import { trackPageView } from "@/utils/umami";
+import { useEffect } from "react";
 
 export default function InfoScreen() {
   const theme = useTheme();
@@ -14,6 +16,14 @@ export default function InfoScreen() {
   const handleGithubPress = () => {
     Linking.openURL(Config.EXTERNAL.GITHUB_WEB_REPO);
   };
+
+  const handleWebsitePress = () => {
+    Linking.openURL(Config.EXTERNAL.ABOUT_PAGE);
+  };
+
+  useEffect(() => {
+      trackPageView('Infos', '/infos');
+    }, []);
 
   return (
     <SafeAreaView
@@ -39,13 +49,13 @@ export default function InfoScreen() {
           <View style={styles.titleContainer}>
             <GraduationCap size={24} color={theme.colors.text} />
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t("info.students")}
+              {t("HomePage.title.fourth")}
             </ThemedText>
           </View>
           <ThemedText
             style={[styles.description, { color: theme.colors.text }]}
           >
-            {t("info.students_desc")}
+            {t("HomeCard.RadarsCard.subtitle")}
           </ThemedText>
         </View>
 
@@ -61,13 +71,13 @@ export default function InfoScreen() {
           <View style={styles.titleContainer}>
             <Flame size={24} color={theme.colors.text} />
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t("info.hot_meals")}
+            {t("AboutPage.updates.title")}
             </ThemedText>
           </View>
           <ThemedText
             style={[styles.description, { color: theme.colors.text }]}
           >
-            {t("info.hot_meals_desc")}
+            {t("AboutPage.updates.description")}
           </ThemedText>
         </View>
 
@@ -83,19 +93,13 @@ export default function InfoScreen() {
           <View style={styles.titleContainer}>
             <Code size={24} color={theme.colors.text} />
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t("info.open_source")}
+              {t("AboutPage.open-source.title")}
             </ThemedText>
           </View>
           <ThemedText
             style={[styles.description, { color: theme.colors.text }]}
           >
-            {t("info.open_source_desc")}
-          </ThemedText>
-          <ThemedText
-            style={[styles.link, { color: theme.colors.link }]}
-            onPress={handleGithubPress}
-          >
-            {t("info.view_github")}
+            {t("AboutPage.open-source.description")}
           </ThemedText>
         </View>
         <View
@@ -109,32 +113,35 @@ export default function InfoScreen() {
         >
           <View style={styles.titleContainer}>
             <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-              {t("info.simple_to_use")}
+              {t("AboutPage.product.title")}
             </ThemedText>
           </View>
           <ThemedText
             style={[styles.description, { color: theme.colors.text }]}
           >
-            {t("info.simple_to_use_desc")}
+            {t("AboutPage.product.description")}
           </ThemedText>
           <View style={styles.checkContainer}>
             <Check size={24} color={theme.colors.text} style={[styles.check, { backgroundColor: theme.colors.success }]} />
-            <ThemedText style={[styles.checkText, { color: theme.colors.text }]}>{t("info.access_all_restaurants")}</ThemedText>
+            <ThemedText style={[styles.checkText, { color: theme.colors.text }]}>{t("AboutPage.product.features.feature1")}</ThemedText>
           </View>
           <View style={styles.checkContainer}>
             <Check size={24} color={theme.colors.text} style={[styles.check, { backgroundColor: theme.colors.success }]} />
-            <ThemedText style={[styles.checkText, { color: theme.colors.text }]}>{t("info.search_by_region")}</ThemedText>
+            <ThemedText style={[styles.checkText, { color: theme.colors.text }]}>{t("AboutPage.product.features.feature2")}</ThemedText>
           </View>
           <View style={styles.checkContainer}>
             <Check size={24} color={theme.colors.text} style={[styles.check, { backgroundColor: theme.colors.success }]} />
-            <ThemedText style={[styles.checkText, { color: theme.colors.text }]}>{t("info.opening_hours")}</ThemedText>
+            <ThemedText style={[styles.checkText, { color: theme.colors.text }]}>{t("AboutPage.product.features.feature3")}</ThemedText>
           </View>
           <View style={styles.checkContainer}>
             <Check size={24} color={theme.colors.text} style={[styles.check, { backgroundColor: theme.colors.success }]} />
-            <ThemedText style={[styles.checkText, { color: theme.colors.text }]}>{t("info.contacts_and_payment")}</ThemedText>
+            <ThemedText style={[styles.checkText, { color: theme.colors.text }]}>{t("AboutPage.product.features.feature4")}</ThemedText>
           </View>
 
         </View>
+        <Pressable onPress={handleWebsitePress} style={styles.linkContainer}>
+          <ThemedText style={[styles.link, { color: theme.colors.text }]}>{t("HomePage.card1.cta")} <ArrowRight size={14} color={theme.colors.text} /></ThemedText>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
@@ -199,5 +206,18 @@ const styles = StyleSheet.create({
   checkText: {
     fontSize: 16,
     marginLeft: 10,
+  },
+  linkContainer: {
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    borderRadius: 12,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    gap: 8,
   },
 });

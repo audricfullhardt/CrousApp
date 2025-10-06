@@ -1,4 +1,4 @@
-# 🍽️ CrousApp
+# 🍽️ CROUStillantApp
 
 Une application React Native moderne pour découvrir et explorer les restaurants CROUS avec une interface intuitive et des fonctionnalités avancées.
 

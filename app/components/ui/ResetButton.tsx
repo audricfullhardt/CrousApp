@@ -16,7 +16,7 @@ function ResetButton({ onPress }: ResetButtonProps) {
     <Pressable style={styles.button} onPress={onPress}>
       <RotateCcw size={16} color={theme.colors.text} />
       <ThemedText style={[styles.text, { color: theme.colors.text }]}>
-        {t('restaurants.reset')}
+        {t('Filters.reset')}
       </ThemedText>
     </Pressable>
   );

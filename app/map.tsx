@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Platform, Pressable } from 'react-native';
-import MapView, { Marker, Callout } from 'react-native-maps';
-import { useRouter, useNavigation } from 'expo-router';
+import { StyleSheet, View, Platform, Pressable } from 'react-native';
+import MapView, { Marker, Callout, UrlTile, PROVIDER_DEFAULT } from 'react-native-maps';
+import { useRouter, useNavigation, Stack } from 'expo-router';
 import { ThemedView } from '@/app/components/ui/ThemedView';
 import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -61,12 +61,14 @@ export default function MapScreen() {
   };
 
   return (
+    <>
+    <Stack.Screen options={{ headerShown: false }}/>
     <ThemedView style={styles.container}>
       <View style={styles.header}>
         <Pressable style={styles.backButton} onPress={handleBackPress}>
           <ChevronLeft size={24} color={theme.colors.text} />
         </Pressable>
-        <ThemedText style={styles.title}>{t('restaurants.map_title')}</ThemedText>
+        <ThemedText style={styles.title}>{t('RestaurantsPage.display.map')}</ThemedText>
       </View>
 
       <MapView
@@ -74,7 +76,13 @@ export default function MapScreen() {
         region={region}
         showsUserLocation={true}
         showsMyLocationButton={true}
+        provider={PROVIDER_DEFAULT}
       >
+        <UrlTile
+          urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maximumZ={19}
+        />
+        
         {restaurants.map((restaurant) => (
           restaurant.latitude && restaurant.longitude ? (
             <Marker
@@ -96,12 +104,8 @@ export default function MapScreen() {
                 <View style={styles.callout}>
                   <ThemedText style={styles.calloutTitle}>{restaurant.nom}</ThemedText>
                   <ThemedText style={styles.calloutSubtitle}>{restaurant.zone}</ThemedText>
-                  <ThemedText style={styles.calloutStatus}>
-                    {restaurant.actif ? t('restaurants.open') : t('restaurants.closed')}
-                  </ThemedText>
-                  <ThemedText style={styles.calloutAction}>
-                    {t('restaurants.view_menu')} →
-                  </ThemedText>
+                  <ThemedText style={styles.calloutStatus}>{restaurant.actif ? t('restaurants.open') : t('restaurants.closed')}</ThemedText>
+                  <ThemedText style={styles.calloutAction}>{t('restaurants.view_menu')} →</ThemedText>
                 </View>
               </Callout>
             </Marker>
@@ -109,6 +113,7 @@ export default function MapScreen() {
         ))}
       </MapView>
     </ThemedView>
+</>
   );
 }
 
@@ -120,7 +125,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    paddingTop: Platform.OS === 'ios' ? 60 : 16,
+    paddingTop: Platform.OS === 'ios' ? 60 : 30,
   },
   backButton: {
     flexDirection: 'row',

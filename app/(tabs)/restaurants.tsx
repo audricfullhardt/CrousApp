@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { StyleSheet, View, ScrollView, ActivityIndicator, SafeAreaView, Platform } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useRouter } from 'expo-router';
@@ -20,6 +21,7 @@ import { useLocation, LocationType } from '@/hooks/useLocation';
 import { useRestaurantFilters } from '@/hooks/useRestaurantFilters';
 import { api, Restaurant } from '@/constants/api';
 import { PAGINATION_CONFIG } from '@/utils/constants';
+import { trackPageView, trackEvent } from '@/utils/umami';
 
 type RootStackParamList = {
   menu: { restaurantId: string };
@@ -35,7 +37,6 @@ export default function RestaurantsScreen() {
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [showNearby, setShowNearby] = useState(false);
   
-  // Utilisation du hook personnalisé pour la gestion des filtres
   const { filters, toggleFilter, resetFilters, applyFilters: applyFiltersHook } = useRestaurantFilters();
   
   const navigation = useNavigation<NavigationProp>();
@@ -44,6 +45,7 @@ export default function RestaurantsScreen() {
   const { favoriteRestaurants, addFavoriteRestaurant, removeFavoriteRestaurant, isFavorite } = useFavorites();
   const { location, loading: locationLoading, requestLocationPermission, calculateDistance } = useLocation();
   const router = useRouter();
+  const { favoriteRegion } = useFavorites();
 
   const ITEMS_PER_PAGE = PAGINATION_CONFIG.ITEMS_PER_PAGE;
 
@@ -68,7 +70,10 @@ export default function RestaurantsScreen() {
     fetchRestaurants();
   }, []);
 
-  // Fonction optimisée pour gérer les favoris
+  useEffect(() => {
+    trackPageView('Restaurants', '/restaurants');
+  }, []);
+
   const toggleFavorite = useCallback((restaurant: Restaurant) => {
     const restaurantId = restaurant.code.toString();
     if (isFavorite(restaurantId)) {
@@ -83,7 +88,6 @@ export default function RestaurantsScreen() {
   }, [isFavorite, removeFavoriteRestaurant, addFavoriteRestaurant]);
 
 
-  // Fonction optimisée pour calculer les distances
   const updateRestaurantsWithDistance = useCallback((restaurants: Restaurant[], userLocation: LocationType) => {
     return restaurants.map(restaurant => {
       if (restaurant.latitude && restaurant.longitude) {
@@ -106,21 +110,19 @@ export default function RestaurantsScreen() {
     setShowNearby(prev => !prev);
   };
 
-  // Fonction de filtrage optimisée avec useMemo
   const filteredRestaurants = useMemo(() => {
-    let filtered = applyFiltersHook(restaurants, searchQuery);
-
-    // Tri par proximité si activé
+    let filtered = applyFiltersHook(restaurants, searchQuery, favoriteRegion);
+  
     if (showNearby && location) {
       filtered = updateRestaurantsWithDistance(filtered, location)
         .sort((a, b) => (a.distance || Infinity) - (b.distance || Infinity));
     }
-
+  
     return filtered;
-  }, [restaurants, searchQuery, showNearby, location, applyFiltersHook, updateRestaurantsWithDistance]);
+  }, [restaurants, searchQuery, showNearby, location, favoriteRegion, applyFiltersHook, updateRestaurantsWithDistance]);
+  
   const totalPages = Math.ceil(filteredRestaurants.length / ITEMS_PER_PAGE);
 
-  // Fonctions optimisées avec useCallback
   const handleReset = useCallback(() => {
     setSearchQuery('');
     setCurrentPage(1);
@@ -132,10 +134,8 @@ export default function RestaurantsScreen() {
   }, [router]);
 
   const getFavoritesText = useCallback((count: number) => {
-    return count === 1 
-      ? `Il y a ${count} restaurant favori`
-      : `Il y a ${count} restaurants favoris`;
-  }, []);
+    return t('RestaurantsPage.favourites', { count });
+  }, [t]);
 
   if (loading) {
     return (
@@ -150,31 +150,31 @@ export default function RestaurantsScreen() {
       <AppHeader />
       <ScrollView style={[styles.content, { backgroundColor: theme.colors.background }]} contentContainerStyle={styles.contentContainer}>
         <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-          {t('restaurants.title')}
+          {t('RestaurantsPage.seo.title')}
         </ThemedText>
         <ThemedText style={[styles.subtitle, { color: theme.colors.text }]}>
-          {t('restaurants.available', { count: filteredRestaurants.length })}
+          {t('RestaurantsPage.results', { count: filteredRestaurants.length })}
         </ThemedText>
 
         <SearchBar
-          placeholder={t('restaurants.search')}
+          placeholder={t('Filters.search')}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
 
         <View style={styles.filterContainer}>
           <FilterButton 
-            title={t('restaurants.filters')} 
+            title={t('Filters.title')} 
             icon={SlidersHorizontal}
             onPress={() => setIsFilterModalVisible(true)}
           />
           <FilterButton
-            title={t('restaurants.nearby')}
+            title={t('Filters.geolocated.title')}
             icon={MapPin}
             onPress={handleNearbyPress}
           />
           <FilterButton
-            title={t('restaurants.show_map')}
+            title={t('Filters.map')}
             icon={Map}
             onPress={handleShowMap}
           />
@@ -197,7 +197,10 @@ export default function RestaurantsScreen() {
                     name={restaurant.nom}
                     city={restaurant.zone}
                     isOpen={restaurant.actif}
-                    onPressMenu={() => navigation.navigate('menu', { restaurantId: restaurant.code.toString() })}
+                    onPressMenu={() => {
+                      navigation.navigate('menu', { restaurantId: restaurant.code.toString() });
+                      trackEvent(`Menu`, '/menu');
+                    }}
                     onPressFavorite={() => toggleFavorite(restaurant)}
                     isFavorite={true}
                     isCreditCard={restaurant.paiement?.includes('Carte bancaire') || false}
@@ -221,7 +224,10 @@ export default function RestaurantsScreen() {
                 name={restaurant.nom}
                 city={restaurant.zone}
                 isOpen={restaurant.actif}
-                onPressMenu={() => navigation.navigate('menu', { restaurantId: restaurant.code.toString() })}
+                onPressMenu={() => {
+                  navigation.navigate('menu', { restaurantId: restaurant.code.toString() });
+                  trackEvent(`Menu`, '/menu');
+                }}
                 onPressFavorite={() => toggleFavorite(restaurant)}
                 isFavorite={isFavorite(restaurant.code.toString())}
                 isCreditCard={restaurant.paiement?.includes('Carte bancaire') || false}

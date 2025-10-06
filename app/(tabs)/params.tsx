@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableOpacity, ScrollView, Switch, Alert, Modal, Platform, Pressable } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ScrollView, Switch, Alert, Modal, Platform, Pressable, Linking } from 'react-native';
 import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -7,16 +7,13 @@ import AppHeader from '@/app/components/ui/AppHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, ChevronDown, AlertTriangle, Check, Trash2 } from 'lucide-react-native';
 import type { Language } from '@/contexts/LanguageContext';
-
-const REGIONS = [
-  { id: 'all', name: 'Toutes les régions' },
-  { id: 'idf', name: 'Île-de-France' },
-  { id: 'aura', name: 'Auvergne-Rhône-Alpes' },
-  { id: 'paca', name: 'Provence-Alpes-Côte d\'Azur' },
-];
+import { Config } from '@/constants/Config';
+import { api, Region } from '@/constants/api';
+import { useRestaurantFilters } from '@/hooks/useRestaurantFilters';
+import { trackPageView } from '@/utils/umami';
 
 const LANGUAGES: { id: Language; name: string }[] = [
   { id: 'fr', name: 'Français (fr)' },
@@ -27,28 +24,54 @@ export default function ParamsScreen() {
   const theme = useTheme();
   const { language, setLanguage, t } = useLanguage();
   const { favoriteRestaurants, favoriteRegion, setFavoriteRegion, clearFavorites, removeFavoriteRestaurant } = useFavorites();
+  const { filters, applyFilters } = useRestaurantFilters();
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showRegionModal, setShowRegionModal] = useState(false);
+  const [regions, setRegions] = useState<Region[]>([]);
+  const [loadingRegions, setLoadingRegions] = useState(true);
+  const navigateToLegal = () => Linking.openURL(Config.EXTERNAL.LEGAL_PAGE);
+
+  useEffect(() => {
+    const fetchRegions = async () => {
+      try {
+        const response = await api.getRegions();
+        if (response.success) {
+          setRegions(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching regions:', error);
+      } finally {
+        setLoadingRegions(false);
+      }
+    };
+
+    fetchRegions();
+  }, []);
+
+  useEffect(() => {
+      trackPageView('Paramètres', '/parametres');
+    }, []);
 
   const handleDeleteData = async () => {
     Alert.alert(
-      t('settings.delete_data.title'),
-      t('settings.delete_data.confirm'),
+      t('SettingsPage.personal.deleteDataTitle'),
+      t('SettingsPage.personal.deleteDataConfirmDescription'),
       [
         {
-          text: t('common.cancel'),
+          text: t('SettingsPage.personal.deleteDataConfirmNo'),
           style: 'cancel',
         },
         {
-          text: t('settings.delete_data.delete'),
+          text: t('SettingsPage.personal.deleteDataConfirmYes'),
           style: 'destructive',
           onPress: async () => {
             try {
               await AsyncStorage.clear();
               await clearFavorites();
-              Alert.alert(t('common.success'), t('settings.delete_data.success'));
+              Alert.alert(t('SettingsPage.personal.deleteDataSuccessTitle'), t('SettingsPage.personal.deleteDataSuccessDescription'));
             } catch (error) {
-              Alert.alert(t('common.error'), t('settings.delete_data.error'));
+              Alert.alert(t('SettingsPage.personal.deleteDataError'), t('SettingsPage.personal.deleteDataErrorDescription'));
+              console.error(error);
             }
           },
         },
@@ -66,7 +89,7 @@ export default function ParamsScreen() {
       <View style={[styles.modalOverlay, { backgroundColor: theme.colors.surface + '80' }]}>
         <View style={[styles.modalContent, { backgroundColor: theme.colors.surface }]}>
           <View style={styles.modalHeader}>
-            <ThemedText style={[styles.modalTitle, { color: theme.colors.text }]}>{t('settings.language.title')}</ThemedText>
+            <ThemedText style={[styles.modalTitle, { color: theme.colors.text }]}>{t('SettingsPage.language.title')}</ThemedText>
             <Pressable style={styles.closeButton} onPress={() => setShowLanguageModal(false)}>
               <X size={24} color={theme.colors.text} />
             </Pressable>
@@ -110,35 +133,71 @@ export default function ParamsScreen() {
       <View style={[styles.modalOverlay, { backgroundColor: theme.colors.surface + '80' }]}>
         <View style={[styles.modalContent, { backgroundColor: theme.colors.surface }]}>
           <View style={styles.modalHeader}>
-            <ThemedText style={[styles.modalTitle, { color: theme.colors.text }]}>{t('settings.region.title')}</ThemedText>
+            <ThemedText style={[styles.modalTitle, { color: theme.colors.text }]}>{t('SettingsPage.favourites.regionTitle')}</ThemedText>
             <Pressable style={styles.closeButton} onPress={() => setShowRegionModal(false)}>
               <X size={24} color={theme.colors.text} />
             </Pressable>
           </View>
-          {REGIONS.map((region) => (
-            <TouchableOpacity
-              key={region.id}
-              style={[
-                styles.modalOption,
-                favoriteRegion === region.id && { backgroundColor: theme.colors.primary + '20' },
-              ]}
-              onPress={() => {
-                setFavoriteRegion(region.id);
-                setShowRegionModal(false);
-              }}
-            >
-              <ThemedText style={[
-                styles.modalOptionText,
-                { color: theme.colors.text },
-                favoriteRegion === region.id && { color: theme.colors.primary },
-              ]}>
-                {region.name}
+          <ScrollView style={styles.modalScrollView}>
+            {loadingRegions ? (
+              <ThemedText style={[styles.modalOptionText, { color: theme.colors.text, textAlign: 'center', padding: 20 }]}>
+                {t('SettingsPage.favourites.regionLoading')}...
               </ThemedText>
-              {favoriteRegion === region.id && (
-                <Check size={20} color={theme.colors.primary} />
-              )}
-            </TouchableOpacity>
-          ))}
+            ) : (
+              <>
+                {/* Option "Toutes les régions" */}
+                <TouchableOpacity
+                  style={[
+                    styles.modalOption,
+                    favoriteRegion === 'all' && { backgroundColor: theme.colors.primary + '20' },
+                  ]}
+                  onPress={() => {
+                    setFavoriteRegion('all');
+                    applyFilters([], '');
+                    setShowRegionModal(false);
+                  }}
+                >
+                  <ThemedText style={[
+                    styles.modalOptionText,
+                    { color: theme.colors.text },
+                    favoriteRegion === 'all' && { color: theme.colors.primary },
+                  ]}>
+                    {t('SettingsPage.favourites.regionSelectAll')}
+                  </ThemedText>
+                  {favoriteRegion === 'all' && (
+                    <Check size={20} color={theme.colors.primary} />
+                  )}
+                </TouchableOpacity>
+                
+                {/* Liste des régions */}
+                {regions.map((region) => (
+                  <TouchableOpacity
+                    key={region.code}
+                    style={[
+                      styles.modalOption,
+                      favoriteRegion === region.code.toString() && { backgroundColor: theme.colors.primary + '20' },
+                    ]}
+                    onPress={() => {
+                      setFavoriteRegion(region.code.toString());
+                      applyFilters([], '');
+                      setShowRegionModal(false);
+                    }}
+                  >
+                    <ThemedText style={[
+                      styles.modalOptionText,
+                      { color: theme.colors.text },
+                      favoriteRegion === region.code.toString() && { color: theme.colors.primary },
+                ]}>
+                      {region.libelle}
+                    </ThemedText>
+                    {favoriteRegion === region.code.toString() && (
+                      <Check size={20} color={theme.colors.primary} />
+                    )}
+                  </TouchableOpacity>
+                ))}
+              </>
+            )}
+          </ScrollView>
         </View>
       </View>
     </Modal>
@@ -148,14 +207,14 @@ export default function ParamsScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <AppHeader/>
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
-        <ThemedText style={[styles.sectionHeader, { color: theme.colors.text }]}>{t('settings.appearance')}</ThemedText>
+        <ThemedText style={[styles.sectionHeader, { color: theme.colors.text }]}>{t('SettingsPage.appearanceTitle')}</ThemedText>
         
         <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
           <View style={styles.settingRow}>
             <View style={styles.settingTextContainer}>
-              <ThemedText style={[styles.settingTitle, { color: theme.colors.text }]}>{t('settings.dark_theme.title')}</ThemedText>
+              <ThemedText style={[styles.settingTitle, { color: theme.colors.text }]}>{t('SettingsPage.theme.title')}</ThemedText>
               <ThemedText style={[styles.settingDescription, { color: theme.colors.text }]}>
-                {t('settings.dark_theme.description')}
+                {t('SettingsPage.theme.description')}
               </ThemedText>
             </View>
             <Switch
@@ -165,11 +224,11 @@ export default function ParamsScreen() {
           </View>
         </View>
 
-        <ThemedText style={[styles.sectionHeader, { color: theme.colors.text }]}>{t('settings.language.title')}</ThemedText>
+        <ThemedText style={[styles.sectionHeader, { color: theme.colors.text }]}>{t('SettingsPage.language.title')}</ThemedText>
         <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
           <View>
             <ThemedText style={[styles.settingDescription, { color: theme.colors.text }]}>
-              {t('settings.language.description')}
+              {t('SettingsPage.language.description')}
             </ThemedText>
             <Pressable style={styles.dropdownButton} onPress={() => setShowLanguageModal(true)}>
               <ThemedText style={[styles.dropdownText, { color: theme.colors.text }]}>
@@ -180,20 +239,20 @@ export default function ParamsScreen() {
           </View>
         </View>
 
-        <ThemedText style={[styles.sectionHeader, { color: theme.colors.text }]}>{t('settings.behavior')}</ThemedText>
+        <ThemedText style={[styles.sectionHeader, { color: theme.colors.text }]}>{t('SettingsPage.behaviorTitle')}</ThemedText>
         
         {favoriteRestaurants.length === 0 ? (
           <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
             <View style={[styles.alert, { backgroundColor: theme.colors.error + '10' }]}>
               <AlertTriangle size={20} color={theme.colors.error} />
               <ThemedText style={[styles.alertText, { color: theme.colors.error }]}>
-                {t('settings.favorites.empty.title')}
+                {t('SettingsPage.favourites.nofavouritesTitle')}
               </ThemedText>
             </View>
             <ThemedText style={[styles.settingDescription, { color: theme.colors.text }]}>
-              {t('settings.favorites.empty.description')}
+              {t('SettingsPage.favourites.nofavouritesDescription')}
               <Link href="/restaurants" style={[styles.link, { color: theme.colors.link }]}>
-                {t('settings.favorites.empty.link')}
+                {t('RestaurantsPage.seo.title')}
               </Link>
             </ThemedText>
           </View>
@@ -201,9 +260,9 @@ export default function ParamsScreen() {
 
         <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
           <View>
-            <ThemedText style={[styles.settingTitle, { color: theme.colors.text }]}>{t('settings.favorites.title')}</ThemedText>
+            <ThemedText style={[styles.settingTitle, { color: theme.colors.text }]}>{t('SettingsPage.favourites.title')}</ThemedText>
             <ThemedText style={[styles.settingDescription, { color: theme.colors.text }]}>
-              {t('settings.favorites.description')}
+              {t('SettingsPage.favourites.description')}
             </ThemedText>
             {favoriteRestaurants.length > 0 && (
               <View style={styles.favoritesList}>
@@ -228,36 +287,48 @@ export default function ParamsScreen() {
 
         <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
           <View>
-            <ThemedText style={[styles.settingTitle, { color: theme.colors.text }]}>{t('settings.region.title')}</ThemedText>
+            <ThemedText style={[styles.settingTitle, { color: theme.colors.text }]}>{t('SettingsPage.favourites.regionTitle')}</ThemedText>
             <ThemedText style={[styles.settingDescription, { color: theme.colors.text }]}>
-              {t('settings.region.description')}
+              {t('SettingsPage.favourites.regionDescription')}
             </ThemedText>
             <Pressable style={styles.dropdownButton} onPress={() => setShowRegionModal(true)}>
               <ThemedText style={[styles.dropdownText, { color: theme.colors.text }]}>
-                {REGIONS.find(r => r.id === favoriteRegion)?.name || t('settings.region.all')}
+                {favoriteRegion === 'all' 
+                  ? t('SettingsPage.favourites.regionSelectAll')
+                  : regions.find(r => r.code.toString() === favoriteRegion)?.libelle || t('SettingsPage.favourites.regionSelectAll')
+                }
               </ThemedText>
               <ChevronDown size={20} color={theme.colors.text} />
             </Pressable>
           </View>
         </View>
 
-        <ThemedText style={[styles.sectionHeader, { color: theme.colors.text }]}>{t('settings.personal_info')}</ThemedText>
+        <ThemedText style={[styles.sectionHeader, { color: theme.colors.text }]}>{t('SettingsPage.personalTitle')}</ThemedText>
         
         <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
           <View>
-            <ThemedText style={[styles.settingTitle, { color: theme.colors.text }]}>{t('settings.delete_data.title')}</ThemedText>
+            <ThemedText style={[styles.settingTitle, { color: theme.colors.text }]}>{t('SettingsPage.personal.deleteDataTitle')}</ThemedText>
             <ThemedText style={[styles.settingDescription, { color: theme.colors.text }]}>
-              {t('settings.delete_data.description')}
+              {t('SettingsPage.personal.deleteDataDescription')}
             </ThemedText>
             <TouchableOpacity
               style={[styles.deleteButton, { backgroundColor: theme.colors.error }]}
               onPress={handleDeleteData}
             >
               <ThemedText style={[styles.deleteButtonText, { color: theme.colors.surface }]}>
-                {t('settings.delete_data.button')}
+                {t('SettingsPage.personal.deleteDataButton')}
               </ThemedText>
             </TouchableOpacity>
           </View>
+        </View>
+        <View style={styles.card}>
+          <ThemedText style={[styles.settingTitle, { color: theme.colors.text }]}>{t('Footer.authors')}</ThemedText>
+          <ThemedText style={[styles.settingDescription, { color: theme.colors.text }]}>
+            {t('Footer.disclaimer')}
+          </ThemedText>
+          <Pressable style={styles.dropdownButton} onPress={() => navigateToLegal()}>
+          <ThemedText style={[styles.settingDescription, { color: theme.colors.text, textDecorationLine: 'underline' }]}>{t('LegalPage.legal.title')}</ThemedText>
+          </Pressable>
         </View>
       </ScrollView>
       <LanguageModal />
@@ -275,7 +346,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: 16,
-    paddingBottom: Platform.OS === 'ios' ? 150 : 100,
+    paddingBottom: Platform.OS === 'ios' ? 100 : 100,
   },
   sectionHeader: {
     fontSize: 22,
@@ -369,6 +440,9 @@ const styles = StyleSheet.create({
   },
   modalOptionText: {
     fontSize: 16,
+  },
+  modalScrollView: {
+    maxHeight: 300,
   },
   favoritesList: {
     marginBottom: 12,

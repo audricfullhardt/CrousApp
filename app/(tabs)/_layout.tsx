@@ -6,7 +6,7 @@ import { HapticTab } from '@/app/components/ui/HapticTab';
 import TabBarBackground from '@/app/components/ui/TabBarBackground';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Home, Utensils, Info, Settings, UtensilsCrossed } from 'lucide-react-native';
+import { Home, Info, Settings, UtensilsCrossed } from 'lucide-react-native';
 
 export default function TabLayout() {
   const theme = useTheme();
@@ -27,6 +27,7 @@ export default function TabLayout() {
             right: 0,
             height: 88,
             paddingBottom: 30,
+            paddingTop: 5,
             marginTop: 10,
             borderTopWidth: 0,
             elevation: 0,
@@ -35,6 +36,7 @@ export default function TabLayout() {
           default: {
             height: 60,
             paddingBottom: 10,
+            paddingTop: 5,
             borderTopWidth: 0,
             elevation: 0,
           },
@@ -43,14 +45,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarLabel: t('tabs.home'),
+          tabBarLabel: t('Header.home'),
           tabBarIcon: ({ color }) => <Home size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name="restaurants"
         options={{
-          tabBarLabel: t('tabs.restaurants'),
+          tabBarLabel: t('Header.restaurants'),
           tabBarIcon: ({ color }) => <UtensilsCrossed size={28} color={color} />,
         }}
       />
@@ -63,14 +65,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="info"
         options={{
-          tabBarLabel: t('tabs.info'),
+          tabBarLabel: t('Header.about'),
           tabBarIcon: ({ color }) => <Info size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name="params"
         options={{
-          tabBarLabel: t('tabs.settings'),
+          tabBarLabel: t('Header.settings'),
           tabBarIcon: ({ color }) => <Settings size={28} color={color} />,
         }}
       />
