@@ -39,20 +39,14 @@ export default function ServerStatus({ title, description, buttonText, onPress }
         }]}>
           <View style={styles.serverTitleRow}>
             <ThemedText style={[styles.serverTitle, { color: theme.colors.teamCard.membersCard.text }]}>
-              Serveur
+            {t('HomeCard.ApiCard.Card.title')}
             </ThemedText>
             <View style={[styles.statusDot, { backgroundColor: theme.colors.success }]} />
           </View>
 
           <View style={[styles.serverUrlRow, { borderColor: theme.colors.teamCard.membersCard.border }]}>
             <ThemedText style={[styles.serverUrl, { color: theme.colors.teamCard.membersCard.text }]}>
-              {t('home.Team.Cards.cicd.server.link') === 'API_BASE_URL' ? Config.API.BASE_URL : t('home.Team.Cards.cicd.server.link')}
-            </ThemedText>
-          </View>
-          
-          <View style={[styles.serverStatusRow, { borderColor: theme.colors.teamCard.membersCard.border }]}>
-            <ThemedText style={[styles.serverStatus, { color: theme.colors.teamCard.membersCard.text }]}>
-              {t('home.Team.Cards.cicd.server.server_desc')}
+              {t('HomeCard.ApiCard.Card.subtitle')}
             </ThemedText>
           </View>
         </View>
@@ -94,18 +88,20 @@ const styles = StyleSheet.create({
   },
   serverInnerContainer: {
     borderRadius: 12,
-    padding: 20,
+    // padding: 20,
   },
   serverTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 12,
+    marginBottom: 6,
     paddingHorizontal: 12,
   },
   serverTitle: {
     fontSize: 16,
     fontWeight: '600',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
   },
   statusDot: {
     width: 8,
@@ -114,11 +110,13 @@ const styles = StyleSheet.create({
   },
   serverUrlRow: {
     borderTopWidth: 1,
-    paddingVertical: 12,
+    paddingVertical: 6,
     paddingHorizontal: 12,
   },
   serverUrl: {
     fontSize: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
   },
   serverStatusRow: {
     borderTopWidth: 1,

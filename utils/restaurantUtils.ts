@@ -153,3 +153,11 @@ export const filterAccessibleRestaurants = (restaurants: Restaurant[]): Restaura
     )
   );
 };
+
+export const filterRestaurantsByRegion = (restaurants: Restaurant[], region: number): Restaurant[] => {
+  return restaurants.filter(restaurant => restaurant.region?.code === region);
+};
+
+export const filterRestaurantsByRegionAll = (restaurants: Restaurant[]): Restaurant[] => {
+  return restaurants.filter(restaurant => restaurant.region?.code !== undefined);
+};

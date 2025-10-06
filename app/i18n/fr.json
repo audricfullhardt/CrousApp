@@ -1,0 +1,660 @@
+{
+    "HomePage": {
+      "badge": {
+        "title": "Le projet est 100% open-source !"
+      },
+      "title": {
+        "first": "Le menu du CROUS en un clic",
+        "second": "Toutes les informations sur votre restaurant",
+        "third": "Faites partie de l’équipe",
+        "fourth": "Créé par des étudiants, pour des étudiants"
+      },
+      "subtitle": "CROUStillant vous permet de consulter les menus des restaurants CROUS de France et d'outre-mer.",
+      "cta": {
+        "first": "Découvrir votre menu",
+        "second": "Voir les restaurants",
+        "starred": "{name}",
+        "join": "Nous rejoindre"
+      },
+      "card1": {
+        "title": "Recherche par région, ville ou restaurant",
+        "description": "Accédez facilement à votre restaurant grâce à notre fonction de recherche",
+        "cta": "En savoir plus"
+      },
+      "card2": {
+        "title": "Horaires d'ouverture et de fermeture",
+        "description": "Consultez rapidement les horaires de votre restaurant universitaire du CROUS.",
+        "cta": "En savoir plus"
+      },
+      "card3": {
+        "title": "Contacts et moyens de paiement acceptés",
+        "description": "Découvrez les moyens de paiement acceptés dans votre restaurant universitaire.",
+        "cta": "En savoir plus"
+      },
+      "card4": {
+        "title": "Accès à tous les restaurants",
+        "description": "CROUStillant vous propose une sélection complète des restaurants du CROUS.",
+        "cta": "En savoir plus"
+      },
+      "footer":  {
+        "title": "Convaincu ?",
+        "subtitle": "Débutez votre utilisation de CROUStillant dès maintenant !"
+      }
+    },
+    "HomeCard": {
+      "RadarsCard": {
+        "title": "Créé par des étudiants, pour des étudiants",
+        "subtitle": "CROUStillant est un projet qui a pour but de fournir des informations sur les menus des restaurants universitaires en France et en Outre-Mer.",
+        "cta": "Participer au projet"
+      },
+      "GitCard": {
+        "title": "Rejoignez l'équipe !",
+        "subtitle": "CROUStillant est un projet en constante évolution. Nous sommes toujours à la recherche de nouveaux talents pour rejoindre l'équipe et nous aider à améliorer le service.",
+        "cta": "Nous rejoindre",
+        "Card": {
+          "name": "Membres de l'équipe"
+        }
+      },
+      "ApiCard": {
+        "title": "Intégration facile",
+        "subtitle": "Intégrer les informations de CROUStillant sur votre propre application gratuitement en utilisant notre API.",
+        "cta": "Commencer à l’utiliser",
+        "Card": {
+          "title": "Serveur",
+          "subtitle": "Serveur de production"
+        }
+      }
+    },
+    "RestaurantsPage": {
+      "noResults": "Aucun restaurant trouvé pour cette recherche 😢",
+      "results": "Il y a {count, plural, =0 {aucun restaurant disponible} =1 {# restaurant disponible} other {# restaurants disponibles}}",
+      "display": {
+        "title": "Choisir l'affichage",
+        "list": "Liste",
+        "map": "Carte"
+      },
+      "favourites": "Il y a {count, plural, =0 {aucun restaurant favori} =1 {# restaurant favori} other {# restaurants favoris}}",
+      "clickToSeeAll": "Voir tout",
+      "clickToSeeLess": "Voir moins",
+      "markerDescription": "Voir le menu du restaurant <link>{name}</link>.",
+      "seo": {
+        "title": "Restaurants",
+        "description": "Découvrez les restaurants CROUS de France et d'outre-mer. Trouvez le restaurant parfait pour votre prochain repas !",
+        "keywords": "CROUS, restaurant, menu"
+      }
+    },
+    "RestaurantPage": {
+      "menuOfTheDay": "Menu du {date}",
+      "noMenuAvailable": "Aucun menu disponible pour cette date 😢",
+      "nextDaysMenu": "Menu des prochains jours",
+      "qrCodeDescription": "Scannez ce QR Code pour accéder directement au menu du restaurant.",
+      "noMealAvailable": "Aucun plat disponible pour ce restaurant 😢",
+      "noMealAvailableDescription": "Le restaurant ne propose actuellement aucun plat. Veuillez réessayer plus tard.",
+      "noMealAvailableDescription2": "Le menu doit être manuellement mis à jour par le restaurant. Si le menu n'est jamais disponible, vous pouvez contacter le restaurant pour leur faire part de votre problème.",
+      "seo": {
+        "title": "Menu de {name}",
+        "description": "Découvrez les détails de {name}, situé à {area}. Parfait pour votre prochain repas !",
+        "keywords": "CROUS, restaurant, menu, {name}, {area}",
+        "notFound": {
+          "title": "Restaurant introuvable",
+          "description": "Le restaurant que vous cherchez n'existe pas ou a été déplacé."
+        }
+      },
+      "information": "Informations",
+      "calendar": "Calendrier"
+    },
+    "DatePickers": {
+      "currentDate": "Date actuelle : {date}",
+      "chooseDate": "Choisir une date",
+      "chooseDateDescription": "Sélectionnez une date pour afficher le menu du restaurant pour ce jour-là.",
+      "cancel": "Annuler",
+      "closeAndChoose": "Fermer et choisir {date}"
+    },
+    "Filters": {
+      "title": "Filtres",
+      "search": "Rechercher un restaurant...",
+      "searchTitle": "Recherche : {query}",
+      "activeFilters": "Filtres actifs: ",
+      "close": "Fermer",
+      "additionnal": {
+        "title": "Filtres additionnels",
+        "open": "Ouvert maintenant",
+        "accessibility": "Accessible aux personnes à mobilité réduite"
+      },
+      "reset": "Réinitialiser",
+      "payment": {
+        "title": "Moyens de paiement",
+        "izly": "Paiement Izly accepté",
+        "creditCard": "Paiement par carte bancaire accepté"
+      },
+      "loading": "Chargement",
+      "geolocated": {
+        "title": "Restaurants à proximité",
+        "error": "Impossible de récupérer votre position actuelle"
+      },
+      "region": {
+        "title": "CROUS",
+        "placeholder": "Rechercher un CROUS...",
+        "all": "Tous les CROUS",
+        "noResults": "Aucune CROUS trouvé pour cette recherche 😢"
+      },
+      "restaurantType": {
+        "title": "Type de restaurant",
+        "placeholder": "Rechercher un type de restaurant...",
+        "all": "Tous les types",
+        "noResults": "Aucun type de restaurant trouvé pour cette recherche 😢"
+      },
+      "restaurantCity": {
+        "title": "Ville du restaurant",
+        "sortAsc": "Ordre alphabétique (A-Z)",
+        "sortDesc": "Ordre alphabétique inverse (Z-A)"
+      },
+      "restaurantName": {
+        "title": "Nom du restaurant",
+        "sortAsc": "Ordre alphabétique (A-Z)",
+        "sortDesc": "Ordre alphabétique inverse (Z-A)"
+      },
+      "map": "Afficher sur la carte",
+      "list": "Afficher en liste"
+    },
+    "RestaurantCard": {
+      "cta": "Voir le menu",
+      "closed": "Fermé",
+      "open": "Ouvert",
+      "izly": "Paiement Izly accepté",
+      "creditCard": "Paiement par carte bancaire accepté",
+      "accessibility": "Accessibilité PMR",
+      "active": "Actif"
+    },
+    "AboutPage": {
+      "presentation": {
+        "title": "Créé par des étudiants, pour des étudiants...",
+        "description": "CROUStillant est un projet qui a pour but de fournir des informations sur les menus des restaurants universitaires en France et en Outre-Mer."
+      },
+      "updates": {
+        "title": "Plats toujours chauds.",
+        "description": "CROUStillant scan l'entièreté des menus des restaurants CROUS plusieurs fois par jour pour vous fournir des informations toujours à jour et fiables."
+      },
+      "open-source": {
+        "title": "Gratuit & 100% open-source !",
+        "description": "CROUStillant est un projet entièrement open-source et gratuit. Vous pouvez consulter le code source du projet sur GitHub et contribuer à son développement si vous le souhaitez.",
+        "features": {
+          "feature1": "Entièrement open-source",
+          "feature2": "Déploiements automatiques",
+          "feature3": "En constante amélioration",
+          "feature4": "Ne collecte pas vos données"
+        }
+      },
+      "job": {
+        "title": "Rejoignez l'équipe !",
+        "description": "CROUStillant est un projet en constante évolution. Nous sommes toujours à la recherche de nouveaux talents pour rejoindre l'équipe et nous aider à améliorer le service.",
+        "button": "Nous contacter via Discord"
+      },
+      "product": {
+        "title": "Simple, intuitif et accessible",
+        "description": "Nos services sont conçus pour être facile à utiliser et accessible à tous. Que vous soyez étudiant, personnel universitaire ou simple curieux, vous trouverez toutes les informations dont vous avez besoin sur CROUStillant.",
+        "features": {
+          "feature1": "Accès à tous les restaurants",
+          "feature2": "Recherche par région, ville ou restaurant",
+          "feature3": "Horaires d'ouverture et de fermeture",
+          "feature4": "Contacts et moyens de paiement acceptés"
+        }
+      },
+      "team": {
+        "title": "L'équipe",
+        "description": "L'équipe de CROUStillant est composée de bénévoles passionnés. Nous travaillons ensemble pour rendre les informations des restaurants CROUS plus accessibles et plus lisibles.",
+        "members": {
+          "member1": {
+            "name": "Paul Bayfield",
+            "role": "Fondateur du projet et développeur principal",
+            "github": "https://github.com/PaulBayfield"
+          },
+          "member2": {
+            "name": "Adlen Cherif",
+            "role": "Concepteur de l'interface utilisateur et développeur web",
+            "github": "https://github.com/cherifad"
+          },
+          "member3": {
+            "name": "Lucas Debeve",
+            "role": "Concepteur de la base de données",
+            "github": "https://github.com/LucasDebeve"
+          },
+          "member4": {
+            "name": "Louis Descotes",
+            "role": "Développeur web",
+            "github": "https://github.com/louisdescotes"
+          },
+          "member5": {
+            "name": "Audric Fullhardt",
+            "role": "Mobile developer",
+            "github": "https://github.com/audricfullhardt"
+          }
+        }
+      },
+      "discord": {
+        "title": "Présent sur Discord",
+        "description": "Vous pouvez retrouver tous les restaurants et menus directement sur Discord via le Bot officiel CROUStillant !",
+        "button": "Ajouter le bot dès maintenant"
+      },
+      "integrated": {
+        "title": "Intégration facile",
+        "description": "Vous pouvez intégrer les informations des restaurants CROUS sur votre site web ou votre application en utilisant notre API. L'API est gratuite et ne nécessite pas d'inscription.",
+        "button": "Découvrir l'API"
+      },
+      "sources": {
+        "title": "Sources",
+        "description": "CROUStillant utilise les données fournies par le site officiel du CROUS qui sont agrégées et mises à jour plusieurs fois par jour, puis rendues accessibles via notre API. L'API de CROUStillant est disponible sur le site officiel de la Data du gouvernement français.", 
+        "button": "En savoir plus sur les sources"
+      },
+      "convinced": {
+        "title": "Convaincu ?",
+        "description": "Débutez votre utilisation de CROUStillant dès maintenant !",
+        "button": "Découvrir votre menu",
+        "button2": "Ajouter notre Bot Discord"
+      },
+      "more-convinced": {
+        "title": "Encore plus convaincu ?",
+        "description": "Rejoignez notre communauté Discord pour discuter avec d'autres utilisateurs et les membres de l'équipe CROUStillant !",
+        "button": "Notre serveur Discord"
+      },
+      "seo": {
+        "title": "À propos",
+        "description": "Découvrez l'équipe de CROUStillant, le projet et les fonctionnalités du service. Nous sommes là pour vous aider !",
+        "keywords": "CROUS, restaurant, menu, équipe, projet"
+      }
+    },
+    "Footer": {
+      "visits": "Déjà <strong>{visitors}</strong> personnes se sont régalées avec CROUStillant ! Plus de <strong>{pageviews}</strong> pages vues 👀",
+      "authors": "Réalisé avec ❤️ par CROUStillant Développement.",
+      "copyright": "© 2022 - {year} CROUStillant Développement, tous droits réservés.",
+      "disclaimer": "CROUStillant n'est pas affilié au \"CROUS\". CROUStillant n'est pas un projet à but lucratif.",
+      "links": {
+        "discover": {
+          "title": "Découvrir",
+          "meals": "Repas",
+          "restaurants": "Restaurants",
+          "dishes": "Plats",
+          "stats": "Statistiques"
+        },
+        "about": {
+          "title": "À propos",
+          "project": "Le projet",
+          "team": "L'équipe",
+          "contact": "Contact",
+          "legal": "Notice légale",
+          "changelog": "Mises à jour"
+        },
+        "resources": {
+          "title": "Lien utiles",
+          "api": "API",
+          "documentation": "Documentation",
+          "discord": "Bot Discord",
+          "status": "Status"
+        }
+      },
+      "accessibility": {
+        "normal": "Police normale",
+        "dislexic": "Police dyslexique"
+      }
+    },
+    "Header": {
+      "home": "Accueil",
+      "restaurants": "Restaurants",
+      "about": "À propos",
+      "settings": "Paramètres"
+    },
+    "QrCodeDialog": {
+      "copy": {
+        "button": "Copier l'image",
+        "toastTitle": "Image copiée !",
+        "toastDescription": "L'image du QR Code a été copiée dans votre presse-papiers."
+      },
+      "download": "Télécharger l'image"
+    },
+    "Pagination": {
+      "previous": "Précédent",
+      "next": "Suivant"
+    },
+    "ErrorPage": {
+      "400": {
+        "description": "La page que vous cherchez n'existe pas. Vous pouvez retourner à l'accueil ou nous signaler le problème.",
+        "cta": "Retourner à l'accueil",
+        "report": "Signaler un problème",
+        "titlesCount": 8,
+        "titles": {
+          "0": "Pâtes bol !",
+          "1": "Le chef a tout mangé !",
+          "2": "Le plat était froid !",
+          "3": "Le serveur ne trouve plus votre table !",
+          "4": "La commande s'est perdue en cuisine !",
+          "5": "Le chef n'a pas préparé ce plat aujourd'hui !",
+          "6": "La table est vide... où est votre assiette ?",
+          "7": "Êtes vous sûr d'avoir une réservation ?"
+        }
+      },
+      "404": {
+        "description": "La page que vous cherchez n'existe pas. Vous pouvez retourner à l'accueil ou nous signaler le problème.",
+        "cta": "Retourner à l'accueil",
+        "report": "Signaler un problème",
+        "titlesCount": 8,
+        "titles": {
+          "0": "Pâtes bol !",
+          "1": "Le chef a tout mangé !",
+          "2": "Le plat était froid !",
+          "3": "Le serveur ne trouve plus votre table !",
+          "4": "La commande s'est perdue en cuisine !",
+          "5": "Le chef n'a pas préparé ce plat aujourd'hui !",
+          "6": "La table est vide... où est votre assiette ?",
+          "7": "Êtes vous sûr d'avoir une réservation ?"
+        }
+      },
+      "500": {
+        "description": "Une erreur est survenue lors du chargement de la page. Vous pouvez retourner à l'accueil ou nous signaler le problème.",
+        "cta": "Retourner à l'accueil",
+        "report": "Signaler un problème",
+        "titlesCount": 8,
+        "titles": {
+          "0": "Le serveur a brûlé !",
+          "1": "Le chef a tout mangé !",
+          "2": "Le plat était froid !",
+          "3": "Le serveur ne trouve plus votre table !",
+          "4": "La commande s'est perdue en cuisine !",
+          "5": "Le chef n'a pas préparé ce plat aujourd'hui !",
+          "6": "La table est vide... où est votre assiette ?",
+          "7": "Êtes vous sûr d'avoir une réservation ?"
+        }
+      }
+    },
+    "RestaurantInformation": {
+      "openingHours": "Horaires d'ouverture",
+      "open": "Ouvert",
+      "closed": "Fermé",
+      "day": "Jour",
+      "breakfast": "Petit-déjeuner",
+      "lunch": "Déjeuner",
+      "dinner": "Dîner",
+      "contact": "Contact",
+      "accessibility": "Accessible aux personnes à mobilité réduite",
+      "izly": "Paiement Izly accepté",
+      "creditCard": "Paiement par carte bancaire accepté",
+      "phone": "Téléphone",
+      "email": "Email",
+      "otherInformation": "Autres informations",
+      "type": "Type",
+      "crous": "CROUS",
+      "Lundi": "Lundi",
+      "Mardi": "Mardi",
+      "Mercredi": "Mercredi",
+      "Jeudi": "Jeudi",
+      "Vendredi": "Vendredi",
+      "Samedi": "Samedi",
+      "Dimanche": "Dimanche"
+    },
+    "Common": {
+      "loading": "Chargement...",
+      "error": "Une erreur est survenue lors du chargement des données 😢",
+      "back": "Retour",
+      "close": "Fermer",
+      "search": "Rechercher...",
+      "noResults": "Aucun résultat trouvé pour cette recherche 😢",
+      "yes": "Oui",
+      "no": "Non",
+      "copy": "Copier",
+      "download": "Télécharger",
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "report": "Signaler",
+      "reportIssue": "Signaler un problème",
+      "reportIssueDescription": "Si vous rencontrez un problème ou une erreur sur le site, vous pouvez nous le signaler en remplissant le formulaire ci-dessous. Nous ferons de notre mieux pour résoudre le problème dans les plus brefs délais.",
+      "reportIssueButton": "Signaler le problème",
+      "reportIssueSuccess": "Le problème a bien été signalé. Merci pour votre aide !",
+      "reportIssueError": "Une erreur est survenue lors de la transmission du problème. Veuillez réessayer plus tard."
+    },
+    "SettingsPage": {
+      "title": "Paramètres",
+      "appearanceTitle": "Apparence",
+      "behaviorTitle": "Comportement",
+      "personalTitle": "Informations personnelles",
+      "language": {
+        "title": "Langue",
+        "description": "Choisissez la langue que vous souhaitez utiliser sur le site.",
+        "fr": "Français ({locale})",
+        "en": "English ({locale})",
+        "selectPlaceholder": "Sélectionner",
+        "successTitle": "Langue modifiée !",
+        "successDescription": "La langue du site a été changée avec succès."
+      },
+      "theme": {
+        "title": "Thème sombre",
+        "description": "Activez le thème sombre pour une expérience plus agréable en faible luminosité.",
+        "successTitle": "Thème modifié !",
+        "successLight": "Thème clair activé !",
+        "successDark": "Thème sombre activé !"
+      },
+      "favourites": {
+        "title": "Favoris",
+        "selectPlaceholder": "Sélectionner",
+        "description": "Gérez vos restaurants favoris et accédez à leur menu en un clic.",
+        "nofavouritesTitle": "Attention - Aucun restaurant favori",
+        "nofavouritesDescription": "Vous n'avez pas de favoris pour le moment, les paramètres suivants sont désactivés. Ajoutez votre premier favori maintenant en vous rendant sur la page ",
+        "starredTitle": "Votre restaurant favori",
+        "starredDescription": "Le bouton de la page d'accueil vous permet de voir directement le menu de votre restaurant favori.",
+        "starredEditSuccessTitle": "Restaurant favori modifié !",
+        "starredEditSuccessDescription": "Le favori a été changé avec succès.",
+        "starredSelectPlaceholder": "Sélectionner",
+        "regionTitle": "Région favorite",
+        "regionDescription": "Choisissez une région pour afficher les restaurants de cette région en premier.",
+        "regionSelectPlaceholder": "Sélectionner",
+        "regionSelectAll": "Toutes les régions",
+        "regionEditSuccessTitle": "Région favorite modifiée !",
+        "regionEditSuccessDescription": "La région favorite a été changée avec succès"
+      },
+      "personal": {
+        "deleteDataTitle": "Supprimer les données",
+        "deleteDataDescription": "Supprimez toutes les données stockées localement sur votre appareil. Cette action est irréversible.",
+        "deleteDataButton": "Supprimer les données",
+        "deleteDataConfirmTitle": "Êtes-vous sûr ?",
+        "deleteDataConfirmYes": "Oui, supprimer",
+        "deleteDataConfirmNo": "Non, annuler",
+        "deleteDataSuccessTitle": "Données supprimées !",
+        "deleteDataSuccessDescription": "Toutes les données ont été supprimées avec succès."
+      },
+      "seo": {
+        "title": "Paramètres",
+        "description": "Personnalisez les paramètres de CROUStillant pour une expérience optimale.",
+        "keywords": "CROUS, restaurant, menu, paramètres"
+      }
+    },
+    "StatsPage": {
+      "title": "Statistiques",
+      "description": "CROUStillant met à jour les menus des restaurants CROUS plusieurs fois par jour. Découvrez les statistiques de ces mises à jour.",
+      "stats": {
+        "menus": "Menus",
+        "compositions": "Compositions",
+        "categories": "Catégories",
+        "repas": "Repas",
+        "plats": "Plats",
+        "restaurants": "Restaurants",
+        "regions": "Régions",
+        "visits": "Visites",
+        "views": "Vues"
+      },
+      "charts": {
+        "menuAdded": {
+          "title": "Menus ajoutés",
+          "description": "Nombre de menus ajoutés par jour."
+        },
+        "overTime": {
+          "title": "Évolution des données",
+          "description": "Évolution du nombre de compositions, catégories, repas et plats ajoutés par jour."
+        },
+        "requests": {
+          "title": "Requêtes",
+          "description": "Nombre de requêtes effectuées par jour pour récupérer les données des restaurants CROUS."
+        },
+        "labels": {
+          "menus": "Menus",
+          "compositions": "Compositions",
+          "categories": "Catégories",
+          "repas": "Repas",
+          "plats": "Plats",
+          "requetes": "Requêtes"
+        }
+      },
+      "seo": {
+        "title": "Statistiques",
+        "description": "Découvrez les statistiques de CROUStillant. Nombre de menus, compositions, catégories, repas et plats ajoutés par jour.",
+        "keywords": "CROUS, restaurant, menu, statistiques"
+      }
+    },
+    "DishesPage": {
+      "title": "Plats",
+      "description": "Découvrez les plats proposés par les restaurants CROUS de France et d'outre-mer.",
+      "seo": {
+        "title": "Plats",
+        "description": "Découvrez les plats proposés par les restaurants CROUS de France et d'outre-mer. Trouvez le plat parfait pour votre prochain repas !",
+        "keywords": "CROUS, restaurant, menu, plat, plats"
+      },
+      "noResults": "Aucun plat trouvé pour cette recherche 😢",
+      "top100": "Top des plats ajoutés",
+      "top100Description": "Découvrez les 100 plats les plus ajoutés à la plateforme.",
+      "last100": "Derniers plats ajoutés",
+      "last100Description": "Découvrez les 100 derniers plats ajoutés à la plateforme.",
+      "ranking": "Classement",
+      "code": "Code",
+      "label": "Libellé",
+      "occurrences": "Occurrences",
+      "search": "Rechercher un plat..."
+    },
+    "LegalPage": {
+      "title": "Notice légale",
+      "subtitle": "Mis à jour le 31 décembre 2024",
+      "description": "Vous trouverez ci-dessous les mentions légales, la politique de confidentialité, les cookies et les conditions d'utilisation de CROUStillant.",
+      "legal": {
+        "title": "Mentions légales",
+        "part1": {
+          "title": "Identité du site",
+          "content1": "Le site : https://croustillant.menu/ est le site officiel de CROUstillant.",
+          "content2": "CROUStillant est un projet open-source développé qui a pour but de fournir des informations sur les menus des restaurants universitaires en France et en Outre-Mer."
+        },
+        "part2": {
+          "title": "Éditeur du site",
+          "content1": "Le site est édité par CROUStillant Développement.",
+          "content2": "CROUStillant Développement est une association à but non lucratif qui n'est pas affiliée au \"CROUS\" ou à une autre entité similaire."
+        },
+        "part3": {
+          "title": "Propriété intellectuelle",
+          "content1": "Le site est la propriété exclusive de CROUStillant Développement.",
+          "content2": "Cependant, tout le contenu du site est la propriété du \"CROUS\" et des restaurants universitaires en France et en Outre-Mer."
+        },
+        "part4": {
+          "title": "Conception",
+          "content1": "Le site a été conçu et développé par l'équipe de CROUStillant Développement. L'équipe est composée de bénévoles passionnés : Paul Bayfield (fondateur et développeur principal), Adlen Cherif (développeur web) et Lucas Debeve (concepteur de la base de données).",
+          "content2": "Le site a été conçu pour être simple, intuitif et accessible à tous. Il est entièrement open-source et gratuit."
+        },
+        "part5": {
+          "title": "Hébergement",
+          "content1": "Le site est hébergé par l'équipe de CROUStillant Développement, sur le serveur personnel de Paul Bayfield.",
+          "content2": "Le site est hébergé en France, sur un serveur sécurisé et fiable. Aucune donnée personnelle n'est collectée ou stockée sur le serveur."
+        }
+      },
+      "privacy": {
+        "title": "Politique de confidentialité",
+        "part1": {
+          "title": "Données personnelles",
+          "content1": "Le site ne collecte aucune donnée personnelle.",
+          "content2": "CROUStillant Développement ne collecte pas de données personnelles sur les utilisateurs du site. Aucune donnée n'est stockée ou partagée avec des tiers."
+        },
+        "part2": {
+          "title": "Données traitées",
+          "content1": "Le site traite uniquement les données nécessaires au bon fonctionnement du service.",
+          "content2": "Les données personnelles pouvant être collectés sur le site le cas échéant par : les formulaires, la connexion au site (adresse IP, navigateur, système d'exploitation). Lorsque certaines informations sont obligatoires pour accéder à des fonctionnalités spécifiques du site, ce caractère obligatoire est indiqué au moment de la saisie des données. En cas de refus de votre part de fournir des informations obligatoires, vous pourriez ne pas avoir accès à certains services, fonctionnalités de site."
+        },
+        "part3": {
+          "title": "Transfert des données hors Union Européenne",
+          "content1": "CROUStillant Développement ne transfère pas de données en dehors de l'Union Européenne.",
+          "content2": "Toutes les données sont stockées en France, sur un serveur sécurisé et fiable."
+        }
+      },
+      "cookies": {
+        "title": "Cookies",
+        "part1": {
+          "title": "Utilisation des cookies",
+          "content1": "Le site utilise des uniquement des cookies nécessaires au bon fonctionnement du service.",
+          "content2": "Le site utilise des cookies pour améliorer l'expérience utilisateur et garantir le bon fonctionnement du service. Aucun cookie publicitaire ou de suivi n'est utilisé sur le site."
+        },
+        "part2": {
+          "title": "Gestion des cookies",
+          "content1": "Vous pouvez gérer les cookies en modifiant les paramètres de votre navigateur.",
+          "content2": "Vous pouvez également supprimer les cookies à tout moment en utilisant les paramètres du site."
+        }
+      },
+      "terms": {
+        "title": "Conditions d'utilisation",
+        "part1": {
+          "title": "Acceptation des conditions",
+          "content1": "En accédant au site, vous acceptez les conditions d'utilisation.",
+          "content2": "Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser le site."
+        },
+        "part2": {
+          "title": "Modification des conditions",
+          "content1": "Les conditions d'utilisation peuvent être modifiées à tout moment.",
+          "content2": "Les utilisateurs seront informés des modifications apportées aux conditions d'utilisation."
+        },
+        "part3": {
+          "title": "Propriété intellectuelle",
+          "content1": "Le contenu de ce site ne peut être reproduit ou utilisé à des fins commerciales ou publicitaires.",
+          "content2": "Les informations utilisées ne doivent l’être qu’à des fins personnelles, associatives ou professionnelles. Toute diffusion ou utilisation à des fins commerciales ou publicitaires est exclue."
+        },
+        "part4": {
+          "title": "Provenance",
+          "content1": "Aucune page ne peut être présentée comme provenant de ce site si des transformations en modifiant le sens y ont été apportées.",
+          "content2": "Les photos provenant des offres de logement émanant des propriétaires ne sont pas contractuelles et n’engagent en aucune façon la responsabilité de CROUStillant Développement."
+        },
+        "part5": {
+          "title": "Liens",
+          "content1": "Le site peut contenir des liens vers d'autres sites.",
+          "content2": "CROUStillant Développement n'est pas responsable du contenu des sites externes. CROUStillant Développement ne peut être tenu responsable des dommages causés par l'utilisation de ces sites."
+        }
+      },
+      "seo": {
+        "title": "Notice légale",
+        "description": "Consultez les mentions légales, la politique de confidentialité, les cookies et les conditions d'utilisation de CROUStillant. Nous sommes là pour vous aider !",
+        "keywords": "CROUS, restaurant, menu, mentions légales, politique de confidentialité"
+      }
+    },
+    "ContactPage": {
+      "title": "Contactez-nous - À votre service !",
+      "description": "Nous ne servons pas de formulaires. À la place, contactez-nous via ces liens. C'est plus rapide et tout aussi savoureux !",
+      "methods": {
+        "email": "Envoyez-nous un email ! 📧",
+        "github": "Un bug repéré ? Signalez-le sur GitHub ! 🐛",
+        "discord": "Discutez avec nous sur Discord ! 🎙️"
+      },
+      "footer": "Nous adorons avoir de vos nouvelles, mais pas via des formulaires. 🍴",
+      "seo": {
+        "title": "Contact",
+        "description": "Contactez l'équipe de CROUStillant pour toute question, suggestion ou problème. Nous sommes à votre service !",
+        "keywords": "CROUS, restaurant, menu, contact"
+      }
+    },
+    "ModeToggle": {
+      "title": "Changer de thème",
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    },
+    "ChangelogPage": {
+      "title": "Mises à jour",
+      "description": "Découvrez les dernières mises à jour de CROUStillant et les fonctionnalités ajoutées.",
+      "noChanges": "Aucun changement n'a été apporté à la plateforme pour le moment.",
+      "noUpdates": "Aucune mise à jour n'a été publiée pour le moment. Revenez plus tard pour découvrir les dernières fonctionnalités ajoutées à CROUStillant !",
+      "buildInProgress": "Construction en cours...",
+      "buildInProgressDescription": "Cette page est en cours de construction. Elle peut présenter des problèmes d'affichage.",
+      "seo": {
+        "title": "Mises à jour",
+        "description": "Découvrez les dernières mises à jour de CROUStillant et les fonctionnalités ajoutées. Restez informé des nouveautés !",
+        "keywords": "CROUS, restaurant, menu, mises à jour"
+      }
+    }
+  }

@@ -63,60 +63,60 @@ export default function FilterModal({ visible, onClose, filters }: FilterModalPr
       <BlurView intensity={10} style={styles.overlay}>
         <ThemedView style={styles.modalContent}>
           <View style={styles.header}>
-            <ThemedText style={styles.title}>{t('restaurants.filters')}</ThemedText>
+            <ThemedText style={styles.title}>{t('Filters.title')}</ThemedText>
             <Pressable style={styles.closeButton} onPress={onClose}>
               <X size={24} color={Colors[colorScheme ?? 'light'].text} />
             </Pressable>
           </View>
 
           <ScrollView style={styles.content}>
-            <FilterSection title={t('restaurants.filters.restaurant_name')}>
+            <FilterSection title={t('Filters.restaurantName.title')}>
               <FilterCheckbox
-                label={t('restaurants.filters.alphabetical_order')}
+                label={t('Filters.restaurantName.sortAsc')}
                 checked={filters.alphabeticalOrder.value}
                 onToggle={filters.alphabeticalOrder.onToggle}
               />
               <FilterCheckbox
-                label={t('restaurants.filters.reverse_alphabetical')}
+                label={t('Filters.restaurantName.sortDesc')}
                 checked={filters.reverseAlphabeticalOrder.value}
                 onToggle={filters.reverseAlphabeticalOrder.onToggle}
               />
             </FilterSection>
 
-            <FilterSection title={t('restaurants.filters.city')}>
+            <FilterSection title={t('Filters.restaurantCity.title')}>
               <FilterCheckbox
-                label={t('restaurants.filters.city_alphabetical_order')}
+                label={t('Filters.restaurantCity.sortAsc')}
                 checked={filters.cityAlphabeticalOrder.value}
                 onToggle={filters.cityAlphabeticalOrder.onToggle}
               />
               <FilterCheckbox
-                label={t('restaurants.filters.city_reverse_alphabetical')}
+                label={t('Filters.restaurantCity.sortDesc')}
                 checked={filters.cityReverseAlphabeticalOrder.value}
                 onToggle={filters.cityReverseAlphabeticalOrder.onToggle}
               />
             </FilterSection>
 
-            <FilterSection title={t('restaurants.filters.payment')}>
+            <FilterSection title={t('Filters.payment.title')}>
               <FilterCheckbox
-                label={t('restaurants.filters.card_payment')}
+                label={t('Filters.payment.creditCard')}
                 checked={filters.cardPayment.value}
                 onToggle={filters.cardPayment.onToggle}
               />
               <FilterCheckbox
-                label={t('restaurants.filters.izly_payment')}
+                label={t('Filters.payment.izly')}
                 checked={filters.izlyPayment.value}
                 onToggle={filters.izlyPayment.onToggle}
               />
             </FilterSection>
 
-            <FilterSection title={t('restaurants.filters.additional')}>
+            <FilterSection title={t('Filters.additionnal.title')}>
               <FilterCheckbox
-                label={t('restaurants.filters.open_now')}
+                label={t('Filters.additionnal.open')}
                 checked={filters.openNow.value}
                 onToggle={filters.openNow.onToggle}
               />
               <FilterCheckbox
-                label={t('restaurants.filters.accessible')}
+                label={t('Filters.additionnal.accessibility')}
                 checked={filters.accessible.value}
                 onToggle={filters.accessible.onToggle}
               />
@@ -124,7 +124,7 @@ export default function FilterModal({ visible, onClose, filters }: FilterModalPr
           </ScrollView>
 
           <TouchableOpacity style={styles.closeModalButton} onPress={onClose}>
-            <ThemedText style={styles.closeModalText}>{t('restaurants.filters.close')}</ThemedText>
+            <ThemedText style={styles.closeModalText}>{t('Filters.close')}</ThemedText>
           </TouchableOpacity>
         </ThemedView>
       </BlurView>

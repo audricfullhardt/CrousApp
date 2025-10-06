@@ -84,7 +84,7 @@ function RestaurantCard({
           </View>
           <View style={cardStyles.status}>
             <ThemedText style={cardStyles.statusText}>
-              {isOpen ? t('restaurants.open') : t('restaurants.closed')}
+              {isOpen ? t('RestaurantInformation.open') : t('RestaurantInformation.closed')}
             </ThemedText>
           </View>
         </View>
@@ -109,7 +109,7 @@ function RestaurantCard({
             onPress={onPressMenu}
           >
             <ThemedText style={cardStyles.menuButtonText}>
-              {t('restaurants.view_menu')}
+              {t('RestaurantCard.cta')}
             </ThemedText>
           </TouchableOpacity>
         </View>

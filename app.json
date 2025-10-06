@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "crousapp",
+    "name": "CROUStillantApp",
     "slug": "crousapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "icon": "./assets/images/logo.webp",
+    "scheme": "CROUStillantApp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -21,8 +21,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/logo.webp",
+        "backgroundColor": "#000000"
       },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
@@ -33,19 +33,19 @@
           "apiKey": "YOUR_ANDROID_API_KEY"
         }
       },
-      "package": "com.audric_dev.crousapp"
+      "package": "com.audric_dev.CroustillantApp"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/logo.webp"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/logo.webp",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -62,6 +62,7 @@
       "eas": {
         "projectId": "9ba9ecd9-5215-4106-8ce7-03a77eaa765b"
       }
-    }
+    },
+    "owner": "audric_dev"
   }
 }

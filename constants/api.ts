@@ -1,6 +1,6 @@
+import { G } from 'react-native-svg';
 import { buildApiUrl } from './Config';
 
-// Types pour les réponses API
 export interface Restaurant {
   code: number;
   nom: string;
@@ -53,13 +53,15 @@ export interface MenuResponse {
   success: boolean;
 }
 
+export interface Region {
+  code: number;
+  libelle: string;
+}
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
   message?: string;
 }
-
-// Classe pour gérer les appels API
 class ApiService {
   private async makeRequest<T>(url: string, options?: RequestInit): Promise<T> {
     try {
@@ -82,7 +84,6 @@ class ApiService {
     }
   }
 
-  // Endpoints pour les restaurants
   async getRestaurants(): Promise<ApiResponse<Restaurant[]>> {
     return this.makeRequest<ApiResponse<Restaurant[]>>(buildApiUrl('restaurants'));
   }
@@ -98,16 +99,17 @@ class ApiService {
   async getRestaurantMenu(restaurantId: string, date: string): Promise<MenuResponse> {
     return this.makeRequest<MenuResponse>(buildApiUrl(`restaurants/${restaurantId}/menu/${date}`));
   }
+  async getRegions(): Promise<ApiResponse<Region[]>> {
+    return this.makeRequest<ApiResponse<Region[]>>(buildApiUrl('regions'));
+  }
 }
 
-// Instance singleton
 export const apiService = new ApiService();
 
-// Fonctions d'aide pour les appels API courants
 export const api = {
-  // Restaurants
   getRestaurants: () => apiService.getRestaurants(),
   getRestaurantsForMap: () => apiService.getRestaurantsForMap(),
   getRestaurant: (id: string) => apiService.getRestaurant(id),
   getRestaurantMenu: (restaurantId: string, date: string) => apiService.getRestaurantMenu(restaurantId, date),
+  getRegions: () => apiService.getRegions(),
 }; 

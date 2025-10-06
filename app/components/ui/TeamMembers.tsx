@@ -12,6 +12,7 @@ export default function TeamMembers() {
     t('home.Team.Cards.teamDesc.teamMembers.members.alden'),
     t('home.Team.Cards.teamDesc.teamMembers.members.lucas'),
     t('home.Team.Cards.teamDesc.teamMembers.members.louis'),
+    t('home.Team.Cards.teamDesc.teamMembers.members.audric'),
   ];
 
   return (

@@ -18,6 +18,8 @@ export const Config = {
   EXTERNAL: {
     GITHUB_REPO: 'https://github.com/CROUStillant-Developpement',
     GITHUB_WEB_REPO: 'https://github.com/CROUStillant-Developpement/CROUStillantWeb/tree/main/public',
+    LEGAL_PAGE: 'https://croustillant.menu/fr/legal',
+    ABOUT_PAGE: 'https://croustillant.menu/fr/about',
   },
 } as const;
 

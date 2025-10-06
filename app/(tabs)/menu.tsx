@@ -20,6 +20,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { api, Restaurant, MenuResponse } from '@/constants/api';
 import { checkIfRestaurantOpen, formatDateForAPI } from '@/utils/restaurantUtils';
 import { MEAL_TYPE_LABELS, WEEK_DAYS, SERVICE_TYPES, PLAT_ICON_KEYWORDS } from '@/utils/constants';
+import { trackPageView } from '@/utils/umami';
 
 export default function MenuScreen() {
   // Hooks d'état
@@ -378,6 +379,10 @@ export default function MenuScreen() {
     fetchRestaurant();
   }, [restaurantId, checkIfOpen, fetchMenuData]);
 
+  useEffect(() => {
+      trackPageView('Menus', '/menu');
+    }, []);
+
   // Initialiser tous les repas comme collapsés par défaut
   useEffect(() => {
     if (menuData?.data.repas) {
@@ -485,7 +490,7 @@ export default function MenuScreen() {
                     {MEAL_TYPE_LABELS[repas.type as keyof typeof MEAL_TYPE_LABELS] || repas.type}
                   </ThemedText>
                 </View>
-                <TouchableOpacity style={styles.collapseButton}>
+                <TouchableOpacity style={styles.collapseButton} onPress={() => toggleRepasCollapse(repas.code)}>
                   {isCollapsed ? (
                     <ChevronDown size={20} color={theme.colors.text} />
                   ) : (
@@ -535,7 +540,6 @@ export default function MenuScreen() {
     );
   }, [menuData, restaurant?.type?.libelle, collapsedRepas, getRepasIcon, getPlatIcon, toggleRepasCollapse, theme.colors.text]);
 
-  // Rendu conditionnel pour le loading
   if (loading || !restaurant) {
     return (
       <View style={styles.loadingContainer}>

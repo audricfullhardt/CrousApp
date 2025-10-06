@@ -13,6 +13,9 @@ import { ArrowRight, MapPin, Clock, CreditCard, HeartHandshake, UtensilsCrossed 
 import TeamCard from '../components/ui/TeamCard';
 import StudentProjectCard from '../components/ui/StudentProjectCard';
 import { Config } from '@/constants/Config';
+import TrackedButton from '../components/TrackedButton';
+import { trackPageView } from '@/utils/umami';
+import { useEffect } from 'react';
 
 type RootStackParamList = {
   restaurants: undefined;
@@ -30,6 +33,10 @@ export default function HomeScreen() {
   const navigateToInfo = () => navigation.navigate('info');
   const navigateToGitHub = () => Linking.openURL(Config.EXTERNAL.GITHUB_REPO);
   const navigateToServer = () => Linking.openURL(Config.API.BASE_URL);
+  
+  useEffect(() => {
+      trackPageView('Home', '/home');
+    }, []);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -45,60 +52,61 @@ export default function HomeScreen() {
             backgroundColor: theme.colors.openSource,
             borderColor: theme.colors.openSourceBorder,
           }]}>
-            {t('home.open_source')}
+            {t('HomePage.badge.title')}
             <ArrowRight size={14} color={theme.colors.text}/>
           </ThemedText>
         </View>
 
         <View style={styles.content}>
           <ThemedText style={[styles.title, { color: theme.colors.text }]}>
-            {t('app.description')}
+            {t('HomePage.title.first')}
           </ThemedText>
           <ThemedText style={[styles.subtitle, { color: theme.colors.text }]}>
-            {t('app.subtitle')}
+            {t('HomePage.subtitle')}
           </ThemedText>
 
           <View style={styles.buttonsContainer}>
-            <Button
-              title={t('home.discover')}
+            <TrackedButton
+              title={t('HomePage.cta.first')}
               size="large"
               color={theme.colors.primary}
               textColor={theme.colors.surface}
               onPress={navigateToRestaurants}
               icon={<ArrowRight />}
+              path='/restaurants'
             />
           </View>
 
           <View style={styles.section}>
             <ThemedText style={[styles.sectionTitle, { color: theme.colors.text }]}>
-              {t('home.Cards.title')}
+              {t('HomePage.title.second')}
             </ThemedText>
 
             <InfoCard
-              title={t('home.Cards.searchCard.title')}
-              description={t('home.Cards.searchCard.desc')}
-              buttonText={t('home.Cards.searchCard.button')}
+              title={t('HomePage.card1.title')}
+              description={t('HomePage.card1.description')}
+              buttonText={t('HomePage.card1.cta')}
               onPress={navigateToInfo}
               icon={<MapPin size={130} color={theme.colors.text} strokeWidth={2} />}
             />
             <InfoCard
-              title={t('home.Cards.hoursCard.title')}
-              description={t('home.Cards.hoursCard.desc')}
-              buttonText={t('home.Cards.hoursCard.button')}
+              title={t('HomePage.card2.title')}
+              description={t('HomePage.card2.description')}
+              buttonText={t('HomePage.card2.cta')}
               onPress={navigateToInfo}
               icon={<Clock size={130} color={theme.colors.text} strokeWidth={2} />}
             />
             <InfoCard
-              title={t('home.Cards.paymentCard.title')}
-              description={t('home.Cards.paymentCard.desc')}
-              buttonText={t('home.Cards.paymentCard.button')}
+              title={t('HomePage.card3.title')}
+              description={t('HomePage.card3.description')}
+              buttonText={t('HomePage.card3.cta')}
               onPress={navigateToInfo}
               icon={<CreditCard size={130} color={theme.colors.text} strokeWidth={2} />}
             />
             <InfoCard
-              title={t('home.Cards.accessCard.title')}
-              description={t('home.Cards.accessCard.desc')}
-              buttonText={t('home.Cards.accessCard.button')}
+              title={t('HomePage.card4.title')}
+              description={t('HomePage.card4.description')}
+              buttonText={t('HomePage.card4.cta')}
               onPress={navigateToInfo}
               icon={<UtensilsCrossed size={130} color={theme.colors.text} strokeWidth={2} />}
             />
@@ -106,33 +114,34 @@ export default function HomeScreen() {
 
           <View style={styles.section}>
             <ThemedText style={[styles.sectionTitle, { color: theme.colors.text }]}>
-              {t('home.Team.title')}
+              {t('HomePage.title.third')}
             </ThemedText>
             
             <StudentProjectCard
-              title={t('home.Team.Cards.projectDesc.title')}
-              description={t('home.Team.Cards.projectDesc.desc')}
-              buttonText={t('home.Team.Cards.projectDesc.button')}
+                title={t('HomeCard.RadarsCard.title')}
+              description={t('HomeCard.RadarsCard.subtitle')}
+              buttonText={t('HomeCard.RadarsCard.cta')}
               onPress={navigateToGitHub}
             />
 
             <TeamCard
-              title={t('home.Team.Cards.teamDesc.title')}
-              description={t('home.Team.Cards.teamDesc.desc')}
-              buttonText={t('home.Team.Cards.teamDesc.button')}
+              title={t('HomeCard.GitCard.title')}
+              description={t('HomeCard.GitCard.subtitle')}
+              buttonText={t('HomeCard.GitCard.cta')}
               members={[
-                { name: t('home.Team.Cards.teamDesc.teamMembers.members.paul') },
-                { name: t('home.Team.Cards.teamDesc.teamMembers.members.alden') },
-                { name: t('home.Team.Cards.teamDesc.teamMembers.members.lucas') },
-                { name: t('home.Team.Cards.teamDesc.teamMembers.members.louis') },
+                { name: t('AboutPage.team.members.member1.name') },
+                { name: t('AboutPage.team.members.member2.name') },
+                { name: t('AboutPage.team.members.member3.name') },
+                { name: t('AboutPage.team.members.member4.name') },
+                { name: t('AboutPage.team.members.member5.name') },
               ]}
               onPress={navigateToGitHub}
             />
 
             <ServerStatus 
-              title={t('home.Team.Cards.cicd.server.title')}
-              description={t('home.Team.Cards.cicd.desc')}
-              buttonText={t('home.Team.Cards.cicd.button')}
+              title={t('HomeCard.ApiCard.Card.title')}
+              description={t('HomeCard.ApiCard.subtitle')}
+              buttonText={t('HomeCard.ApiCard.cta')}
               onPress={navigateToServer}
             />
 
@@ -141,17 +150,18 @@ export default function HomeScreen() {
                   <HeartHandshake size={80} color={theme.colors.convincedCard.text}/>
                 </View>
               <ThemedText style={[styles.convincedTitle, { color: theme.colors.text }]}>
-                {t('home.Team.Cards.convinced.title')}
+                {t('HomePage.footer.title')}
               </ThemedText>
               <ThemedText style={[styles.convincedDesc, { color: theme.colors.text }]}>
-                {t('home.Team.Cards.convinced.desc')}
+                {t('HomePage.footer.subtitle')}
               </ThemedText>
-              <Button
-                title={t('home.Team.Cards.convinced.button')}
+              <TrackedButton
+                title={t('HomePage.cta.first')}
                 size="large"
                 color={theme.colors.primary}
                 textColor={theme.colors.surface}
                 onPress={navigateToRestaurants}
+                path='/restaurants'
               />
             </View>
           </View>
