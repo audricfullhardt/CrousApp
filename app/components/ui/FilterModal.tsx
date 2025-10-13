@@ -32,11 +32,10 @@ type FilterModalProps = {
 
 export default function FilterModal({ visible, onClose, filters }: FilterModalProps) {
   const { t } = useLanguage();
-  const colorScheme = useColorScheme();
   const theme = useTheme();
 
   const FilterSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <View style={styles.section}>
+    <View style={[styles.section, {backgroundColor: theme.colors.background}]}>
       <ThemedText style={styles.sectionTitle}>{title}</ThemedText>
       {children}
     </View>
@@ -44,7 +43,7 @@ export default function FilterModal({ visible, onClose, filters }: FilterModalPr
 
   const FilterCheckbox = ({ label, checked, onToggle }: { label: string; checked: boolean; onToggle: () => void }) => (
     <TouchableOpacity style={styles.checkboxContainer} onPress={onToggle}>
-      <Pressable
+      <Pressable onPress={onToggle}
         style={[styles.checkbox, checked && { backgroundColor: theme.colors.primary }]}
       >
         {checked && <Check size={16} color="#fff" />}
@@ -61,11 +60,11 @@ export default function FilterModal({ visible, onClose, filters }: FilterModalPr
       onRequestClose={onClose}
     >
       <BlurView intensity={10} style={styles.overlay}>
-        <ThemedView style={styles.modalContent}>
+        <ThemedView style={[styles.modalContent, {backgroundColor: theme.colors.background}]}>
           <View style={styles.header}>
             <ThemedText style={styles.title}>{t('Filters.title')}</ThemedText>
             <Pressable style={styles.closeButton} onPress={onClose}>
-              <X size={24} color={Colors[colorScheme ?? 'light'].text} />
+              <X size={24} color={theme.colors.text} />
             </Pressable>
           </View>
 

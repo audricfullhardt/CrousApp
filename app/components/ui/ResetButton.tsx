@@ -13,7 +13,7 @@ function ResetButton({ onPress }: ResetButtonProps) {
   const { t } = useLanguage();
 
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable style={[styles.button, {borderColor: theme.colors.text}]} onPress={onPress}>
       <RotateCcw size={16} color={theme.colors.text} />
       <ThemedText style={[styles.text, { color: theme.colors.text }]}>
         {t('Filters.reset')}

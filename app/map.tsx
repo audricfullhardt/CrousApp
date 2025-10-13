@@ -104,8 +104,8 @@ export default function MapScreen() {
                 <View style={styles.callout}>
                   <ThemedText style={styles.calloutTitle}>{restaurant.nom}</ThemedText>
                   <ThemedText style={styles.calloutSubtitle}>{restaurant.zone}</ThemedText>
-                  <ThemedText style={styles.calloutStatus}>{restaurant.actif ? t('restaurants.open') : t('restaurants.closed')}</ThemedText>
-                  <ThemedText style={styles.calloutAction}>{t('restaurants.view_menu')} →</ThemedText>
+                  <ThemedText style={styles.calloutStatus}>{restaurant.actif ? t('RestaurantInformation.open') : t('RestaurantInformation.closed')}</ThemedText>
+                  <ThemedText style={styles.calloutAction}>{t('RestaurantCard.cta')} →</ThemedText>
                 </View>
               </Callout>
             </Marker>
