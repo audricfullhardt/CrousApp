@@ -32,6 +32,7 @@ export default function TabLayout() {
             borderTopWidth: 0,
             elevation: 0,
             shadowOpacity: 0,
+            backgroundColor: theme.colors.background,
           },
           default: {
             height: 60,
@@ -39,6 +40,7 @@ export default function TabLayout() {
             paddingTop: 5,
             borderTopWidth: 0,
             elevation: 0,
+            backgroundColor: theme.colors.background,
           },
         }),
       }}>

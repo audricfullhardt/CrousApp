@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { StyleSheet, View, ScrollView, ActivityIndicator, Platform } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -130,7 +130,15 @@ export default function RestaurantsScreen() {
   }, [resetFilters]);
 
   const handleShowMap = useCallback(() => {
-    router.push('/map');
+    if (Platform.OS === 'android') {
+      Alert.alert(
+        "Indisponible pour le moment",
+        "Les équipes CROUStillant travaillent dessus",
+        [{ text: "OK", style: "default" }]
+      );
+    } else {
+      router.push('/map');
+    }
   }, [router]);
 
   const getFavoritesText = useCallback((count: number) => {

@@ -21,6 +21,7 @@ import { api, Restaurant, MenuResponse } from '@/constants/api';
 import { checkIfRestaurantOpen, formatDateForAPI } from '@/utils/restaurantUtils';
 import { MEAL_TYPE_LABELS, WEEK_DAYS, SERVICE_TYPES, PLAT_ICON_KEYWORDS } from '@/utils/constants';
 import { trackPageView } from '@/utils/umami';
+import { useFavorites } from '@/contexts/FavoritesContext';
 
 export default function MenuScreen() {
   // Hooks d'état
@@ -29,10 +30,10 @@ export default function MenuScreen() {
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(true);
   const [menuData, setMenuData] = useState<MenuResponse | null>(null);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [collapsedRepas, setCollapsedRepas] = useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = useState<"calendrier" | "informations">("calendrier");
+  const { favoriteRestaurants, addFavoriteRestaurant, removeFavoriteRestaurant, isFavorite } = useFavorites();
   
   // Hooks de contexte
   const colorScheme = useColorScheme();
@@ -342,9 +343,18 @@ export default function MenuScreen() {
   }, [restaurantId]);
 
   // Actions optimisées avec useCallback
-  const toggleFavorite = useCallback(() => {
-    setIsFavorite(prev => !prev);
-  }, []);
+  const toggleFavorite = useCallback((restaurant: Restaurant) => {
+      const restaurantId = restaurant.code.toString();
+      if (isFavorite(restaurantId)) {
+        removeFavoriteRestaurant(restaurantId);
+      } else {
+        addFavoriteRestaurant({
+          id: restaurantId,
+          name: restaurant.nom,
+          city: restaurant.zone
+        });
+      }
+    }, [isFavorite, removeFavoriteRestaurant, addFavoriteRestaurant]);
 
   const toggleRepasCollapse = useCallback((repasCode: number) => {
     setCollapsedRepas(prev => {
@@ -572,8 +582,8 @@ export default function MenuScreen() {
               </ThemedText>
             )}
           </View>
-          <TouchableOpacity onPress={toggleFavorite}>
-            {isFavorite ? <Heart size={24} color={colors.tint} /> : <Heart size={24} color={colors.text} />}
+          <TouchableOpacity onPress={()=>toggleFavorite(restaurant)}>
+            {isFavorite(restaurant.code.toString()) ? <Heart size={24} color={colors.tint} /> : <Heart size={24} color={theme.colors.text} />}
           </TouchableOpacity>
         </View>
 

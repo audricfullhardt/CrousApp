@@ -4,7 +4,7 @@
     "slug": "crousapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logo.webp",
+    "icon": "./assets/images/logo.png",
     "scheme": "CROUStillantApp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,38 +14,30 @@
         "NSLocationWhenInUseUsageDescription": "Nous avons besoin de votre localisation pour afficher les restaurants les plus proches de vous.",
         "NSLocationAlwaysUsageDescription": "Nous avons besoin de votre localisation pour afficher les restaurants les plus proches de vous.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Nous avons besoin de votre localisation pour afficher les restaurants les plus proches de vous."
-      },
-      "config": {
-        "googleMapsApiKey": "YOUR_IOS_API_KEY"
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo.webp",
+        "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#000000"
       },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
       ],
-      "config": {
-        "googleMaps": {
-          "apiKey": "YOUR_ANDROID_API_KEY"
-        }
-      },
       "package": "com.audric_dev.CroustillantApp"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/logo.webp"
+      "favicon": "./assets/images/logo.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/logo.webp",
+          "image": "./assets/images/logo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"

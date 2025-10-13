@@ -22,7 +22,7 @@ function buildPayload(eventName, url, type = "event", extra = {}) {
 }
 
 export async function trackEvent(eventName, url = "/", extra = {}) {
-  // if(__DEV__) return; // Skip tracking in development mode
+  if(__DEV__) return; // Skip tracking in development mode
   try {
     const payload = buildPayload(eventName, url, "event", extra);
     console.log("Umami sending event:", payload);
@@ -35,7 +35,7 @@ export async function trackEvent(eventName, url = "/", extra = {}) {
 }
 
 export async function trackPageView(pageName, path = "/") {
-  // if(__DEV__) return; // Skip tracking in development mode
+  if(__DEV__) return; // Skip tracking in development mode
   try {
     const payload = buildPayload(pageName, path, "event");
     console.log("Umami sending pageview as event:", payload);

@@ -26,6 +26,7 @@ export interface Restaurant {
     };
   }[];
   isOpen?: boolean;
+  ouvert?: boolean;
   type?: {
     libelle: string;
   };

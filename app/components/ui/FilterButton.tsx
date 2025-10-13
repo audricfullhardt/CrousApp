@@ -4,6 +4,7 @@ import { ThemedText } from './ThemedText';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { LucideIcon } from 'lucide-react-native';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface FilterButtonProps {
   title: string;
@@ -13,16 +14,16 @@ interface FilterButtonProps {
 }
 
 export default function FilterButton({ title, icon: Icon, onPress, isActive = false }: FilterButtonProps) {
-  const colorScheme = useColorScheme();
-  const backgroundColor = isActive ? Colors[colorScheme ?? 'light'].tint : Colors[colorScheme ?? 'light'].background;
-  const textColor = isActive ? '#fff' : Colors[colorScheme ?? 'light'].text;
+  const theme = useTheme();
+  const backgroundColor = theme.colors.background
+  const borderColor = theme.colors.text
+  const textColor = theme.colors.text
 
   return (
     <TouchableOpacity
       style={[
         styles.button,
-        { backgroundColor },
-        isActive ? styles.activeButton : styles.inactiveButton,
+        { backgroundColor: backgroundColor, borderColor: borderColor },
       ]}
       onPress={onPress}
     >
@@ -38,7 +39,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 8,
+    borderRadius: 20,
+    borderWidth: 1,
     gap: 6,
   },
   activeButton: {

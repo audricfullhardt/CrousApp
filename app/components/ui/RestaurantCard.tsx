@@ -67,7 +67,6 @@ function RestaurantCard({
           <Heart
             size={24}
             color={isFavorite ? theme.colors.primary : theme.colors.text}
-            fill={isFavorite ? theme.colors.primary : 'none'}
           />
         </TouchableOpacity>
       </View>
