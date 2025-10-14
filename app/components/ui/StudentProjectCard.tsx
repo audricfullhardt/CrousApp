@@ -35,11 +35,11 @@ export default function StudentProjectCard({
         </ThemedText>
       </View>
       <View
-        style={styles.illustration}
+        style={[styles.illustration, { backgroundColor: theme.colors.StudentProjectCard.background}]}
         onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
       >
-        <View style={styles.circleMiddle} />
-        <View style={styles.circleInner} />
+        <View style={[styles.circleMiddle, {backgroundColor: theme.colors.StudentProjectCard.firstCircle, borderColor: theme.colors.StudentProjectCard.borderColor}]} />
+        <View style={[styles.circleInner, {backgroundColor: theme.colors.StudentProjectCard.secondCircle, borderColor: theme.colors.StudentProjectCard.borderColor}]} />
         {containerWidth > 0 && Array.from({ length: 6 }).map((_, i) => {
           const angle = (i / 6) * 2 * Math.PI - Math.PI / 2;
           const centerX = containerWidth / 2;
@@ -52,7 +52,7 @@ export default function StudentProjectCard({
               key={i}
               style={[
                 styles.iconCircle,
-                { left: x, top: y }
+                { left: x, top: y }, {backgroundColor: theme.colors.StudentProjectCard.iconBackground}
               ]}
             >
               <UtensilsCrossed color="#fff" size={28} />
@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     position: "relative",
     borderRadius: 20,
-    backgroundColor: "#fdeaea",
     overflow: 'hidden',
   },
   circleMiddle: {

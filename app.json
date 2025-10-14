@@ -9,6 +9,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "bundleIdentifier": "com.audric_dev.CroustillantApp",
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Nous avons besoin de votre localisation pour afficher les restaurants les plus proches de vous.",
