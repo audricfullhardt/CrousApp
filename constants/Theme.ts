@@ -33,7 +33,15 @@ export type Theme = {
       background: string;
       text: string;
       border: string;
-    }
+    },
+    StudentProjectCard: {
+      background: string;
+      firstCircle: string;
+      secondCircle: string;
+      iconBackground: string;
+      iconColor: string;
+      borderColor: string;
+    },
   };
 };
 
@@ -60,16 +68,24 @@ export const lightTheme: Theme = {
     teamCard: {
       membersCard: {
         background: '#f9f3f3',
-        border: '#fce3e3',
+        border: '#FAEBEA',
         text: '#000000',
-        dot: '#0066FF',
+        dot: '#3B82F6',
       }
     },
     convincedCard: {
       background: '#ff6563',
       text: '#F2F2F2',
       border: '#ff9493',
-    }
+    },
+    StudentProjectCard: {
+      background: '#fdeaea',
+      firstCircle: '#fdd9d8',
+      secondCircle: '#ffc5c3',
+      iconBackground: '#F44336',
+      borderColor: '#FCBEBF',
+      iconColor: '#fff',
+    },
   },
 };
 
@@ -95,17 +111,25 @@ export const darkTheme: Theme = {
     cardsTitle: '#f0353d',
     teamCard: {
       membersCard: {
-        background: '#FFF1F4',
-        border: '#fce3e3',
-        text: '#000000',
-        dot: '#0066FF',
+        background: '#292929',
+        border: '#594D4D',
+        text: '#E6E6E6',
+        dot: '#3B82F6',
       }
     },
     convincedCard: {
       background: '#ff6563',
       text: '#F2F2F2',
       border: '#ff9493',
-    }
+    },
+    StudentProjectCard: {
+      background: '#4C3534',
+      firstCircle: '#452D2C',
+      secondCircle: '#452E2E',
+      iconBackground: '#F04646',
+      borderColor: '#F8ACAB',
+      iconColor: '#F2F2F2',
+    },
   },
 };
 

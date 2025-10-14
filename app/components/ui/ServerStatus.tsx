@@ -125,6 +125,5 @@ const styles = StyleSheet.create({
   },
   serverStatus: {
     fontSize: 14,
-    color: '#666666',
   },
 }); 
