@@ -300,6 +300,7 @@
     "Header": {
       "home": "Accueil",
       "restaurants": "Restaurants",
+      "favorites" : "Favoris",
       "about": "À propos",
       "settings": "Paramètres"
     },

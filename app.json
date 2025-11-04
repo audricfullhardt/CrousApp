@@ -9,12 +9,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "bundleIdentifier": "com.audric_dev.CroustillantApp",
+      "bundleIdentifier": "com.audric.CroustillantApp",
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Nous avons besoin de votre localisation pour afficher les restaurants les plus proches de vous.",
         "NSLocationAlwaysUsageDescription": "Nous avons besoin de votre localisation pour afficher les restaurants les plus proches de vous.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Nous avons besoin de votre localisation pour afficher les restaurants les plus proches de vous."
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Nous avons besoin de votre localisation pour afficher les restaurants les plus proches de vous.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -22,11 +23,10 @@
         "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#000000"
       },
-      "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
-      ],
-      "package": "com.audric_dev.CroustillantApp"
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+      "package": "com.audric.CroustillantApp",
+      "compileSdkVersion": 35,
+      "targetSdkVersion": 35
     },
     "web": {
       "bundler": "metro",

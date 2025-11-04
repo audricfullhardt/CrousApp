@@ -261,7 +261,8 @@ export default function MenuScreen() {
       marginBottom: 16,
       color: theme.colors.text,
       textAlign: "center",
-      paddingBottom: 12,
+      paddingTop: 12,
+      paddingLeft: 8,
       borderBottomWidth: 2,
       borderBottomColor: theme.colors.primary,
     },
@@ -286,6 +287,7 @@ export default function MenuScreen() {
       color: theme.colors.text,
       lineHeight: 22,
       marginBottom: 4,
+      paddingLeft: 4,
     },
     platItem: {
       flexDirection: "row",
