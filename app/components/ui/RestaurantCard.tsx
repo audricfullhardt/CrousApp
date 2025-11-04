@@ -10,7 +10,7 @@ export interface RestaurantCardProps {
   imageUrl: string | null;
   name: string;
   city: string;
-  isOpen: boolean;
+  isOpen: boolean | undefined;
   onPressMenu: () => void;
   onPressFavorite: () => void;
   isFavorite?: boolean;

@@ -6,7 +6,7 @@ import { HapticTab } from '@/app/components/ui/HapticTab';
 import TabBarBackground from '@/app/components/ui/TabBarBackground';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Home, Info, Settings, UtensilsCrossed } from 'lucide-react-native';
+import { Heart, Home, Info, Settings, UtensilsCrossed } from 'lucide-react-native';
 
 export default function TabLayout() {
   const theme = useTheme();
@@ -56,6 +56,13 @@ export default function TabLayout() {
         options={{
           tabBarLabel: t('Header.restaurants'),
           tabBarIcon: ({ color }) => <UtensilsCrossed size={28} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="fav"
+        options={{
+          tabBarLabel: t('Header.favorites'),
+          tabBarIcon: ({ color }) => <Heart size={28} color={color} />,
         }}
       />
       <Tabs.Screen

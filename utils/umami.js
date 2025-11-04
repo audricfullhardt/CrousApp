@@ -4,6 +4,7 @@ import { Dimensions } from "react-native";
 const UMAMI_URL = process.env.EXPO_PUBLIC_UMAMI_URL;
 const WEBSITE_ID = process.env.EXPO_PUBLIC_WEBSITE_ID;
 const HOSTNAME = process.env.EXPO_PUBLIC_HOSTNAME;
+const isDev = false;
 
 function buildPayload(eventName, url, type = "event", extra = {}) {
   const { width, height } = Dimensions.get("window");
@@ -22,7 +23,9 @@ function buildPayload(eventName, url, type = "event", extra = {}) {
 }
 
 export async function trackEvent(eventName, url = "/", extra = {}) {
-  if(__DEV__) return; // Skip tracking in development mode
+  if (isDev) {
+    return;
+  }
   try {
     const payload = buildPayload(eventName, url, "event", extra);
     console.log("Umami sending event:", payload);
@@ -35,7 +38,9 @@ export async function trackEvent(eventName, url = "/", extra = {}) {
 }
 
 export async function trackPageView(pageName, path = "/") {
-  if(__DEV__) return; // Skip tracking in development mode
+  if (isDev) {
+    return;
+  }
   try {
     const payload = buildPayload(pageName, path, "event");
     console.log("Umami sending pageview as event:", payload);
