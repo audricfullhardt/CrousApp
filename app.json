@@ -2,10 +2,10 @@
   "expo": {
     "name": "CROUStillantApp",
     "slug": "crousapp",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
-    "scheme": "CROUStillantApp",
+    "scheme": "croustillantapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -24,9 +24,7 @@
         "backgroundColor": "#000000"
       },
       "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
-      "package": "com.audric.CroustillantApp",
-      "compileSdkVersion": 35,
-      "targetSdkVersion": 35
+      "package": "com.audric.CroustillantApp"
     },
     "web": {
       "bundler": "metro",
@@ -42,6 +40,15 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35
+          }
         }
       ]
     ],
