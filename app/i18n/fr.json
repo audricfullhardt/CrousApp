@@ -418,7 +418,7 @@
       "personalTitle": "Informations personnelles",
       "language": {
         "title": "Langue",
-        "description": "Choisissez la langue que vous souhaitez utiliser sur le site.",
+        "description": "Choisissez la langue que vous souhaitez utiliser sur l'application.",
         "fr": "Français ({locale})",
         "en": "English ({locale})",
         "selectPlaceholder": "Sélectionner",

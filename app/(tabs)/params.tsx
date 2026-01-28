@@ -268,8 +268,8 @@ export default function ParamsScreen() {
               <View style={styles.favoritesList}>
                 {favoriteRestaurants.map((restaurant) => (
                   <View key={restaurant.id} style={[styles.favoriteItem, { backgroundColor: theme.colors.surfaceVariant }]}>
-                    <View>
-                      <ThemedText style={[styles.restaurantName, { color: theme.colors.text }]}>{restaurant.name}</ThemedText>
+                    <View style={styles.restaurantInfo}>
+                      <ThemedText style={[styles.restaurantName, { color: theme.colors.text }]} numberOfLines={1} ellipsizeMode="tail">{restaurant.name}</ThemedText>
                       <ThemedText style={[styles.restaurantCity, { color: theme.colors.text }]}>{restaurant.city}</ThemedText>
                     </View>
                     <TouchableOpacity
@@ -454,6 +454,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 12,
     borderRadius: 8,
+  },
+  restaurantInfo: {
+    flex: 1,
+    marginRight: 8,
   },
   restaurantName: {
     fontSize: 16,

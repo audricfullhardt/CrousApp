@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { HapticTab } from '@/app/components/ui/HapticTab';
 import TabBarBackground from '@/app/components/ui/TabBarBackground';
@@ -11,6 +12,7 @@ import { Heart, Home, Info, Settings, UtensilsCrossed } from 'lucide-react-nativ
 export default function TabLayout() {
   const theme = useTheme();
   const { t } = useLanguage();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
@@ -35,8 +37,8 @@ export default function TabLayout() {
             backgroundColor: theme.colors.background,
           },
           default: {
-            height: 60,
-            paddingBottom: 10,
+            height: 60 + insets.bottom,
+            paddingBottom: Math.max(insets.bottom, 10),
             paddingTop: 5,
             borderTopWidth: 0,
             elevation: 0,
@@ -63,12 +65,6 @@ export default function TabLayout() {
         options={{
           tabBarLabel: t('Header.favorites'),
           tabBarIcon: ({ color }) => <Heart size={28} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="menu"
-        options={{
-          href: null,
         }}
       />
       <Tabs.Screen

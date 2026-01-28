@@ -26,6 +26,7 @@ import { Config } from "@/constants/Config";
 import TrackedButton from "../components/TrackedButton";
 import { trackPageView } from "@/utils/umami";
 import { useEffect } from "react";
+import { ExternalLink } from "../components/ui/ExternalLink";
 
 type RootStackParamList = {
   restaurants: undefined;
@@ -62,7 +63,10 @@ export default function HomeScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.openSource}>
+        <ExternalLink
+          href={Config.EXTERNAL.GITHUB_REPO}
+          style={styles.openSource}
+        >
           <ThemedText
             style={[
               styles.openSourceText,
@@ -76,7 +80,7 @@ export default function HomeScreen() {
             {t("HomePage.badge.title")}
             <ArrowRight size={14} color={theme.colors.text} />
           </ThemedText>
-        </View>
+        </ExternalLink>
 
         <View style={styles.content}>
           <ThemedText style={[styles.title, { color: theme.colors.text }]}>

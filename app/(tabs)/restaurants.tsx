@@ -8,8 +8,6 @@ import {
   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useRouter } from "expo-router";
 import { SlidersHorizontal, MapPin, Map } from "lucide-react-native";
 
@@ -30,12 +28,6 @@ import { api, Restaurant } from "@/constants/api";
 import { PAGINATION_CONFIG } from "@/utils/constants";
 import { trackPageView, trackEvent } from "@/utils/umami";
 
-type RootStackParamList = {
-  menu: { restaurantId: string };
-};
-
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
 export default function RestaurantsScreen() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +43,6 @@ export default function RestaurantsScreen() {
     applyFilters: applyFiltersHook,
   } = useRestaurantFilters();
 
-  const navigation = useNavigation<NavigationProp>();
   const theme = useTheme();
   const { t } = useLanguage();
   const {
@@ -264,8 +255,9 @@ export default function RestaurantsScreen() {
                     city={restaurant.zone}
                     isOpen={restaurant.ouvert}
                     onPressMenu={() => {
-                      navigation.navigate("menu", {
-                        restaurantId: restaurant.code.toString(),
+                      router.push({
+                        pathname: "/menu",
+                        params: { restaurantId: restaurant.code.toString() },
                       });
                       trackEvent(`Menu`, "/menu");
                     }}
@@ -304,8 +296,9 @@ export default function RestaurantsScreen() {
                 city={restaurant.zone}
                 isOpen={restaurant.ouvert}
                 onPressMenu={() => {
-                  navigation.navigate("menu", {
-                    restaurantId: restaurant.code.toString(),
+                  router.push({
+                    pathname: "/menu",
+                    params: { restaurantId: restaurant.code.toString() },
                   });
                   trackEvent(`Menu`, "/menu");
                 }}
