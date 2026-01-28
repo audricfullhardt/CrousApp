@@ -15,20 +15,15 @@ import { useCallback, useEffect, useState } from "react";
 import { ThemedText } from "../components/ui/ThemedText";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import RestaurantCard from "../components/ui/RestaurantCard";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useRouter } from "expo-router";
 import { api, Restaurant } from "@/constants/api";
 import NoFavorite from "../components/NoFavorite";
 
 export default function FavScreen() {
-  type RootStackParamList = {
-    menu: { restaurantId: string };
-  };
-  type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
   const theme = useTheme();
   const { t } = useLanguage();
   const { favoriteRestaurants } = useFavorites();
-  const navigation = useNavigation<NavigationProp>();
+  const router = useRouter();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
   useEffect(() => {
@@ -104,8 +99,9 @@ export default function FavScreen() {
                     city={restaurant.zone}
                     isOpen={restaurant.ouvert}
                     onPressMenu={() => {
-                      navigation.navigate("menu", {
-                        restaurantId: restaurant.code.toString(),
+                      router.push({
+                        pathname: "/menu",
+                        params: { restaurantId: restaurant.code.toString() },
                       });
                       trackEvent(`Menu`, "/menu");
                     }}

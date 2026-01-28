@@ -566,7 +566,7 @@ export default function MenuScreen() {
         <View style={styles.header}>
           <TouchableOpacity 
             style={styles.backButtonHeader}
-            onPress={() => router.push('/restaurants')}
+            onPress={() => router.back()}
             activeOpacity={0.7}
           >
             <ArrowLeft size={20} color={theme.colors.text} />

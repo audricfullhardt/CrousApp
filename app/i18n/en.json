@@ -418,7 +418,7 @@
       "personalTitle": "Personal data",
       "language": {
         "title": "Language",
-        "description": "Choose the language in which you want to use the website.",
+        "description": "Choose the language in which you want to use on the application.",
         "fr": "Français ({locale})",
         "en": "English ({locale})",
         "selectPlaceholder": "Select",
