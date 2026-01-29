@@ -36,9 +36,21 @@ export default function TabLayout() {
             shadowOpacity: 0,
             backgroundColor: theme.colors.background,
           },
-          default: {
+          android: {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
             height: 60 + insets.bottom,
-            paddingBottom: Math.max(insets.bottom, 10),
+            paddingBottom: insets.bottom,
+            paddingTop: 5,
+            borderTopWidth: 0,
+            elevation: 0,
+            backgroundColor: theme.colors.background,
+          },
+          default: {
+            height: 60,
+            paddingBottom: 10,
             paddingTop: 5,
             borderTopWidth: 0,
             elevation: 0,
