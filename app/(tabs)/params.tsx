@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: 16,
-    paddingBottom: Platform.OS === 'ios' ? 100 : 100,
+    paddingBottom: 100,
   },
   sectionHeader: {
     fontSize: 22,

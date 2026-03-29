@@ -21,91 +21,38 @@ import Pagination from "../components/ui/Pagination";
 import ResetButton from "../components/ui/ResetButton";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useFavorites } from "@/contexts/FavoritesContext";
 import { useLocation, LocationType } from "@/hooks/useLocation";
 import { useRestaurantFilters } from "@/hooks/useRestaurantFilters";
-import { api, Restaurant } from "@/constants/api";
+import { useRestaurants } from "@/hooks/useRestaurants";
+import { useFavoriteToggle } from "@/hooks/useFavoriteToggle";
+import { Restaurant } from "@/constants/api";
 import { PAGINATION_CONFIG } from "@/utils/constants";
 import { trackPageView, trackEvent } from "@/utils/umami";
 
 export default function RestaurantsScreen() {
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [showNearby, setShowNearby] = useState(false);
 
-  const {
-    filters,
-    toggleFilter,
-    resetFilters,
-    applyFilters: applyFiltersHook,
-  } = useRestaurantFilters();
+  const { restaurants, loading } = useRestaurants();
+  const { favoriteRestaurants, favoriteRegion, isFavorite, toggleFavorite } = useFavoriteToggle();
+  const { filters, resetFilters, applyFilters } = useRestaurantFilters();
 
   const theme = useTheme();
   const { t } = useLanguage();
-  const {
-    favoriteRestaurants,
-    addFavoriteRestaurant,
-    removeFavoriteRestaurant,
-    isFavorite,
-  } = useFavorites();
-  const {
-    location,
-    loading: locationLoading,
-    requestLocationPermission,
-    calculateDistance,
-  } = useLocation();
+  const { location, requestLocationPermission, calculateDistance } = useLocation();
   const router = useRouter();
-  const { favoriteRegion } = useFavorites();
 
   const ITEMS_PER_PAGE = PAGINATION_CONFIG.ITEMS_PER_PAGE;
-
-  useEffect(() => {
-    const fetchRestaurants = async () => {
-      try {
-        const response = await api.getRestaurants();
-
-        if (response.success) {
-          setRestaurants(response.data);
-        } else {
-          console.error("API Error:", response);
-          throw new Error("API returned unsuccessful response");
-        }
-      } catch (error) {
-        console.error("Error fetching restaurants:", error);
-      }
-
-      setLoading(false);
-    };
-
-    fetchRestaurants();
-  }, []);
 
   useEffect(() => {
     trackPageView("Restaurants", "/restaurants");
   }, []);
 
-  const toggleFavorite = useCallback(
-    (restaurant: Restaurant) => {
-      const restaurantId = restaurant.code.toString();
-      if (isFavorite(restaurantId)) {
-        removeFavoriteRestaurant(restaurantId);
-      } else {
-        addFavoriteRestaurant({
-          id: restaurantId,
-          name: restaurant.nom,
-          city: restaurant.zone,
-        });
-      }
-    },
-    [isFavorite, removeFavoriteRestaurant, addFavoriteRestaurant]
-  );
-
   const updateRestaurantsWithDistance = useCallback(
-    (restaurants: Restaurant[], userLocation: LocationType) => {
-      return restaurants.map((restaurant) => {
+    (list: Restaurant[], userLocation: LocationType) => {
+      return list.map((restaurant) => {
         if (restaurant.latitude && restaurant.longitude) {
           const distance = calculateDistance(
             userLocation.latitude,
@@ -129,7 +76,7 @@ export default function RestaurantsScreen() {
   };
 
   const filteredRestaurants = useMemo(() => {
-    let filtered = applyFiltersHook(restaurants, searchQuery, favoriteRegion);
+    let filtered = applyFilters(restaurants, searchQuery, favoriteRegion);
 
     if (showNearby && location) {
       filtered = updateRestaurantsWithDistance(filtered, location).sort(
@@ -144,7 +91,7 @@ export default function RestaurantsScreen() {
     showNearby,
     location,
     favoriteRegion,
-    applyFiltersHook,
+    applyFilters,
     updateRestaurantsWithDistance,
   ]);
 
@@ -168,25 +115,40 @@ export default function RestaurantsScreen() {
     }
   }, [router]);
 
-  const getFavoritesText = useCallback(
-    (count: number) => {
-      return t("RestaurantsPage.favourites", { count });
+  const handlePressMenu = useCallback(
+    (restaurant: Restaurant) => {
+      router.push({
+        pathname: "/menu",
+        params: { restaurantId: restaurant.code.toString() },
+      });
+      trackEvent(`Menu`, "/menu");
     },
+    [router]
+  );
+
+  const getFavoritesText = useCallback(
+    (count: number) => t("RestaurantsPage.favourites", { count }),
     [t]
   );
 
   if (loading) {
     return (
       <View
-        style={[
-          styles.loadingContainer,
-          { backgroundColor: theme.colors.background },
-        ]}
+        style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}
       >
         <ActivityIndicator size="large" color={theme.colors.primary} />
       </View>
     );
   }
+
+  const nonFavoriteRestaurants = filteredRestaurants.filter(
+    (restaurant) => !favoriteRestaurants.some((fav) => fav.id === restaurant.code.toString())
+  );
+
+  const paginatedRestaurants = nonFavoriteRestaurants.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   return (
     <SafeAreaView
@@ -254,18 +216,10 @@ export default function RestaurantsScreen() {
                     name={restaurant.nom}
                     city={restaurant.zone}
                     isOpen={restaurant.ouvert}
-                    onPressMenu={() => {
-                      router.push({
-                        pathname: "/menu",
-                        params: { restaurantId: restaurant.code.toString() },
-                      });
-                      trackEvent(`Menu`, "/menu");
-                    }}
+                    onPressMenu={() => handlePressMenu(restaurant)}
                     onPressFavorite={() => toggleFavorite(restaurant)}
                     isFavorite={true}
-                    isCreditCard={
-                      restaurant.paiement?.includes("Carte bancaire") || false
-                    }
+                    isCreditCard={restaurant.paiement?.includes("Carte bancaire") || false}
                     isIzly={restaurant.paiement?.includes("IZLY") || false}
                     location={restaurant.adresse}
                     payment={restaurant.paiement?.join(", ") || "Aucun"}
@@ -277,41 +231,22 @@ export default function RestaurantsScreen() {
         )}
 
         <View style={styles.restaurantList}>
-          {filteredRestaurants
-            .filter(
-              (restaurant) =>
-                !favoriteRestaurants.some(
-                  (favorite) => favorite.id === restaurant.code.toString()
-                )
-            )
-            .slice(
-              (currentPage - 1) * ITEMS_PER_PAGE,
-              currentPage * ITEMS_PER_PAGE
-            )
-            .map((restaurant) => (
-              <RestaurantCard
-                key={restaurant.code}
-                imageUrl={restaurant.image_url || ""}
-                name={restaurant.nom}
-                city={restaurant.zone}
-                isOpen={restaurant.ouvert}
-                onPressMenu={() => {
-                  router.push({
-                    pathname: "/menu",
-                    params: { restaurantId: restaurant.code.toString() },
-                  });
-                  trackEvent(`Menu`, "/menu");
-                }}
-                onPressFavorite={() => toggleFavorite(restaurant)}
-                isFavorite={isFavorite(restaurant.code.toString())}
-                isCreditCard={
-                  restaurant.paiement?.includes("Carte bancaire") || false
-                }
-                isIzly={restaurant.paiement?.includes("IZLY") || false}
-                location={restaurant.adresse}
-                payment={restaurant.paiement?.join(", ") || "Aucun"}
-              />
-            ))}
+          {paginatedRestaurants.map((restaurant) => (
+            <RestaurantCard
+              key={restaurant.code}
+              imageUrl={restaurant.image_url || ""}
+              name={restaurant.nom}
+              city={restaurant.zone}
+              isOpen={restaurant.ouvert}
+              onPressMenu={() => handlePressMenu(restaurant)}
+              onPressFavorite={() => toggleFavorite(restaurant)}
+              isFavorite={isFavorite(restaurant.code.toString())}
+              isCreditCard={restaurant.paiement?.includes("Carte bancaire") || false}
+              isIzly={restaurant.paiement?.includes("IZLY") || false}
+              location={restaurant.adresse}
+              payment={restaurant.paiement?.join(", ") || "Aucun"}
+            />
+          ))}
         </View>
 
         <Pagination
@@ -363,7 +298,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   restaurantList: {
-    gap: 16,
+    gap: 4,
   },
   favoritesSection: {
     marginBottom: 20,
@@ -376,6 +311,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   favoritesList: {
-    gap: 12,
+    gap: 4,
   },
 });

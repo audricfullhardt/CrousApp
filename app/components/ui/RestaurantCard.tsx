@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Utensils, MapPin, CreditCard, Heart } from 'lucide-react-native';
+import { CreditCard, Heart } from 'lucide-react-native';
 
 import { ThemedText } from '@/app/components/ui/ThemedText';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -30,207 +30,155 @@ function RestaurantCard({
   isFavorite = false,
   isIzly = false,
   isCreditCard = false,
-  location,
-  payment,
 }: RestaurantCardProps) {
   const theme = useTheme();
   const { t } = useLanguage();
 
-  // Optimisation des styles avec useMemo
   const cardStyles = useMemo(() => ({
     container: [styles.container, { backgroundColor: theme.colors.surface }],
-    favoriteButton: [styles.favoriteButton, { backgroundColor: theme.colors.surface }],
     status: [styles.status, { backgroundColor: isOpen ? theme.colors.success : theme.colors.error }],
-    iconButton: [styles.iconButton, { backgroundColor: theme.colors.surfaceVariant }],
     menuButton: [styles.menuButton, { backgroundColor: theme.colors.primary }],
-    name: [styles.name, { color: theme.colors.text }],
-    city: [styles.city, { color: theme.colors.text }],
-    statusText: [styles.statusText, { color: theme.colors.surface }],
-    menuButtonText: [styles.menuButtonText, { color: theme.colors.surface }],
   }), [theme.colors, isOpen]);
 
-  // Image source optimisée
   const imageSource = useMemo(() => {
-    return imageUrl 
-      ? { uri: imageUrl } 
+    return imageUrl
+      ? { uri: imageUrl }
       : require('@/assets/images/default_ru.png');
   }, [imageUrl]);
 
   return (
-    <View style={cardStyles.container}>
-      <View style={styles.imageContainer}>
-        <Image source={imageSource} style={styles.image} resizeMode="cover" />
-        <TouchableOpacity
-          style={cardStyles.favoriteButton}
-          onPress={onPressFavorite}
-        >
-          <Heart
-            size={24}
-            color={isFavorite ? theme.colors.primary : theme.colors.text}
-          />
-        </TouchableOpacity>
-      </View>
+    <TouchableOpacity style={cardStyles.container} onPress={onPressMenu} activeOpacity={0.85}>
+      <Image source={imageSource} style={styles.image} resizeMode="cover" />
 
       <View style={styles.content}>
-        <View style={styles.header}>
-          <View style={styles.titleContainer}>
-            <ThemedText style={cardStyles.name} numberOfLines={2}>
+        <View style={styles.topRow}>
+          <View style={styles.titleBlock}>
+            <ThemedText style={[styles.name, { color: theme.colors.text }]} numberOfLines={1}>
               {name}
             </ThemedText>
-            <ThemedText style={cardStyles.city} numberOfLines={1}>
+            <ThemedText style={[styles.city, { color: theme.colors.text }]} numberOfLines={1}>
               {city}
             </ThemedText>
           </View>
-          <View style={cardStyles.status}>
-            <ThemedText style={cardStyles.statusText}>
-              {isOpen ? t('RestaurantInformation.open') : t('RestaurantInformation.closed')}
+          <TouchableOpacity onPress={onPressFavorite} hitSlop={8}>
+            <Heart
+              size={20}
+              color={isFavorite ? theme.colors.primary : theme.colors.text}
+              fill={isFavorite ? theme.colors.primary : 'none'}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.bottomRow}>
+          <View style={styles.badges}>
+            <View style={cardStyles.status}>
+              <ThemedText style={[styles.statusText, { color: theme.colors.surface }]}>
+                {isOpen ? t('RestaurantInformation.open') : t('RestaurantInformation.closed')}
+              </ThemedText>
+            </View>
+            {isCreditCard && (
+              <View style={[styles.paymentBadge, { backgroundColor: theme.colors.surfaceVariant }]}>
+                <CreditCard size={14} color={theme.colors.text} />
+              </View>
+            )}
+            {isIzly && (
+              <View style={[styles.paymentBadge, { backgroundColor: theme.colors.surfaceVariant }]}>
+                <Image
+                  source={require('@/assets/images/izly.png')}
+                  style={styles.izlyIcon}
+                  resizeMode="contain"
+                />
+              </View>
+            )}
+          </View>
+          <View style={cardStyles.menuButton}>
+            <ThemedText style={[styles.menuButtonText, { color: theme.colors.surface }]}>
+              {t('RestaurantCard.cta')}
             </ThemedText>
           </View>
         </View>
-
-        <View style={styles.actions}>
-          {isCreditCard && (
-            <TouchableOpacity style={cardStyles.iconButton}>
-              <CreditCard size={20} color={theme.colors.text} />
-            </TouchableOpacity>
-          )}
-          {isIzly && (
-            <TouchableOpacity style={cardStyles.iconButton}>
-              <Image 
-                source={require('@/assets/images/izly.png')} 
-                style={{ width: 20, height: 20 }}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={cardStyles.menuButton}
-            onPress={onPressMenu}
-          >
-            <ThemedText style={cardStyles.menuButtonText}>
-              {t('RestaurantCard.cta')}
-            </ThemedText>
-          </TouchableOpacity>
-        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
     borderRadius: 12,
     overflow: 'hidden',
-    marginBottom: 16,
+    marginBottom: 10,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  imageContainer: {
-    position: 'relative',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    elevation: 2,
   },
   image: {
-    width: '100%',
-    height: 200,
-  },
-  placeholderImage: {
-    width: '100%',
-    height: 200,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  favoriteButton: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    borderRadius: 20,
-    padding: 8,
+    width: 100,
+    height: 100,
   },
   content: {
-    padding: 16,
+    flex: 1,
+    padding: 10,
+    justifyContent: 'space-between',
   },
-  header: {
+  topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 16,
     gap: 8,
   },
-  titleContainer: {
+  titleBlock: {
     flex: 1,
   },
   name: {
-    fontSize: 22,
+    fontSize: 15,
     fontWeight: 'bold',
-    marginBottom: 4,
+    lineHeight: 18,
   },
   city: {
-    fontSize: 18,
+    fontSize: 13,
     opacity: 0.7,
+    marginTop: 2,
   },
-  location: {
-    fontSize: 14,
-    opacity: 0.7,
+  bottomRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  badges: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   status: {
     paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderRadius: 16,
-    alignSelf: 'flex-start',
+    paddingVertical: 3,
+    borderRadius: 10,
   },
   statusText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  paymentBadge: {
+    padding: 4,
+    borderRadius: 6,
+  },
+  izlyIcon: {
+    width: 14,
+    height: 14,
+  },
+  menuButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+  menuButtonText: {
     fontSize: 12,
     fontWeight: 'bold',
   },
-  actions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  iconButton: {
-    padding: 8,
-    borderRadius: 8,
-  },
-  menuButton: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  menuButtonText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  paymentContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  iconContainer: {
-    position: 'absolute',
-    top: 12,
-    left: 12,
-  },
-  payment: {
-    fontSize: 14,
-    opacity: 0.7,
-  },
 });
 
-export default RestaurantCard; 
+export default RestaurantCard;
