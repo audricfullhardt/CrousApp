@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   scrollViewContent: {
-    paddingBottom: Platform.OS === 'ios' ? 100 : 50, // Espace pour la tab bar
+    paddingBottom: Platform.OS === 'ios' ? 100 : 50,
   },
   section: {
     marginBottom: 32,

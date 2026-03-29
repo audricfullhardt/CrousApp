@@ -1,61 +1,52 @@
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Linking,
-  Platform,
-  Pressable,
-} from "react-native";
+import { StyleSheet, View, ScrollView, Platform, ActivityIndicator } from "react-native";
 import AppHeader from "../components/ui/AppHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { trackEvent, trackPageView } from "@/utils/umami";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { ThemedText } from "../components/ui/ThemedText";
-import { useFavorites } from "@/contexts/FavoritesContext";
 import RestaurantCard from "../components/ui/RestaurantCard";
 import { useRouter } from "expo-router";
-import { api, Restaurant } from "@/constants/api";
+import { Restaurant } from "@/constants/api";
 import NoFavorite from "../components/NoFavorite";
+import { useRestaurants } from "@/hooks/useRestaurants";
+import { useFavoriteToggle } from "@/hooks/useFavoriteToggle";
 
 export default function FavScreen() {
   const theme = useTheme();
   const { t } = useLanguage();
-  const { favoriteRestaurants } = useFavorites();
   const router = useRouter();
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const { restaurants, loading } = useRestaurants();
+  const { favoriteRestaurants, toggleFavorite, isFavorite } = useFavoriteToggle();
 
   useEffect(() => {
     trackPageView("Favorite", "/fav");
   }, []);
+
   const getFavoritesText = useCallback(
-    (count: number) => {
-      return t("RestaurantsPage.favourites", { count });
-    },
+    (count: number) => t("RestaurantsPage.favourites", { count }),
     [t]
   );
 
-  useEffect(() => {
-      const fetchRestaurants = async () => {
-        try {
-          const response = await api.getRestaurants();
-          
-          if (response.success) {
-            setRestaurants(response.data);
-          } else {
-            console.error('API Error:', response);
-            throw new Error('API returned unsuccessful response');
-          }
-        } catch (error) {
-          console.error('Error fetching restaurants:', error);
-        }
-        
-        setLoading(false);
-      };
-  
-      fetchRestaurants();
-    }, []);
+  const handlePressMenu = useCallback(
+    (restaurant: Restaurant) => {
+      router.push({
+        pathname: "/menu",
+        params: { restaurantId: restaurant.code.toString() },
+      });
+      trackEvent(`Menu`, "/menu");
+    },
+    [router]
+  );
+
+  if (loading) {
+    return (
+      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -69,7 +60,8 @@ export default function FavScreen() {
         <ThemedText style={[styles.title, { color: theme.colors.text }]}>
           {t("Header.favorites")}
         </ThemedText>
-        {favoriteRestaurants.length > 0 ?
+
+        {favoriteRestaurants.length > 0 ? (
           <View
             style={[
               styles.favoritesSection,
@@ -87,9 +79,6 @@ export default function FavScreen() {
                   (r) => r.code.toString() === favorite.id
                 );
                 if (!restaurant) return null;
-                function toggleFavorite(restaurant: any): void {
-                  throw new Error("Function not implemented.");
-                }
 
                 return (
                   <RestaurantCard
@@ -98,18 +87,10 @@ export default function FavScreen() {
                     name={restaurant.nom}
                     city={restaurant.zone}
                     isOpen={restaurant.ouvert}
-                    onPressMenu={() => {
-                      router.push({
-                        pathname: "/menu",
-                        params: { restaurantId: restaurant.code.toString() },
-                      });
-                      trackEvent(`Menu`, "/menu");
-                    }}
-                    onPressFavorite={()=> 0}
-                    isFavorite={true}
-                    isCreditCard={
-                      restaurant.paiement?.includes("Carte bancaire") || false
-                    }
+                    onPressMenu={() => handlePressMenu(restaurant)}
+                    onPressFavorite={() => toggleFavorite(restaurant)}
+                    isFavorite={isFavorite(restaurant.code.toString())}
+                    isCreditCard={restaurant.paiement?.includes("Carte bancaire") || false}
                     isIzly={restaurant.paiement?.includes("IZLY") || false}
                     location={restaurant.adresse}
                     payment={restaurant.paiement?.join(", ") || "Aucun"}
@@ -118,8 +99,9 @@ export default function FavScreen() {
               })}
             </View>
           </View>
-        : <NoFavorite/>
-        }
+        ) : (
+          <NoFavorite />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -146,20 +128,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 8,
   },
-  subtitle: {
-    fontSize: 16,
-    opacity: 0.7,
-    marginBottom: 16,
-  },
-  filterContainer: {
-    flexDirection: "row",
-    gap: 12,
-    marginBottom: 20,
-    flexWrap: "wrap",
-  },
-  restaurantList: {
-    gap: 16,
-  },
   favoritesSection: {
     marginBottom: 20,
     padding: 16,
@@ -171,10 +139,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   favoritesList: {
-    gap: 12,
+    gap: 8,
   },
 });
-function setLoading(arg0: boolean) {
-    throw new Error("Function not implemented.");
-}
-

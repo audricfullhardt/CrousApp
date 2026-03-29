@@ -1,4 +1,3 @@
-import { G } from 'react-native-svg';
 import { buildApiUrl } from './Config';
 
 export interface Restaurant {
@@ -105,12 +104,4 @@ class ApiService {
   }
 }
 
-export const apiService = new ApiService();
-
-export const api = {
-  getRestaurants: () => apiService.getRestaurants(),
-  getRestaurantsForMap: () => apiService.getRestaurantsForMap(),
-  getRestaurant: (id: string) => apiService.getRestaurant(id),
-  getRestaurantMenu: (restaurantId: string, date: string) => apiService.getRestaurantMenu(restaurantId, date),
-  getRegions: () => apiService.getRegions(),
-}; 
+export const api = new ApiService();

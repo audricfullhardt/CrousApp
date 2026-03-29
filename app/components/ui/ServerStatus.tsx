@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
   },
   serverInnerContainer: {
     borderRadius: 12,
-    // padding: 20,
   },
   serverTitleRow: {
     flexDirection: 'row',

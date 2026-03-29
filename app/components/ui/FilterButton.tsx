@@ -1,8 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { ThemedText } from './ThemedText';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { LucideIcon } from 'lucide-react-native';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -42,13 +40,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     gap: 6,
-  },
-  activeButton: {
-    borderWidth: 0,
-  },
-  inactiveButton: {
-    borderWidth: 1,
-    borderColor: '#ccc',
   },
   text: {
     fontSize: 14,

@@ -1,10 +1,9 @@
-import { StyleSheet, View, ScrollView, Linking, Platform } from "react-native";
+import { StyleSheet, View, ScrollView, Linking } from "react-native";
 import { ThemedText } from "@/app/components/ui/ThemedText";
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import Button from "@/app/components/ui/Button";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import AppHeader from "../components/ui/AppHeader";
@@ -240,9 +239,6 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  // scrollViewContent: {
-  //   paddingBottom: Platform.OS === "ios" ? 100 : 5,
-  // },
   content: {
     padding: 20,
   },

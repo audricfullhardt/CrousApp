@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { calculateDistance } from '@/utils/restaurantUtils';
 
 export type LocationType = {
   latitude: number;
@@ -31,13 +32,13 @@ export function useLocation() {
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync({
+      const currentLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,
       });
 
       setLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -49,18 +50,6 @@ export function useLocation() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    const R = 6371; // Rayon de la Terre en kilomètres
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c; // Distance en kilomètres
   };
 
   return {
