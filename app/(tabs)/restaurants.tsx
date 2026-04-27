@@ -191,7 +191,7 @@ export default function RestaurantsScreen() {
           <ResetButton onPress={handleReset} />
         </View>
 
-        {favoriteRestaurants.length > 0 && (
+        {favoriteRestaurants.length > 0 && !searchQuery && (
           <View
             style={[
               styles.favoritesSection,
